@@ -1,0 +1,12 @@
+.sandbox-vehicles-findone .blueimp-gallery-carousel {
+    margin-top: 0;
+}
+
+.sandbox-vehicles-findone .blueimp-gallery > .indicator > li {
+    width: 40px;
+    height: 40px;
+}
+
+.sandbox-vehicles-findone .btn.edit {
+    margin-right: 5px;
+}
