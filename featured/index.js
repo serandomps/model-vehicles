@@ -12,7 +12,6 @@ module.exports = function (ctx, container, options, done) {
         list(ctx, container, {
             vehicles: vehicles,
             title: 'Featured',
-            deck: options.deck,
             size: 4
         }, done);
     });

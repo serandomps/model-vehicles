@@ -41,7 +41,6 @@ module.exports = function (ctx, container, options, done) {
             return done(err);
         }
         list(ctx, container, {
-            deck: options.deck,
             vehicles: vehicles,
             size: 4
         }, done);

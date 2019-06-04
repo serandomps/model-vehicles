@@ -7,7 +7,11 @@
         <div class="col-md-2">
             {?_.edit}
             <div class="d-flex justify-content-end mt-1">
-                <a href="/vehicles/{id}/edit" class="btn btn-success edit">Edit</a>
+                <a href="/vehicles" class="btn btn-secondary cancel">Cancel</a>
+                {@is group="admin"}
+                <a href="/vehicles{id}/status" class="btn btn-success status">Status</a>
+                {/is}
+                <a href="/vehicles/{id}/edit" class="btn btn-primary edit">Edit</a>
                 <a href="/vehicles/{id}/delete" class="btn btn-danger delete">Delete</a>
             </div>
             {/_.edit}

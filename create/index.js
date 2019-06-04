@@ -330,13 +330,10 @@ var vehicleConfigs = {
 
 var create = function (id, data, done) {
     serand.emit('loader', 'start', {
-        name: 'autos-navigation',
         delay: 500
     });
     var end = function (err, data) {
-        serand.emit('loader', 'end', {
-            name: 'autos-navigation'
-        });
+        serand.emit('loader', 'end', {});
         done(err, data);
     };
     $.ajax({

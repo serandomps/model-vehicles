@@ -7,7 +7,7 @@ var list = require('../find');
 module.exports = function (ctx, container, options, done) {
     var sandbox = container.sandbox;
     options = options || {}
-    options.user = ctx.user && ctx.user.id
+    options.user = ctx.token && ctx.token.user.id
     Vehicle.find({
         query: options,
         resolution: '288x162'

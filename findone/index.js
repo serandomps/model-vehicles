@@ -5,7 +5,7 @@ var Vehicle = require('../service');
 
 require('gallery');
 
-var user;
+var token;
 
 dust.loadSource(dust.compile(require('./template'), 'vehicles-findone'));
 
@@ -66,7 +66,7 @@ module.exports = function (ctx, container, options, done) {
             }
             vehicle._.contact = o.contact;
             vehicle._.location = o.location;
-            if (user.id === vehicle.user) {
+            if (token.user.id === vehicle.user) {
                 vehicle._.edit = true;
             }
             dust.render('vehicles-findone', vehicle, function (err, out) {
@@ -104,14 +104,14 @@ module.exports = function (ctx, container, options, done) {
     });
 };
 
-serand.on('user', 'ready', function (usr) {
-    user = usr;
+serand.on('user', 'ready', function (tk) {
+    token = tk;
 });
 
-serand.on('user', 'logged in', function (usr) {
-    user = usr;
+serand.on('user', 'logged in', function (tk) {
+    token = tk;
 });
 
-serand.on('user', 'logged out', function (usr) {
-    user = null;
+serand.on('user', 'logged out', function (tk) {
+    token = null;
 });

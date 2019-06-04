@@ -7,6 +7,8 @@
     height: 40px;
 }
 
-.sandbox-vehicles-findone .btn.edit {
+.sandbox-vehicles-findone .btn.status,
+.sandbox-vehicles-findone .btn.edit,
+.sandbox-vehicles-findone .btn.cancel {
     margin-right: 5px;
 }

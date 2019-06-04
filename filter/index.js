@@ -1,44 +1,11 @@
 var dust = require('dust')();
 var serand = require('serand');
+var utils = require('utils');
 var form = require('form');
 var Make = require('vehicle-makes').service;
 var Model = require('vehicle-models').service;
 
 dust.loadSource(dust.compile(require('./template'), 'vehicles-filter'));
-
-var toQuery = function (options) {
-    var name;
-    var value;
-    var q = '';
-    var i;
-    options = to(options);
-    for (name in options) {
-        if (!options.hasOwnProperty(name)) {
-            continue;
-        }
-        if (name === '_') {
-            continue;
-        }
-        value = options[name];
-        if (!value) {
-            continue;
-        }
-        value = value instanceof Array ? value : [value];
-        for (i = 0; i < value.length; i++) {
-            q += q ? '&' : '';
-            q += name + '=' + value[i];
-        }
-    }
-    return q ? '?' + q : '';
-};
-
-var to = function (o) {
-    var oo = {};
-    Object.keys(o).forEach(function (name) {
-        oo[name.replace(/-/g, ':')] = o[name];
-    });
-    return oo;
-};
 
 var from = function (o) {
     var oo = {};
@@ -91,7 +58,7 @@ var configs = {
                         if (err) {
                             return console.error(err);
                         }
-                        serand.redirect('/vehicles' + toQuery(query));
+                        serand.redirect('/vehicles' + utils.toQuery(query));
                     });
                 }
             }, done);
@@ -121,7 +88,7 @@ var configs = {
                             if (err) {
                                 return console.error(err);
                             }
-                            serand.redirect('/vehicles' + toQuery(query));
+                            serand.redirect('/vehicles' + utils.toQuery(query));
                         });
                     });
                 }
@@ -141,7 +108,7 @@ var configs = {
                         if (err) {
                             return console.error(err);
                         }
-                        serand.redirect('/vehicles' + toQuery(query));
+                        serand.redirect('/vehicles' + utils.toQuery(query));
                     });
                 }
             }, done);
@@ -160,7 +127,7 @@ var configs = {
                         if (err) {
                             return console.error(err);
                         }
-                        serand.redirect('/vehicles' + toQuery(query));
+                        serand.redirect('/vehicles' + utils.toQuery(query));
                     });
                 }
             }, done);
@@ -179,7 +146,7 @@ var configs = {
                         if (err) {
                             return console.error(err);
                         }
-                        serand.redirect('/vehicles' + toQuery(query));
+                        serand.redirect('/vehicles' + utils.toQuery(query));
                     });
                 }
             }, done);
@@ -198,7 +165,7 @@ var configs = {
                         if (err) {
                             return console.error(err);
                         }
-                        serand.redirect('/vehicles' + toQuery(query));
+                        serand.redirect('/vehicles' + utils.toQuery(query));
                     });
                 }
             }, done);
@@ -217,7 +184,7 @@ var configs = {
                         if (err) {
                             return console.error(err);
                         }
-                        serand.redirect('/vehicles' + toQuery(query));
+                        serand.redirect('/vehicles' + utils.toQuery(query));
                     });
                 }
             }, done);
@@ -250,7 +217,7 @@ var configs = {
                         if (err) {
                             return console.error(err);
                         }
-                        serand.redirect('/vehicles' + toQuery(query));
+                        serand.redirect('/vehicles' + utils.toQuery(query));
                     });
                 }
             }, done);
@@ -274,7 +241,7 @@ var configs = {
                         if (err) {
                             return console.error(err);
                         }
-                        serand.redirect('/vehicles' + toQuery(query));
+                        serand.redirect('/vehicles' + utils.toQuery(query));
                     });
                 }
             }, done);
@@ -293,7 +260,7 @@ var configs = {
                         if (err) {
                             return console.error(err);
                         }
-                        serand.redirect('/vehicles' + toQuery(query));
+                        serand.redirect('/vehicles' + utils.toQuery(query));
                     });
                 }
             }, done);
@@ -312,7 +279,7 @@ var configs = {
                         if (err) {
                             return console.error(err);
                         }
-                        serand.redirect('/vehicles' + toQuery(query));
+                        serand.redirect('/vehicles' + utils.toQuery(query));
                     });
                 }
             }, done);
