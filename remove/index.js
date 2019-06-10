@@ -7,15 +7,22 @@ dust.loadSource(dust.compile(require('./template'), 'vehicles-remove'));
 
 module.exports = function (ctx, container, options, done) {
     var sandbox = container.sandbox;
-    dust.render('vehicles-remove', {}, function (err, out) {
-        if (err) {
-            return done(err);
-        }
-        var el = sandbox.append(out);
-        console.log(out)
-        $('.remove', el).on('click', function () {
-            Vehicle.remove(options.id, serand.none);
-        })
-        done(null, serand.none);
+    Vehicle.findOne({id: options.id}, function (err, vehicle) {
+        if (err) return done(err);
+        dust.render('vehicles-remove', vehicle, function (err, out) {
+            if (err) {
+                return done(err);
+            }
+            var el = sandbox.append(out);
+            $('.remove', el).on('click', function () {
+                Vehicle.remove(vehicle, function (err) {
+                    if (err) {
+                        return console.error(err);
+                    }
+                    serand.redirect('/vehicles');
+                });
+            });
+            done(null, serand.none);
+        });
     });
 };

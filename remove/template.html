@@ -1,13 +1,7 @@
-<div class="vehicles-remove">
-    <div class="row">
-        <div class="col-md-12">
-            <p>You are about to delete the post {title}?</p>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <button class="remove btn btn-danger mr-1">Confirm</button>
-            <button class="cancel btn btn-success">Cancel</button>
-        </div>
-    </div>
+<h1 class="title text-center mb-4">{_.make.title} {_.model.title} {manufacturedAt|year}</h1>
+<div class="d-inline">You are about to delete this vehicle?
+</div>
+<div class="d-inline">
+    <button class="remove btn btn-danger mr-1 ml-3">Confirm</button>
+    <a href="/vehicles/{id}" class="cancel btn btn-secondary">Cancel</a>
 </div>

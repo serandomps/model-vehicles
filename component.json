@@ -12,7 +12,8 @@
         "recent/index.js",
         "remove/index.js",
         "search/index.js",
-        "service/index.js"
+        "service/index.js",
+        "status/index.js"
     ],
     "styles": [
         "styles.css",
@@ -30,7 +31,9 @@
         "filter/template.html",
         "find/template.html",
         "findone/template.html",
-        "remove/template.html"
+        "findone/buttons.html",
+        "remove/template.html",
+        "status/template.html"
     ],
     "main": "index.js",
     "dependencies": {

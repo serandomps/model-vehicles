@@ -336,32 +336,16 @@ var create = function (id, data, done) {
         serand.emit('loader', 'end', {});
         done(err, data);
     };
-    $.ajax({
-        url: AUTO_API + (id ? '/' + id : ''),
-        type: id ? 'PUT' : 'POST',
-        dataType: 'json',
-        contentType: 'application/json',
-        data: JSON.stringify(data),
-        success: function (data) {
-            end(null, data);
-        },
-        error: function (xhr, status, err) {
-            end(err || status || xhr);
+    Vehicle.create(data, function (err, data) {
+        if (err) {
+            return end(err);
         }
+        end(null, data);
     });
 };
 
 var remove = function (id, done) {
-    $.ajax({
-        url: AUTO_API + '/' + id,
-        type: 'DELETE',
-        success: function (data) {
-            done(null, data);
-        },
-        error: function (xhr, status, err) {
-            done(err || status || xhr);
-        }
-    });
+    Vehicle.remove({id: id}, done);
 };
 
 var findModels = function (make, done) {
@@ -415,15 +399,15 @@ var stepHandler = function (handler, done) {
 };
 
 var createHandler = function (handler, done) {
-  stepHandler(handler, function (err, errors, o) {
-      if (err) {
-          return done(err);
-      }
-      if (errors) {
-          return done(null, errors);
-      }
-      handler.create(o, done);
-  })
+    stepHandler(handler, function (err, errors, o) {
+        if (err) {
+            return done(err);
+        }
+        if (errors) {
+            return done(null, errors);
+        }
+        handler.create(o, done);
+    })
 };
 
 var render = function (ctx, container, data, done) {

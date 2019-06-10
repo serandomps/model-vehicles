@@ -8,6 +8,7 @@ require('gallery');
 var token;
 
 dust.loadSource(dust.compile(require('./template'), 'vehicles-findone'));
+dust.loadSource(dust.compile(require('./buttons'), 'vehicles-findone-buttons'));
 
 var findLocation = function (id, done) {
     $.ajax({
@@ -66,7 +67,7 @@ module.exports = function (ctx, container, options, done) {
             }
             vehicle._.contact = o.contact;
             vehicle._.location = o.location;
-            if (token.user.id === vehicle.user) {
+            if (token && token.user.id === vehicle.user) {
                 vehicle._.edit = true;
             }
             dust.render('vehicles-findone', vehicle, function (err, out) {

@@ -129,3 +129,19 @@ exports.remove = function (options, done) {
         }
     });
 };
+
+exports.create = function (options, done) {
+    $.ajax({
+        url: utils.resolve('autos:///apis/v/vehicles'+ (options.id ? '/' + options.id : '')),
+        type: options.id ? 'PUT' : 'POST',
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify(options),
+        success: function (data) {
+            update([data], options, done);
+        },
+        error: function (xhr, status, err) {
+            done(err || status || xhr);
+        }
+    });
+};
