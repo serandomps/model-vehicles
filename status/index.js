@@ -142,7 +142,6 @@ module.exports = function (ctx, container, options, done) {
     var sandbox = container.sandbox;
     Vehicle.findOne({id: options.id}, function (err, vehicle) {
         if (err) return done(err);
-        vehicle._.container = container.id;
         vehicle._.picks = [
             {label: 'Published', value: 'published'},
             {label: 'Unpublished', value: 'unpublished'}
@@ -152,6 +151,7 @@ module.exports = function (ctx, container, options, done) {
                 return done(err);
             }
             vehicle._.status = status;
+            vehicle = serand.pack(vehicle, container);
             dust.render('vehicles-status', vehicle, function (err, out) {
                 if (err) {
                     return done(err);

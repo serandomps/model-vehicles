@@ -9,7 +9,7 @@ module.exports = function (ctx, container, options, done) {
     var sandbox = container.sandbox;
     Vehicle.findOne({id: options.id}, function (err, vehicle) {
         if (err) return done(err);
-        dust.render('vehicles-remove', vehicle, function (err, out) {
+        dust.render('vehicles-remove', serand.pack(vehicle, container), function (err, out) {
             if (err) {
                 return done(err);
             }

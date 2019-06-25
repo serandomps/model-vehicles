@@ -6,7 +6,7 @@ dust.loadSource(dust.compile(require('./template'), 'vehicles-find'));
 
 module.exports = function (ctx, container, options, done) {
     var sandbox = container.sandbox;
-    dust.render('vehicles-find', options, function (err, out) {
+    dust.render('vehicles-find', serand.pack(options, container), function (err, out) {
         if (err) {
             return done(err);
         }

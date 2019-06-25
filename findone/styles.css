@@ -9,6 +9,7 @@
 
 .sandbox-vehicles-findone .btn.status,
 .sandbox-vehicles-findone .btn.edit,
-.sandbox-vehicles-findone .btn.cancel {
+.sandbox-vehicles-findone .btn.cancel,
+.sandbox-vehicles-findone .btn-group {
     margin-right: 5px;
 }

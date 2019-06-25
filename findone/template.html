@@ -1,21 +1,20 @@
 <div class="vehicles-findone">
     <div class="row mb-3">
-        <!--<div class="col-md-2"></div>-->
         <div class="col-md-10">
             <h1 class="title text-center">{?id}{_.make.title} {_.model.title} {manufacturedAt|year}{:else}Create your vehicle{/id}</h1>
         </div>
         <div class="col-md-2">
             {?_.edit}
-            {>"vehicles-findone-buttons"/}
+            {>"vehicles-findone-actions"/}
             {:else}
             {@is group="admin"}
-            {>"vehicles-findone-buttons"/}
+            {>"vehicles-findone-actions"/}
             {/is}
             {/_.edit}
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-9">
             <div class="blueimp-gallery blueimp-gallery-carousel blueimp-gallery-controls">
                 <div class="slides"></div>
                 <h3 class="title"></h3>
@@ -24,106 +23,13 @@
                 <a class="play-pause"></a>
                 <ol class="indicator"></ol>
             </div>
-        </div>
-        <div class="col-md-6">
-            <div class="table-responsive">
-                <table class="table table-striped table-bordered">
-                    <tbody>
-                    <tr>
-                        <td>Make</td>
-                        <td>{_.make.title}</td>
-                    </tr>
-                    <tr>
-                        <td>Model</td>
-                        <td>{_.model.title}</td>
-                    </tr>
-                    <tr>
-                        <td>Year</td>
-                        <td>{manufacturedAt|year}</td>
-                    </tr>
-                    <tr>
-                        <td>Color</td>
-                        <td>{color}</td>
-                    </tr>
-                    <tr>
-                        <td>Condition</td>
-                        <td>{condition}</td>
-                    </tr>
-                    <tr>
-                        <td>Mileage</td>
-                        <td>{mileage} km</td>
-                    </tr>
-                    <tr>
-                        <td>Fuel</td>
-                        <td>{fuel}</td>
-                    </tr>
-                    <tr>
-                        <td>Transmission</td>
-                        <td>{transmission}</td>
-                    </tr>
-                    <tr>
-                        <td>Price</td>
-                        <td>{price} LKR</td>
-                    </tr>
-                    {?_.contact}
-                    <tr>
-                        <td>Contacts</td>
-                        <td>
-                            {?_.contact.phones}
-                            <div class="d-flex justify-content-start">
-                                <div class="p-1"><i class="fas fa-phone"></i></div>
-                                {#_.contact.phones}
-                                <div class="p-1">{.}</div>
-                                {/_.contact.phones}
-                            </div>
-                            {/_.contact.phones}
-                            {?_.contact.email}
-                            <div class="d-flex justify-content-start">
-                                <div class="p-1">
-                                    <i class="fas fa-envelope mr-2"></i>{_.contact.email}
-                                </div>
-                            </div>
-                            {/_.contact.email}
-                            {?_.contact.viber}
-                            <div class="d-flex justify-content-start">
-                                <div class="p-1">
-                                    <i class="fab fa-viber mr-2"></i>{_.contact.viber}
-                                </div>
-                            </div>
-                            {/_.contact.viber}
-                            {?_.contact.whatsapp}
-                            <div class="d-flex justify-content-start">
-                                <div class="p-1">
-                                    <i class="fab fa-whatsapp mr-2"></i>{_.contact.whatsapp}
-                                </div>
-                            </div>
-                            {/_.contact.whatsapp}
-                            {?_.contact.messenger}
-                            <div class="d-flex justify-content-start">
-                                <div class="p-1">
-                                    <i class="fab fa-facebook-messenger mr-2"></i>{_.contact.messenger}
-                                </div>
-                            </div>
-                            {/_.contact.messenger}
-                            {?_.contact.skype}
-                            <div class="d-flex justify-content-start">
-                                <div class="p-1">
-                                    <i class="fab fa-skype mr-2"></i>{_.contact.skype}
-                                </div>
-                            </div>
-                            {/_.contact.skype}
-                        </td>
-                    </tr>
-                    {/_.contact}
-                    {?description}
-                    <tr>
-                        <td>Description</td>
-                        <td>{description|s}</td>
-                    </tr>
-                    {/description}
-                    </tbody>
-                </table>
+            <div class="details">
+            {>"vehicles-findone-details"/}
             </div>
+            <div class="location"></div>
+        </div>
+        <div class="col-md-3">
+            <div class="recent"></div>
         </div>
     </div>
 </div>

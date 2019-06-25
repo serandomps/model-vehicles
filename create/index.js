@@ -328,7 +328,7 @@ var vehicleConfigs = {
     },
 };
 
-var create = function (id, data, done) {
+var create = function (data, done) {
     serand.emit('loader', 'start', {
         delay: 500
     });
@@ -543,6 +543,7 @@ var render = function (ctx, container, data, done) {
                                         if (errors) {
                                             return;
                                         }
+                                        vehicle.id = vehicle.id || id;
                                         createHandler(handlers.location, function (err, errors, location) {
                                             if (err) {
                                                 return console.error(err);
@@ -559,7 +560,7 @@ var render = function (ctx, container, data, done) {
                                                     return;
                                                 }
                                                 vehicle.contact = contact;
-                                                create(id, vehicle, function (err) {
+                                                create(vehicle, function (err) {
                                                     if (err) {
                                                         return console.error(err);
                                                     }
@@ -599,11 +600,7 @@ module.exports = function (ctx, container, options, done) {
     options = options || {};
     var id = options.id;
     if (!id) {
-        render(ctx, container, {
-            _: {
-                container: container.id
-            }
-        }, done);
+        render(ctx, container, serand.pack({}, container), done);
         return;
     }
     Vehicle.findOne({
@@ -613,7 +610,6 @@ module.exports = function (ctx, container, options, done) {
         if (err) {
             return done(err);
         }
-        vehicle._.container = container.id;
-        render(ctx, container, vehicle, done);
+        render(ctx, container, serand.pack(vehicle, container), done);
     });
 };

@@ -367,6 +367,7 @@ module.exports = function (ctx, container, options, done) {
                 {label: 'Blue', value: 'blue'},
                 {label: 'Brown', value: 'brown'},
                 {label: 'Green', value: 'green'},
+                {label: 'Grey', value: 'grey'},
                 {label: 'Orange', value: 'orange'},
                 {label: 'Red', value: 'red'},
                 {label: 'Silver', value: 'silver'},
@@ -374,7 +375,7 @@ module.exports = function (ctx, container, options, done) {
                 {label: 'Yellow', value: 'yellow'}
             ];
 
-            dust.render('vehicles-filter', query, function (err, out) {
+            dust.render('vehicles-filter', serand.pack(query, container), function (err, out) {
                 if (err) {
                     return done(err);
                 }

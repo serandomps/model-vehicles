@@ -3,12 +3,17 @@ var serand = require('serand');
 var utils = require('utils');
 var Vehicle = require('../service');
 
+var locations = require('locations');
+var recent = require('../recent');
+
 require('gallery');
 
 var token;
 
 dust.loadSource(dust.compile(require('./template'), 'vehicles-findone'));
-dust.loadSource(dust.compile(require('./buttons'), 'vehicles-findone-buttons'));
+dust.loadSource(dust.compile(require('./actions'), 'vehicles-findone-actions'));
+dust.loadSource(dust.compile(require('./status'), 'vehicles-findone-status'));
+dust.loadSource(dust.compile(require('./details'), 'vehicles-findone-details'));
 
 var findLocation = function (id, done) {
     $.ajax({
@@ -28,6 +33,27 @@ var findContact = function (id, done) {
     $.ajax({
         method: 'GET',
         url: utils.resolve('accounts:///apis/v/contacts/' + id),
+        dataType: 'json',
+        success: function (data) {
+            done(null, data);
+        },
+        error: function (xhr, status, err) {
+            done(err || status || xhr);
+        }
+    });
+};
+
+var transit = function (id, action, done) {
+    $.ajax({
+        method: 'POST',
+        url: utils.resolve('autos:///apis/v/vehicles/' + id),
+        headers: {
+            'X-Action': 'transit'
+        },
+        contentType: 'application/json',
+        data: JSON.stringify({
+            action: action
+        }),
         dataType: 'json',
         success: function (data) {
             done(null, data);
@@ -70,35 +96,66 @@ module.exports = function (ctx, container, options, done) {
             if (token && token.user.id === vehicle.user) {
                 vehicle._.edit = true;
             }
-            dust.render('vehicles-findone', vehicle, function (err, out) {
+            utils.workflow('model', function (err, workflow) {
                 if (err) {
                     return done(err);
                 }
-                sandbox.append(out);
-                done(null, {
-                    clean: function () {
-                        $('.vehicles-findone', sandbox).remove();
-                    },
-                    ready: function () {
-                        var i;
-                        var o = [];
-                        var images = vehicle._.images;
-                        var length = images.length;
-                        var image;
-                        for (i = 0; i < length; i++) {
-                            image = images[i];
-                            o.push({
-                                href: image.url,
-                                thumbnail: image.url
-                            });
-                        }
-                        blueimp.Gallery(o, {
-                            container: $('.blueimp-gallery-carousel', sandbox),
-                            carousel: true,
-                            thumbnailIndicators: true,
-                            stretchImages: true
-                        });
+                vehicle._.status = Object.keys(workflow[vehicle.status]);
+                dust.render('vehicles-findone', serand.pack(vehicle, container), function (err, out) {
+                    if (err) {
+                        return done(err);
                     }
+                    var elem = sandbox.append(out);
+                    locations.findone(ctx, {
+                        id: container.id,
+                        sandbox: $('.location', elem),
+                        parent: elem
+                    }, {
+                        required: true,
+                        label: 'Location of the vehicle',
+                        id: vehicle.location
+                    }, function (err, o) {
+                        if (err) {
+                            return done(err);
+                        }
+                        recent(ctx, {
+                            id: container.id,
+                            sandbox: $('.recent', elem)
+                        }, {}, function (err, o) {
+                            elem.on('click', '.status-buttons .dropdown-item', function () {
+                                transit(vehicle.id, $(this).data('action'), function (err) {
+                                    if (err) {
+                                        console.error(err);
+                                    }
+                                });
+                            });
+                            done(null, {
+                                clean: function () {
+                                    $('.vehicles-findone', sandbox).remove();
+                                },
+                                ready: function () {
+                                    var i;
+                                    var o = [];
+                                    var images = vehicle._.images;
+                                    var length = images.length;
+                                    var image;
+                                    for (i = 0; i < length; i++) {
+                                        image = images[i];
+                                        o.push({
+                                            href: image.url,
+                                            thumbnail: image.url
+                                        });
+                                    }
+                                    blueimp.Gallery(o, {
+                                        container: $('.blueimp-gallery-carousel', sandbox),
+                                        carousel: true,
+                                        thumbnailIndicators: true,
+                                        stretchImages: true
+                                    });
+                                }
+                            });
+                        });
+                    });
                 });
             });
         });

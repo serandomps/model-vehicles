@@ -31,7 +31,9 @@
         "filter/template.html",
         "find/template.html",
         "findone/template.html",
-        "findone/buttons.html",
+        "findone/actions.html",
+        "findone/status.html",
+        "findone/details.html",
         "remove/template.html",
         "status/template.html"
     ],

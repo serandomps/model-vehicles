@@ -1,0 +1,19 @@
+<div class="d-flex justify-content-end mt-1">
+    <a href="/vehicles" class="btn btn-secondary cancel">Cancel</a>
+    <div class="status-buttons btn-group" role="group">
+        <button id="status-buttons-{_.container}" type="button"
+                class="btn btn-success dropdown-toggle"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false">
+            Status
+        </button>
+        <div class="dropdown-menu" aria-labelledby="status-buttons-{_.container}">
+            {#_.status}
+            <a class="dropdown-item text-capitalize" href="#" data-action="{.}">{.}</a>
+            {/_.status}
+        </div>
+    </div>
+    <a href="/vehicles/{id}/edit" class="btn btn-primary edit">Edit</a>
+    <a href="/vehicles/{id}/delete" class="btn btn-danger delete">Delete</a>
+</div>
