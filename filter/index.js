@@ -2,18 +2,14 @@ var dust = require('dust')();
 var serand = require('serand');
 var utils = require('utils');
 var form = require('form');
-var Make = require('vehicle-makes').service;
-var Model = require('vehicle-models').service;
+var Makes = require('vehicle-makes').service;
+var Models = require('vehicle-models').service;
+var Locations = require('locations').service;
+
+var allProvinces = Locations.allProvinces();
+var provincesByName = _.keyBy(allProvinces, 'name');
 
 dust.loadSource(dust.compile(require('./template'), 'vehicles-filter'));
-
-var from = function (o) {
-    var oo = {};
-    Object.keys(o).forEach(function (name) {
-        oo[name.replace(/:/g, '-')] = o[name];
-    });
-    return oo;
-};
 
 var findQuery = function (vform, done) {
     vform.find(function (err, data) {
@@ -27,7 +23,12 @@ var findQuery = function (vform, done) {
             if (errors) {
                 return vform.update(errors, data, done);
             }
-            done(null, data);
+            vform.to(data, function (err, data) {
+                if (err) {
+                    return done(err);
+                }
+                done(null, data);
+            });
         });
     });
 };
@@ -36,12 +37,88 @@ var findModels = function (make, done) {
     if (!make) {
         return done(null, []);
     }
-    Model.find(make, function (err, models) {
+    Models.find(make, function (err, models) {
         if (err) {
             return done(err);
         }
         done(null, models);
     });
+};
+
+var findDistricts = function (province, done) {
+    if (!province) {
+        return done(null, []);
+    }
+    return done(null, provincesByName[province].districts);
+};
+
+var to = function (o, done) {
+    var query = {
+        type: o.type,
+        make: o.make,
+        model: o.model,
+        color: o.color,
+        condition: o.condition,
+        transmission: o.transmission,
+        fuel: o.fuel,
+        mileage: o.mileage,
+        'price:gte': o['price-gte'],
+        'price:lte': o['price-lte'],
+        'manufacturedAt:gte': o['manufacturedAt-gte'],
+        'manufacturedAt:lte': o['manufacturedAt-lte'],
+        'tags:location:province': o['location-province'],
+        'tags:location:district': o['location-district'],
+        'tags:location:city': o['location-city']
+    };
+    var key;
+    var value;
+    var oo = {};
+    for (key in query) {
+        if (!query.hasOwnProperty(key)) {
+            continue;
+        }
+        value = query[key];
+        if (!value) {
+            continue;
+        }
+        oo[key] = query[key];
+    }
+    done(null, oo);
+};
+
+var from = function (query, done) {
+    var o = {
+        _: query._,
+        type: query.type || '',
+        make: query.make || '',
+        model: query.model,
+        color: query.color,
+        condition: query.condition,
+        transmission: query.transmission,
+        fuel: query.fuel,
+        mileage: query.mileage,
+        'price-gte': query['price:gte'],
+        'price-lte': query['price:lte'],
+        'manufacturedAt-gte': query['manufacturedAt:gte'],
+        'manufacturedAt-lte': query['manufacturedAt:lte'],
+        'location-province': query['tags:location:province'],
+        'location-district': query['tags:location:district'],
+        'location-city': query['tags:location:city']
+    };
+    var key;
+    var value;
+    var oo = {};
+    for (key in o) {
+        if (!o.hasOwnProperty(key)) {
+            continue;
+        }
+        value = o[key];
+        if (!value) {
+            continue;
+        }
+        oo[key] = o[key];
+    }
+    done(null, oo);
 };
 
 var configs = {
@@ -284,110 +361,213 @@ var configs = {
                 }
             }, done);
         }
+    },
+    'location-province': {
+        find: function (context, source, done) {
+            serand.blocks('select', 'find', source, function (err, province) {
+                if (err) {
+                    return done(err);
+                }
+                done(null, province);
+            });
+        },
+        render: function (ctx, vform, data, value, done) {
+            var el = $('.location-province', vform.elem);
+            serand.blocks('select', 'create', el, {
+                value: value,
+                change: function () {
+                    serand.blocks('select', 'update', $('.location-district', vform.elem), {
+                        value: ''
+                    }, function (err) {
+                        if (err) {
+                            return done(err);
+                        }
+                        findQuery(vform, function (err, query) {
+                            if (err) {
+                                return console.error(err);
+                            }
+                            serand.redirect('/vehicles' + utils.toQuery(query));
+                        });
+                    });
+                }
+            }, done);
+        }
+    },
+    'location-district': {
+        find: function (context, source, done) {
+            serand.blocks('select', 'find', source, done);
+        },
+        render: function (ctx, vform, data, value, done) {
+            var el = $('.location-district', vform.elem);
+            serand.blocks('select', 'create', el, {
+                value: value,
+                change: function () {
+                    findQuery(vform, function (err, query) {
+                        if (err) {
+                            return console.error(err);
+                        }
+                        serand.redirect('/vehicles' + utils.toQuery(query));
+                    });
+                }
+            }, done);
+        }
+    },
+    'location-city': {
+        find: function (context, source, done) {
+            serand.blocks('select', 'find', source, done);
+        },
+        render: function (ctx, vform, data, value, done) {
+            var el = $('.location-city', vform.elem);
+            serand.blocks('select', 'create', el, {
+                value: value,
+                change: function () {
+                    findQuery(vform, function (err, query) {
+                        if (err) {
+                            return console.error(err);
+                        }
+                        serand.redirect('/vehicles' + utils.toQuery(query));
+                    });
+                }
+            }, done);
+        }
+    },
+    _: {
+        to: to,
+        from: from
     }
 };
 
 module.exports = function (ctx, container, options, done) {
     var sandbox = container.sandbox;
     options = options || {};
-    Make.find(function (err, makes) {
+
+    from(_.cloneDeep(options.query) || {}, function (err, query) {
         if (err) {
             return done(err);
         }
-
-        var makeData = [{label: 'All Makes', value: ''}];
-        makeData = makeData.concat(_.map(makes, function (make) {
-            return {
-                value: make.id,
-                label: make.title
-            };
-        }));
-
-        var query = _.cloneDeep(options.query) || {};
-
-        findModels(query.make, function (err, models) {
+        query._ = query._ || (query._ = {});
+        Makes.find(function (err, makes) {
             if (err) {
                 return done(err);
             }
 
-            var modelData = [{label: 'All Models', value: ''}];
-            modelData = modelData.concat(_.map(models, function (model) {
+            var makeData = [{label: 'Any Make', value: ''}];
+            makeData = makeData.concat(_.map(makes, function (make) {
                 return {
-                    value: model.id,
-                    label: model.title
+                    value: make.id,
+                    label: make.title
                 };
             }));
 
-            var manufacturedAt = [];
-            var year = moment().year();
-            var start = year - 100;
-            while (year > start) {
-                manufacturedAt.push({label: year, value: year});
-                year--;
-            }
-
-            query._ = {
-                container: container.id
-            };
-            query._.makes = makeData;
-            query._.models = modelData;
-            query._.types = [
-                {label: 'All Types', value: ''},
-                {label: 'SUV', value: 'suv'},
-                {label: 'Car', value: 'car'},
-                {label: 'Cab', value: 'cab'},
-                {label: 'Bus', value: 'bus'},
-                {label: 'Lorry', value: 'lorry'},
-                {label: 'Backhoe', value: 'backhoe'},
-                {label: 'Motorcycle', value: 'motorcycle'},
-                {label: 'Threewheeler', value: 'threewheeler'},
-            ];
-            query._.manufacturedFrom = [{label: 'From Any Year', value: ''}].concat(manufacturedAt);
-            query._.manufacturedTo = [{label: 'To Any Year', value: ''}].concat(manufacturedAt);
-            query._.conditions = [
-                {label: 'Brand New', value: 'brand-new'},
-                {label: 'Used', value: 'used'},
-                {label: 'Unregistered', value: 'unregistered'}
-            ];
-            query._.transmissions = [
-                {label: 'Automatic', value: 'automatic'},
-                {label: 'Manual', value: 'manual'},
-                {label: 'Manumatic', value: 'manumatic'}
-            ];
-            query._.fuels = [
-                {label: 'None', value: 'none'},
-                {label: 'Petrol', value: 'petrol'},
-                {label: 'Diesel', value: 'diesel'},
-                {label: 'Hybrid', value: 'hybrid'},
-                {label: 'Electric', value: 'electric'}
-            ];
-            query._.colors = [
-                {label: 'All Colors', value: ''},
-                {label: 'Black', value: 'black'},
-                {label: 'Blue', value: 'blue'},
-                {label: 'Brown', value: 'brown'},
-                {label: 'Green', value: 'green'},
-                {label: 'Grey', value: 'grey'},
-                {label: 'Orange', value: 'orange'},
-                {label: 'Red', value: 'red'},
-                {label: 'Silver', value: 'silver'},
-                {label: 'White', value: 'white'},
-                {label: 'Yellow', value: 'yellow'}
-            ];
-
-            dust.render('vehicles-filter', serand.pack(query, container), function (err, out) {
+            findModels(query.make, function (err, models) {
                 if (err) {
                     return done(err);
                 }
 
-                var elem = sandbox.append(out);
-                var vform = form.create(container.id, elem, configs);
-                vform.render(ctx, from(query), function (err) {
+                var modelData = [{label: 'Any Model', value: ''}];
+                modelData = modelData.concat(_.map(models, function (model) {
+                    return {
+                        value: model.id,
+                        label: model.title
+                    };
+                }));
+
+                var manufacturedAt = [];
+                var year = moment().year();
+                var start = year - 100;
+                while (year > start) {
+                    manufacturedAt.push({label: year, value: year});
+                    year--;
+                }
+
+                query._.container = container.id;
+                query._.makes = makeData;
+                query._.models = modelData;
+                query._.types = [
+                    {label: 'Any Type', value: ''},
+                    {label: 'SUV', value: 'suv'},
+                    {label: 'Car', value: 'car'},
+                    {label: 'Cab', value: 'cab'},
+                    {label: 'Bus', value: 'bus'},
+                    {label: 'Lorry', value: 'lorry'},
+                    {label: 'Backhoe', value: 'backhoe'},
+                    {label: 'Motorcycle', value: 'motorcycle'},
+                    {label: 'Threewheeler', value: 'threewheeler'},
+                ];
+                query._.manufacturedFrom = [{label: 'From Any Year', value: ''}].concat(manufacturedAt);
+                query._.manufacturedTo = [{label: 'To Any Year', value: ''}].concat(manufacturedAt);
+                query._.conditions = [
+                    {label: 'Brand New', value: 'brand-new'},
+                    {label: 'Used', value: 'used'},
+                    {label: 'Unregistered', value: 'unregistered'}
+                ];
+                query._.transmissions = [
+                    {label: 'Automatic', value: 'automatic'},
+                    {label: 'Manual', value: 'manual'},
+                    {label: 'Manumatic', value: 'manumatic'}
+                ];
+                query._.fuels = [
+                    {label: 'None', value: 'none'},
+                    {label: 'Petrol', value: 'petrol'},
+                    {label: 'Diesel', value: 'diesel'},
+                    {label: 'Hybrid', value: 'hybrid'},
+                    {label: 'Electric', value: 'electric'}
+                ];
+                query._.colors = [
+                    {label: 'Any Color', value: ''},
+                    {label: 'Black', value: 'black'},
+                    {label: 'Blue', value: 'blue'},
+                    {label: 'Brown', value: 'brown'},
+                    {label: 'Green', value: 'green'},
+                    {label: 'Grey', value: 'grey'},
+                    {label: 'Orange', value: 'orange'},
+                    {label: 'Red', value: 'red'},
+                    {label: 'Silver', value: 'silver'},
+                    {label: 'White', value: 'white'},
+                    {label: 'Yellow', value: 'yellow'}
+                ];
+                var provinces = [{label: 'Any Province', value: ''}];
+                query._.provinces = provinces.concat(_.map(allProvinces, function (province) {
+                    return {
+                        label: province.name,
+                        value: province.name
+                    };
+                }));
+                findDistricts(query['location-province'], function (err, districts) {
                     if (err) {
                         return done(err);
                     }
-                    done(null, function () {
-                        $('.vehicles-filter', sandbox).remove();
+                    var districtsData = [{label: 'Any District', value: ''}];
+                    query._.districts = districtsData.concat(_.map(districts, function (district) {
+                        return {
+                            label: district.name,
+                            value: district.name
+                        };
+                    }));
+                    var cities = [{label: 'Any City', value: ''}];
+                    query._.cities = cities.concat(_.map(Locations.allCities(), function (city) {
+                        return {
+                            label: city.name,
+                            value: city.name
+                        };
+                    }));
+
+                    dust.render('vehicles-filter', serand.pack(query, container), function (err, out) {
+                        if (err) {
+                            return done(err);
+                        }
+
+                        var elem = sandbox.append(out);
+                        var vform = form.create(container.id, elem, configs);
+
+                        vform.render(ctx, query, function (err) {
+                            if (err) {
+                                return done(err);
+                            }
+                            done(null, function () {
+                                $('.vehicles-filter', sandbox).remove();
+                            });
+                        });
                     });
                 });
             });

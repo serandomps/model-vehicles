@@ -1,18 +1,14 @@
 var dust = require('dust')();
 var serand = require('serand');
-var autils = require('autos-utils');
 var utils = require('utils');
 var form = require('form');
 var locations = require('locations');
 var contacts = require('contacts');
 var Vehicle = require('../service');
-var Binaries = require('service-binaries');
 var Make = require('vehicle-makes').service;
 var Model = require('vehicle-models').service;
 
 dust.loadSource(dust.compile(require('./template'), 'vehicles-create'));
-
-var AUTO_API = utils.resolve('autos:///apis/v/vehicles');
 
 var resolution = '288x162';
 
@@ -366,10 +362,9 @@ var updateModels = function (ctx, elem, make, model, done) {
         if (err) {
             return done(err);
         }
-        var modelz = [{label: 'Model', value: ''}];
-        modelz = modelz.concat(_.map(models, function (model) {
+        var modelz = _.map(models, function (model) {
             return {label: model.title, value: model.id};
-        }));
+        });
         serand.blocks('select', 'update', source, {
             options: modelz
         }, done);
@@ -417,27 +412,25 @@ var render = function (ctx, container, data, done) {
         if (err) {
             return done(err);
         }
-        var makeData = [{label: 'Make', value: ''}];
-        makeData = makeData.concat(_.map(makes, function (make) {
+        var makeData = _.map(makes, function (make) {
             return {
                 value: make.id,
                 label: make.title
             };
-        }));
+        });
         findModels(data.make, function (err, models) {
             if (err) {
                 return done(err);
             }
 
-            var modelData = [{label: 'Models', value: ''}];
-            modelData = modelData.concat(_.map(models, function (model) {
+            var modelData = _.map(models, function (model) {
                 return {
                     value: model.id,
                     label: model.title
                 };
-            }));
+            });
 
-            var manufacturedAt = [{label: 'Year', value: ''}];
+            var manufacturedAt = [];
             var year = moment().year();
             var start = year - 100;
             while (year > start) {
@@ -449,7 +442,6 @@ var render = function (ctx, container, data, done) {
             data._.makes = makeData;
             data._.models = modelData;
             data._.types = [
-                {label: 'Type', value: ''},
                 {label: 'SUV', value: 'suv'},
                 {label: 'Car', value: 'car'},
                 {label: 'Cab', value: 'cab'},
@@ -482,7 +474,6 @@ var render = function (ctx, container, data, done) {
                 {label: 'Other', value: 'other'}
             ];
             data._.color = [
-                {label: 'Color', value: ''},
                 {label: 'Black', value: 'black'},
                 {label: 'Blue', value: 'blue'},
                 {label: 'Brown', value: 'brown'},

@@ -100,7 +100,12 @@ module.exports = function (ctx, container, options, done) {
                 if (err) {
                     return done(err);
                 }
-                vehicle._.status = Object.keys(workflow[vehicle.status]);
+                var transitions = workflow.transitions[vehicle.status];
+                var status = _.filter(Object.keys(transitions), function (action) {
+                    return utils.permitted(ctx.user, vehicle, action);
+                });
+                vehicle._.status = status.length ? status : null;
+                vehicle._.editing = (vehicle.status === 'editing');
                 dust.render('vehicles-findone', serand.pack(vehicle, container), function (err, out) {
                     if (err) {
                         return done(err);

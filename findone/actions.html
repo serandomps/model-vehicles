@@ -1,5 +1,6 @@
 <div class="d-flex justify-content-end mt-1">
     <a href="/vehicles" class="btn btn-secondary cancel">Cancel</a>
+    {?_.status.length}
     <div class="status-buttons btn-group" role="group">
         <button id="status-buttons-{_.container}" type="button"
                 class="btn btn-success dropdown-toggle"
@@ -14,6 +15,9 @@
             {/_.status}
         </div>
     </div>
+    {/_.status.length}
+    {?_.editing}
     <a href="/vehicles/{id}/edit" class="btn btn-primary edit">Edit</a>
+    {/_.editing}
     <a href="/vehicles/{id}/delete" class="btn btn-danger delete">Delete</a>
 </div>
