@@ -7,7 +7,6 @@ var Models = require('vehicle-models').service;
 var Locations = require('locations').service;
 
 var allProvinces = Locations.allProvinces();
-var provincesByName = _.keyBy(allProvinces, 'name');
 
 dust.loadSource(dust.compile(require('./template'), 'vehicles-filter'));
 
@@ -47,9 +46,19 @@ var findModels = function (make, done) {
 
 var findDistricts = function (province, done) {
     if (!province) {
-        return done(null, []);
+        return done(null, Locations.allDistricts());
     }
-    return done(null, provincesByName[province].districts);
+    return done(null, Locations.districtsByProvince(province));
+};
+
+var findCities = function (province, district, done) {
+    if (district) {
+        return done(null, Locations.citiesByDistrict(district));
+    }
+    if (province) {
+        return done(null, Locations.citiesByProvince(province));
+    }
+    done(null, Locations.allCities());
 };
 
 var to = function (o, done) {
@@ -375,18 +384,28 @@ var configs = {
             var el = $('.location-province', vform.elem);
             serand.blocks('select', 'create', el, {
                 value: value,
-                change: function () {
+                change: function (e, clickedIndex, isSelected, previousValue) {
+                    if (!isSelected) {
+                        return;
+                    }
                     serand.blocks('select', 'update', $('.location-district', vform.elem), {
                         value: ''
                     }, function (err) {
                         if (err) {
                             return done(err);
                         }
-                        findQuery(vform, function (err, query) {
+                        serand.blocks('select', 'update', $('.location-city', vform.elem), {
+                            value: ''
+                        }, function (err) {
                             if (err) {
-                                return console.error(err);
+                                return done(err);
                             }
-                            serand.redirect('/vehicles' + utils.toQuery(query));
+                            findQuery(vform, function (err, query) {
+                                if (err) {
+                                    return console.error(err);
+                                }
+                                serand.redirect('/vehicles' + utils.toQuery(query));
+                            });
                         });
                     });
                 }
@@ -401,12 +420,37 @@ var configs = {
             var el = $('.location-district', vform.elem);
             serand.blocks('select', 'create', el, {
                 value: value,
-                change: function () {
-                    findQuery(vform, function (err, query) {
+                change: function (e, clickedIndex, isSelected, previousValue) {
+                    if (!isSelected) {
+                        return;
+                    }
+                    var source = $('.location-district', vform.elem);
+                    serand.blocks('select', 'find', source, function (err, value) {
                         if (err) {
                             return console.error(err);
                         }
-                        serand.redirect('/vehicles' + utils.toQuery(query));
+                        var province = Locations.provinceByDistrict(value);
+                        var provinceSource = $('.location-province', vform.elem);
+                        serand.blocks('select', 'update', provinceSource, {
+                            value: province
+                        }, function (err) {
+                            if (err) {
+                                return console.error(err);
+                            }
+                            serand.blocks('select', 'update', $('.location-city', vform.elem), {
+                                value: ''
+                            }, function (err) {
+                                if (err) {
+                                    return done(err);
+                                }
+                                findQuery(vform, function (err, query) {
+                                    if (err) {
+                                        return console.error(err);
+                                    }
+                                    serand.redirect('/vehicles' + utils.toQuery(query));
+                                });
+                            });
+                        });
                     });
                 }
             }, done);
@@ -420,12 +464,38 @@ var configs = {
             var el = $('.location-city', vform.elem);
             serand.blocks('select', 'create', el, {
                 value: value,
-                change: function () {
-                    findQuery(vform, function (err, query) {
+                change: function (e, clickedIndex, isSelected, previousValue) {
+                    if (!isSelected) {
+                        return;
+                    }
+                    var source = $('.location-city', vform.elem);
+                    serand.blocks('select', 'find', source, function (err, value) {
                         if (err) {
                             return console.error(err);
                         }
-                        serand.redirect('/vehicles' + utils.toQuery(query));
+                        var city = Locations.findCity(value);
+                        var provinceSource = $('.location-province', vform.elem);
+                        serand.blocks('select', 'update', provinceSource, {
+                            value: city.province
+                        }, function (err) {
+                            if (err) {
+                                return console.error(err);
+                            }
+                            var locationSource = $('.location-district', vform.elem);
+                            serand.blocks('select', 'update', locationSource, {
+                                value: city.district
+                            }, function (err) {
+                                if (err) {
+                                    return console.error(err);
+                                }
+                                findQuery(vform, function (err, query) {
+                                    if (err) {
+                                        return console.error(err);
+                                    }
+                                    serand.redirect('/vehicles' + utils.toQuery(query));
+                                });
+                            });
+                        });
                     });
                 }
             }, done);
@@ -529,8 +599,8 @@ module.exports = function (ctx, container, options, done) {
                 var provinces = [{label: 'Any Province', value: ''}];
                 query._.provinces = provinces.concat(_.map(allProvinces, function (province) {
                     return {
-                        label: province.name,
-                        value: province.name
+                        label: province,
+                        value: province
                     };
                 }));
                 findDistricts(query['location-province'], function (err, districts) {
@@ -540,32 +610,37 @@ module.exports = function (ctx, container, options, done) {
                     var districtsData = [{label: 'Any District', value: ''}];
                     query._.districts = districtsData.concat(_.map(districts, function (district) {
                         return {
-                            label: district.name,
-                            value: district.name
+                            label: district,
+                            value: district
                         };
                     }));
-                    var cities = [{label: 'Any City', value: ''}];
-                    query._.cities = cities.concat(_.map(Locations.allCities(), function (city) {
-                        return {
-                            label: city.name,
-                            value: city.name
-                        };
-                    }));
-
-                    dust.render('vehicles-filter', serand.pack(query, container), function (err, out) {
+                    findCities(query['location-province'], query['location-district'], function (err, cities) {
                         if (err) {
                             return done(err);
                         }
+                        var citiesData = [{label: 'Any City', value: ''}];
+                        query._.cities = citiesData.concat(_.map(cities, function (city) {
+                            return {
+                                label: city.name,
+                                value: city.name
+                            };
+                        }));
 
-                        var elem = sandbox.append(out);
-                        var vform = form.create(container.id, elem, configs);
-
-                        vform.render(ctx, query, function (err) {
+                        dust.render('vehicles-filter', serand.pack(query, container), function (err, out) {
                             if (err) {
                                 return done(err);
                             }
-                            done(null, function () {
-                                $('.vehicles-filter', sandbox).remove();
+
+                            var elem = sandbox.append(out);
+                            var vform = form.create(container.id, elem, configs);
+
+                            vform.render(ctx, query, function (err) {
+                                if (err) {
+                                    return done(err);
+                                }
+                                done(null, function () {
+                                    $('.vehicles-filter', sandbox).remove();
+                                });
                             });
                         });
                     });
