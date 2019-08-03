@@ -22,7 +22,7 @@ var findQuery = function (vform, done) {
             if (errors) {
                 return vform.update(errors, data, done);
             }
-            vform.to(data, function (err, data) {
+            to(data, function (err, data) {
                 if (err) {
                     return done(err);
                 }
@@ -77,7 +77,8 @@ var to = function (o, done) {
         'manufacturedAt:lte': o['manufacturedAt-lte'],
         'tags:location:province': o['location-province'],
         'tags:location:district': o['location-district'],
-        'tags:location:city': o['location-city']
+        'tags:location:city': o['location-city'],
+        'tags:location:postal': o['location-postal']
     };
     var key;
     var value;
@@ -112,7 +113,8 @@ var from = function (query, done) {
         'manufacturedAt-lte': query['manufacturedAt:lte'],
         'location-province': query['tags:location:province'],
         'location-district': query['tags:location:district'],
-        'location-city': query['tags:location:city']
+        'location-city': query['tags:location:city'],
+        'location-postal': query['tags:location:postal']
     };
     var key;
     var value;
@@ -400,11 +402,18 @@ var configs = {
                             if (err) {
                                 return done(err);
                             }
-                            findQuery(vform, function (err, query) {
+                            serand.blocks('select', 'update', $('.location-postal', vform.elem), {
+                                value: ''
+                            }, function (err) {
                                 if (err) {
-                                    return console.error(err);
+                                    return done(err);
                                 }
-                                serand.redirect('/vehicles' + utils.toQuery(query));
+                                findQuery(vform, function (err, query) {
+                                    if (err) {
+                                        return console.error(err);
+                                    }
+                                    serand.redirect('/vehicles' + utils.toQuery(query));
+                                });
                             });
                         });
                     });
@@ -443,11 +452,18 @@ var configs = {
                                 if (err) {
                                     return done(err);
                                 }
-                                findQuery(vform, function (err, query) {
+                                serand.blocks('select', 'update', $('.location-postal', vform.elem), {
+                                    value: ''
+                                }, function (err) {
                                     if (err) {
-                                        return console.error(err);
+                                        return done(err);
                                     }
-                                    serand.redirect('/vehicles' + utils.toQuery(query));
+                                    findQuery(vform, function (err, query) {
+                                        if (err) {
+                                            return console.error(err);
+                                        }
+                                        serand.redirect('/vehicles' + utils.toQuery(query));
+                                    });
                                 });
                             });
                         });
@@ -481,18 +497,26 @@ var configs = {
                             if (err) {
                                 return console.error(err);
                             }
-                            var locationSource = $('.location-district', vform.elem);
-                            serand.blocks('select', 'update', locationSource, {
+                            var districtSource = $('.location-district', vform.elem);
+                            serand.blocks('select', 'update', districtSource, {
                                 value: city.district
                             }, function (err) {
                                 if (err) {
                                     return console.error(err);
                                 }
-                                findQuery(vform, function (err, query) {
+                                var postalSource = $('.location-postal', vform.elem);
+                                serand.blocks('select', 'update', postalSource, {
+                                    value: city.postal
+                                }, function (err) {
                                     if (err) {
                                         return console.error(err);
                                     }
-                                    serand.redirect('/vehicles' + utils.toQuery(query));
+                                    findQuery(vform, function (err, query) {
+                                        if (err) {
+                                            return console.error(err);
+                                        }
+                                        serand.redirect('/vehicles' + utils.toQuery(query));
+                                    });
                                 });
                             });
                         });
@@ -501,9 +525,58 @@ var configs = {
             }, done);
         }
     },
-    _: {
-        to: to,
-        from: from
+    'location-postal': {
+        find: function (context, source, done) {
+            serand.blocks('select', 'find', source, done);
+        },
+        render: function (ctx, vform, data, value, done) {
+            var el = $('.location-postal', vform.elem);
+            serand.blocks('select', 'create', el, {
+                value: value,
+                change: function (e, clickedIndex, isSelected, previousValue) {
+                    if (!isSelected) {
+                        return;
+                    }
+                    var source = $('.location-postal', vform.elem);
+                    serand.blocks('select', 'find', source, function (err, value) {
+                        if (err) {
+                            return console.error(err);
+                        }
+                        var city = Locations.cityByPostal(value);
+                        var provinceSource = $('.location-province', vform.elem);
+                        serand.blocks('select', 'update', provinceSource, {
+                            value: city.province
+                        }, function (err) {
+                            if (err) {
+                                return console.error(err);
+                            }
+                            var districtSource = $('.location-district', vform.elem);
+                            serand.blocks('select', 'update', districtSource, {
+                                value: city.district
+                            }, function (err) {
+                                if (err) {
+                                    return console.error(err);
+                                }
+                                var citySource = $('.location-city', vform.elem);
+                                serand.blocks('select', 'update', citySource, {
+                                    value: city.name
+                                }, function (err) {
+                                    if (err) {
+                                        return console.error(err);
+                                    }
+                                    findQuery(vform, function (err, query) {
+                                        if (err) {
+                                            return console.error(err);
+                                        }
+                                        serand.redirect('/vehicles' + utils.toQuery(query));
+                                    });
+                                });
+                            });
+                        });
+                    });
+                }
+            }, done);
+        }
     }
 };
 
@@ -619,12 +692,19 @@ module.exports = function (ctx, container, options, done) {
                             return done(err);
                         }
                         var citiesData = [{label: 'Any City', value: ''}];
+                        var postalsData = [{label: 'Any Postal Code', value: ''}];
                         query._.cities = citiesData.concat(_.map(cities, function (city) {
                             return {
                                 label: city.name,
                                 value: city.name
                             };
                         }));
+                        query._.postals = postalsData.concat(_.sortBy(_.map(cities, function (city) {
+                            return {
+                                label: city.postal,
+                                value: city.postal
+                            }
+                        }), 'value'));
 
                         dust.render('vehicles-filter', serand.pack(query, container), function (err, out) {
                             if (err) {

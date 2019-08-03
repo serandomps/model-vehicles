@@ -24,6 +24,10 @@ var hooks = {
     'tags:location:city': function (o, val) {
         o.tags = o.tags || (o.tags = []);
         o.tags.push({name: 'location:city', value: val});
+    },
+    'tags:location:postal': function (o, val) {
+        o.tags = o.tags || (o.tags = []);
+        o.tags.push({name: 'location:postal', value: val});
     }
 };
 
