@@ -1,24 +1,31 @@
-<div class="d-flex justify-content-end mt-1">
-    <button type="button" class="status btn btn-outline-secondary text-capitalize" disabled>{status}</button>
-    <a href="/vehicles" class="btn btn-secondary cancel">Cancel</a>
-    {?_.status.length}
-    <div class="status-buttons btn-group" role="group">
-        <button id="status-buttons-{_.container}" type="button"
-                class="btn btn-success dropdown-toggle"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false">
-            Status
-        </button>
-        <div class="dropdown-menu" aria-labelledby="status-buttons-{_.container}">
-            {#_.status}
-            <a class="dropdown-item text-capitalize" href="#" data-action="{.}">{.}</a>
-            {/_.status}
-        </div>
+<div class="row">
+    <div class="col-md-2">
+        <h4><span class="badge badge-secondary text-capitalize">{status}</span></h4>
     </div>
-    {/_.status.length}
-    {?_.editing}
-    <a href="/vehicles/{id}/edit" class="btn btn-primary edit">Edit</a>
-    {/_.editing}
-    <a href="/vehicles/{id}/delete" class="btn btn-danger delete">Delete</a>
+    <div class="col-md-10">
+        <ul class="nav justify-content-end mb-3">
+            <li class="nav-item">
+                <a class="nav-link cancel" href="/vehicles"><i class="fas fa-undo text-secondary mr-1"></i> Cancel</a>
+            </li>
+            {?_.status.length}
+            <li class="status-buttons nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+                   aria-expanded="false"><i class="fas fa-project-diagram text-success mr-1"></i> Status</a>
+                <div class="dropdown-menu">
+                    {#_.status}
+                    <a class="dropdown-item text-capitalize" href="#" data-action="{.}">{.}</a>
+                    {/_.status}
+                </div>
+            </li>
+            {/_.status.length}
+            {?_.editing}
+            <li class="nav-item">
+                <a class="nav-link edit" href="/vehicles/{id}/edit"><i class="fas fa-edit text-primary mr-1"></i> Edit</a>
+            </li>
+            {/_.editing}
+            <li class="nav-item">
+                <a class="nav-link delete" href="/vehicles/{id}/delete" tabindex="-1" aria-disabled="true"><i class="fas fa-trash text-danger mr-1"></i> Delete</a>
+            </li>
+        </ul>
+    </div>
 </div>
