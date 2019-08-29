@@ -15,19 +15,19 @@ var hooks = {
     },
     'tags:location:province': function (o, val) {
         o.tags = o.tags || (o.tags = []);
-        o.tags.push({name: 'location:province', value: val});
+        o.tags.push({name: 'location:locations:province', value: val});
     },
     'tags:location:district': function (o, val) {
         o.tags = o.tags || (o.tags = []);
-        o.tags.push({name: 'location:district', value: val});
+        o.tags.push({name: 'location:locations:district', value: val});
     },
     'tags:location:city': function (o, val) {
         o.tags = o.tags || (o.tags = []);
-        o.tags.push({name: 'location:city', value: val});
+        o.tags.push({name: 'location:locations:city', value: val});
     },
     'tags:location:postal': function (o, val) {
         o.tags = o.tags || (o.tags = []);
-        o.tags.push({name: 'location:postal', value: val});
+        o.tags.push({name: 'location:locations:postal', value: val});
     }
 };
 
