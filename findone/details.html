@@ -2,7 +2,7 @@
     <div class="col-md mb-3">
         <div class="media">
             <span class="btn rounded-circle mr-2">
-              <span class="fas fa-calendar fa-2x"></span>
+              <span class="fas fa-calendar fa-fw fa-2x"></span>
             </span>
             <div class="media-body">
                 <h4 class="h6 text-secondary mb-0 mt-0">Year</h4>
@@ -13,18 +13,18 @@
     <div class="col-md mb-3">
         <div class="media">
             <span class="btn rounded-circle mr-2">
-              <span class="fas fa-tachometer-alt fa-2x"></span>
+              <span class="fas fa-tachometer-alt fa-fw fa-2x"></span>
             </span>
             <div class="media-body">
                 <h4 class="h6 text-secondary mb-0 mt-0">Mileage</h4>
-                <span class="h4 text-capitalize">{mileage}</span>
+                <span class="h4 text-capitalize">{mileage}</span> <small class="text-muted">km</small>
             </div>
         </div>
     </div>
     <div class="col-md mb-3">
         <div class="media">
             <span class="btn rounded-circle mr-2">
-              <span class="fas fa-cogs fa-2x"></span>
+              <span class="fas fa-cogs fa-fw fa-2x"></span>
             </span>
             <div class="media-body">
                 <h4 class="h6 text-secondary mb-0 mt-0">Transmission</h4>
@@ -35,11 +35,11 @@
     <div class="col-md mb-3">
         <div class="media">
             <span class="btn rounded-circle mr-2">
-              <span class="fas fa-money-check-alt fa-2x"></span>
+              <span class="fas fa-money-check-alt fa-fw fa-2x"></span>
             </span>
             <div class="media-body">
                 <h4 class="h6 text-secondary mb-0 mt-0">Price</h4>
-                <span class="h4 text-capitalize">{price}</span>
+                <span class="h4 text-capitalize">{price}</span> <small class="text-muted">LKR</small>
             </div>
         </div>
     </div>
@@ -49,7 +49,7 @@
     <div class="col-md mb-3">
         <div class="media">
             <span class="btn rounded-circle mr-2">
-              <span class="fas fa-building"></span>
+              <span class="fas fa-building fa-fw"></span>
             </span>
             <div class="media-body">
                 <h4 class="h6 text-secondary mb-0 mt-0">Make</h4>
@@ -60,7 +60,7 @@
     <div class="col-md mb-3">
         <div class="media">
             <span class="btn rounded-circle mr-2">
-              <span class="fas fa-tag"></span>
+              <span class="fas fa-tag fa-fw"></span>
             </span>
             <div class="media-body">
                 <h4 class="h6 text-secondary mb-0 mt-0">Model</h4>
@@ -71,7 +71,7 @@
     <div class="col-md mb-3">
         <div class="media">
             <span class="btn rounded-circle mr-2">
-              <span class="fas fa-battery-full"></span>
+              <span class="fas fa-battery-full fa-fw"></span>
             </span>
             <div class="media-body">
                 <h4 class="h6 text-secondary mb-0 mt-0">Condition</h4>
@@ -82,7 +82,7 @@
     <div class="col-md mb-3">
         <div class="media">
             <span class="btn rounded-circle mr-2">
-              <span class="fas fa-tint"></span>
+              <span class="fas fa-tint fa-fw"></span>
             </span>
             <div class="media-body">
                 <h4 class="h6 text-secondary mb-0 mt-0">Color</h4>
@@ -93,7 +93,7 @@
     <div class="col-md mb-3">
         <div class="media">
             <span class="btn rounded-circle mr-2">
-              <span class="fas fa-gas-pump"></span>
+              <span class="fas fa-gas-pump fa-fw"></span>
             </span>
             <div class="media-body">
                 <h4 class="h6 text-secondary mb-0 mt-0">Fuel</h4>
@@ -102,102 +102,6 @@
         </div>
     </div>
 </div>
-<!--<div class="card-deck mt-5">
-    <div class="card text-center border-0">
-        <span class="align-self-center btn rounded-circle">
-          <span class="fas fa-map-marker-alt fa-5x"></span>
-        </span>
-        <div class="card-body">
-            {?_.location.name}
-            <h5 class="card-title text-muted">
-                Location
-            </h5>
-            {/_.location.name}
-            <div class="location-info">
-                {?_.location.name}
-                    <div class="p-1">
-                        {_.location.name}
-                    </div>
-                {/_.location.name}
-                {?_.location.line1}
-                    <div class="p-1">
-                        {_.location.line1}{?_.location.line2}, {_.location.line2}{/_.location.line2}
-                    </div>
-                {/_.location.line1}
-                {?_.location.city}
-                    <div class="p-1">
-                        {_.location.city}{?_.location.postal} {_.location.postal}{/_.location.postal}
-                    </div>
-                {/_.location.city}
-                {?_.location.district}
-                    <div class="p-1">
-                        {_.location.district}
-                    </div>
-                {:else}
-                {?_.location.province}
-                    <div class="p-1">
-                        {_.location.province}
-                    </div>
-                {:else}
-                    <div class="p-1">
-                        {_.location.state}
-                    </div>
-                {/_.location.province}
-                {/_.location.district}
-                {?_.location.country}
-                    <div class="p-1">
-                        {_.location.country}
-                    </div>
-                {/_.location.country}
-            </div>
-        </div>
-    </div>
-    <div class="card text-center border-0">
-        <span class="align-self-center btn rounded-circle">
-          <span class="fas fa-phone fa-5x"></span>
-        </span>
-        <div class="card-body">
-            <h5 class="card-title text-muted">
-                Contacts
-            </h5>
-            <div class="contacts-info">
-                {?_.contact.phones}
-                    {#_.contact.phones}
-                    <div class="p-1">
-                        <i class="fas fa-phone mr-2"></i>{.}
-                    </div>
-                    {/_.contact.phones}
-                {/_.contact.phones}
-                {?_.contact.email}
-                    <div class="p-1">
-                        <i class="fas fa-envelope mr-2"></i>{_.contact.email}
-                    </div>
-                {/_.contact.email}
-                {?_.contact.viber}
-                    <div class="p-1">
-                        <i class="fab fa-viber mr-2"></i>{_.contact.viber}
-                    </div>
-                {/_.contact.viber}
-                {?_.contact.whatsapp}
-                    <div class="p-1">
-                        <i class="fab fa-whatsapp mr-2"></i>{_.contact.whatsapp}
-                    </div>
-                {/_.contact.whatsapp}
-                {?_.contact.messenger}
-                    <div class="p-1">
-                        <i class="fab fa-facebook-messenger mr-2"></i>{_.contact.messenger}
-                    </div>
-                {/_.contact.messenger}
-                {?_.contact.skype}
-                    <div class="p-1">
-                        <i class="fab fa-skype mr-2"></i>{_.contact.skype}
-                    </div>
-                {/_.contact.skype}
-            </div>
-        </div>
-    </div>
-</div>-->
-
 <div class="row mt-5">
     <div class="col-md">
         <div class="card border-0">
@@ -276,7 +180,7 @@
                         <div class="contacts-info">
                             {?_.contact.phones}
                             <div class="d-flex justify-content-start">
-                                <div class="p-1"><i class="fas fa-phone"></i></div>
+                                <div class="p-1"><i class="fas fa-phone fa-fw"></i></div>
                                 {#_.contact.phones}
                                 <div class="p-1">{.}</div>
                                 {/_.contact.phones}
@@ -285,35 +189,35 @@
                             {?_.contact.email}
                             <div class="d-flex justify-content-start">
                                 <div class="p-1">
-                                    <i class="fas fa-envelope mr-2"></i>{_.contact.email}
+                                    <i class="fas fa-envelope fa-fw mr-2"></i>{_.contact.email}
                                 </div>
                             </div>
                             {/_.contact.email}
                             {?_.contact.viber}
                             <div class="d-flex justify-content-start">
                                 <div class="p-1">
-                                    <i class="fab fa-viber mr-2"></i>{_.contact.viber}
+                                    <i class="fab fa-viber fa-fw mr-2"></i>{_.contact.viber}
                                 </div>
                             </div>
                             {/_.contact.viber}
                             {?_.contact.whatsapp}
                             <div class="d-flex justify-content-start">
                                 <div class="p-1">
-                                    <i class="fab fa-whatsapp mr-2"></i>{_.contact.whatsapp}
+                                    <i class="fab fa-whatsapp fa-fw mr-2"></i>{_.contact.whatsapp}
                                 </div>
                             </div>
                             {/_.contact.whatsapp}
                             {?_.contact.messenger}
                             <div class="d-flex justify-content-start">
                                 <div class="p-1">
-                                    <i class="fab fa-facebook-messenger mr-2"></i>{_.contact.messenger}
+                                    <i class="fab fa-facebook-messenger fa-fw mr-2"></i>{_.contact.messenger}
                                 </div>
                             </div>
                             {/_.contact.messenger}
                             {?_.contact.skype}
                             <div class="d-flex justify-content-start">
                                 <div class="p-1">
-                                    <i class="fab fa-skype mr-2"></i>{_.contact.skype}
+                                    <i class="fab fa-skype fa-fw mr-2"></i>{_.contact.skype}
                                 </div>
                             </div>
                             {/_.contact.skype}
