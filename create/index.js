@@ -484,6 +484,7 @@ var render = function (ctx, container, data, done) {
                 {label: 'White', value: 'white'},
                 {label: 'Yellow', value: 'yellow'}
             ];
+            data._.back = '/vehicles' + (id ? '/' + id : '');
             dust.render('vehicles-create', data, function (err, out) {
                 if (err) {
                     return done(err);

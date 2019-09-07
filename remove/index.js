@@ -7,7 +7,7 @@ dust.loadSource(dust.compile(require('./template'), 'vehicles-remove'));
 
 module.exports = function (ctx, container, options, done) {
     var sandbox = container.sandbox;
-    Vehicle.findOne({id: options.id}, function (err, vehicle) {
+    Vehicle.findOne({id: options.id, resolution: '800x450'}, function (err, vehicle) {
         if (err) return done(err);
         dust.render('vehicles-remove', serand.pack(vehicle, container), function (err, out) {
             if (err) {
@@ -22,7 +22,31 @@ module.exports = function (ctx, container, options, done) {
                     serand.redirect('/vehicles');
                 });
             });
-            done(null, serand.none);
+            done(null, {
+                clean: function () {
+                    $('.vehicles-remove', sandbox).remove();
+                },
+                ready: function () {
+                    var i;
+                    var o = [];
+                    var images = vehicle._.images;
+                    var length = images.length;
+                    var image;
+                    for (i = 0; i < length; i++) {
+                        image = images[i];
+                        o.push({
+                            href: image.url,
+                            thumbnail: image.url
+                        });
+                    }
+                    blueimp.Gallery(o, {
+                        container: $('.blueimp-gallery-carousel', sandbox),
+                        carousel: true,
+                        thumbnailIndicators: true,
+                        stretchImages: true
+                    });
+                }
+            });
         });
     });
 };

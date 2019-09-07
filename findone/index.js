@@ -43,27 +43,6 @@ var findContact = function (id, done) {
     });
 };
 
-var transit = function (id, action, done) {
-    $.ajax({
-        method: 'POST',
-        url: utils.resolve('autos:///apis/v/vehicles/' + id),
-        headers: {
-            'X-Action': 'transit'
-        },
-        contentType: 'application/json',
-        data: JSON.stringify({
-            action: action
-        }),
-        dataType: 'json',
-        success: function (data) {
-            done(null, data);
-        },
-        error: function (xhr, status, err) {
-            done(err || status || xhr);
-        }
-    });
-};
-
 module.exports = function (ctx, container, options, done) {
     var sandbox = container.sandbox;
     Vehicle.findOne({id: options.id, resolution: '800x450'}, function (err, vehicle) {
@@ -127,8 +106,11 @@ module.exports = function (ctx, container, options, done) {
                             id: container.id,
                             sandbox: $('.recent', elem)
                         }, {}, function (err, o) {
+                            if (err) {
+                                return done(err);
+                            }
                             elem.on('click', '.status-buttons .dropdown-item', function () {
-                                transit(vehicle.id, $(this).data('action'), function (err) {
+                                utils.transit('autos', 'vehicles', vehicle.id, $(this).data('action'), function (err) {
                                     if (err) {
                                         console.error(err);
                                     }

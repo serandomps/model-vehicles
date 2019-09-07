@@ -1,7 +1,7 @@
 <h1 class="title text-center">{?id}{_.make.title} {_.model.title} {manufacturedAt|year}{:else}Create your vehicle{/id}</h1>
 <form role="form">
     {@steps}
-        {@step name="vehicle" title="Vehicle" icon="fa-car" active="true"}
+        {@step name="vehicle" title="Vehicle" icon="fa-car" active="true" back=_.back}
             {@blocks block="select" id=_.container name="type" label="Type" title="Type" options=_.types/}
             {@blocks block="select" id=_.container name="make" label="Make" title="Make" options=_.makes/}
             {@blocks block="select" id=_.container name="model" label="Model" title="Model" options=_.models/}
@@ -13,7 +13,7 @@
             {@blocks block="text" id=_.container name="mileage" help="Mileage" value=mileage label="Mileage"/}
             {@blocks block="text" id=_.container name="price" help="Price" value=price label="Price"/}
             {@blocks block="textarea" id=_.container name="description" help="Description" rows=6 value=description label="Description"/}
-            {@blocks block="uploads" id=_.container name="images" help="Photos" value=_.images size=3 label="Photos"/}
+            {@blocks block="uploads" id=_.container name="images" help="Photos" value=_.images size=3 label="Photos" icon="fa-images"/}
         {/step}
         {@step name="location" title="Location" icon="fa-map-marker-alt"}{/step}
         {@step name="contact" title="Contacts" icon="fa-phone"}{/step}

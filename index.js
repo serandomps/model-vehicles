@@ -18,4 +18,4 @@ exports.search = require('./search');
 
 exports.service = require('./service');
 
-exports.status = require('./status');
+exports.review = require('./review');
