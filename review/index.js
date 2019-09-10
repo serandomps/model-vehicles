@@ -76,37 +76,6 @@ var findStatus = function (vehicle, done) {
     return done(null, 'published');
 };
 
-var publish = function (domain, model, o, done) {
-    var status = o.status;
-    if (status === 'published' || status === 'unpublished') {
-        return done();
-    }
-    if (status === 'editing') {
-        utils.transit(domain, model, o.id, 'review', function (err) {
-            if (err) {
-                return done(err);
-            }
-            utils.transit(domain, model, o.id, 'approve', function (err) {
-                if (err) {
-                    return done(err);
-                }
-                utils.transit(domain, model, o.id, 'publish', done);
-            });
-        });
-        return;
-    }
-    if (status === 'reviewing') {
-        utils.transit(domain, model, o.id, 'approve', function (err) {
-            if (err) {
-                return done(err);
-            }
-            utils.transit(domain, model, o.id, 'publish', done);
-        });
-        return;
-    }
-    done(new Error('An unknown status ' + status));
-};
-
 module.exports = function (ctx, container, options, done) {
     var sandbox = container.sandbox;
     Vehicle.findOne({id: options.id, resolution: '800x450'}, function (err, vehicle) {
@@ -136,7 +105,7 @@ module.exports = function (ctx, container, options, done) {
             vehicle._.contactOK = o.contact && o.contact.status === 'published';
             vehicle._.location = o.location;
             vehicle._.locationOK = o.location && o.location.status === 'published';
-            vehicle._.vehicleOK = vehicle._.locationOK && vehicle._.contactOK;
+            vehicle._.vehicleOK = (vehicle.status === 'published' || (vehicle._.locationOK && vehicle._.contactOK));
             /*vehicle._.picks = [
                 {label: 'Published', value: 'published'},
                 {label: 'Unpublished', value: 'unpublished'}
@@ -154,7 +123,7 @@ module.exports = function (ctx, container, options, done) {
                     serand.emit('loader', 'start', {
                         delay: 500
                     });
-                    publish('accounts', 'locations', o.location, function (err) {
+                    utils.publish('accounts', 'locations', o.location, function (err) {
                         serand.emit('loader', 'end', {});
                         if (err) {
                             return console.error(err);
@@ -173,7 +142,7 @@ module.exports = function (ctx, container, options, done) {
                     serand.emit('loader', 'start', {
                         delay: 500
                     });
-                    publish('accounts', 'contacts', o.contact, function (err) {
+                    utils.publish('accounts', 'contacts', o.contact, function (err) {
                         serand.emit('loader', 'end', {});
                         if (err) {
                             return console.error(err);
@@ -188,15 +157,21 @@ module.exports = function (ctx, container, options, done) {
                 });
 
                 $('.vehicle-ok', sandbox).on('click', function () {
+                    var thiz = $(this);
                     serand.emit('loader', 'start', {
                         delay: 500
                     });
-                    publish('autos', 'vehicles', vehicle, function (err) {
+                    utils.publish('autos', 'vehicles', vehicle, function (err) {
                         serand.emit('loader', 'end', {});
                         if (err) {
                             return console.error(err);
                         }
-                        serand.redirect('/vehicles');
+                        thiz.removeClass('text-primary').addClass('text-success')
+                            .siblings('.vehicle-bad').addClass('hidden');
+
+                        setTimeout(function () {
+                            serand.redirect('/vehicles');
+                        }, 500);
                     });
                 });
 

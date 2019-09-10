@@ -3,13 +3,17 @@
     {@slice context=vehicles size="30"}
     <div class="row">
         {#.}
-        <div class="col-md-{size}">
-            <a class="thumbnail" href="/vehicles/{id}">
+        <div class="col-lg-{size}">
+            <div class="thumbnail">
                 <div class="card mb-3">
-                    <img src="{_.images[0].url}" class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">{_.make.title} {_.model.title}
-                            <small class="text-muted"> {manufacturedAt|year}</small>
+                    <a href="/vehicles/{id}">
+                        <img src="{_.images[0].url}" class="card-img-top" alt="..."/>
+                    </a>
+                    <div class="card-body position-relative">
+                        <h5 class="card-title">
+                            <a href="/vehicles/{id}" class="stretched-link">{_.make.title} {_.model.title}
+                                <small class="text-muted"> {manufacturedAt|year}</small>
+                            </a>
                         </h5>
                         <div class="d-flex justify-content-between">
                             <div class="pr-5">
@@ -20,8 +24,25 @@
                             </div>
                         </div>
                     </div>
+                    {?_.edit}
+                    <div class="card-footer bg-transparent border-top-0 mt-0 pt-0">
+                        <div class="d-flex text-muted">
+                            <div class="flex-grow-1">
+                                <span class="badge badge-secondary text-capitalize pull-left">{status}</span>
+                            </div>
+                            <div class="bd-highlight">
+                                <a class="btn-link mr-3" href="/vehicles/{id}/edit">
+                                    <i class="fas fa-edit text-primary"></i>
+                                </a>
+                                <a class="btn-link" href="/vehicles/{id}/delete">
+                                    <i class="fas fa-trash text-danger"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {/_.edit}
                 </div>
-            </a>
+            </div>
         </div>
         {/.}
     </div>

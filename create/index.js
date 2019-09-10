@@ -502,7 +502,7 @@ var render = function (ctx, container, data, done) {
                         sandbox: $('.tab-pane[data-name="location"] .step', elem)
                     }, {
                         required: true,
-                        label: 'Location of the vehicle',
+                        label: 'Location',
                         location: data.location
                     }, function (err, o) {
                         if (err) {
@@ -515,7 +515,7 @@ var render = function (ctx, container, data, done) {
                             sandbox: $('.tab-pane[data-name="contact"] .step', elem)
                         }, {
                             required: true,
-                            label: 'Contacts for further details',
+                            label: 'Contacts',
                             contact: data.contact
                         }, function (err, o) {
                             if (err) {

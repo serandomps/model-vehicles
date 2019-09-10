@@ -11,7 +11,7 @@
             {/_.edit}
             </div>
 
-            <h1 class="title text-center">{?id}{_.make.title} {_.model.title} {manufacturedAt|year}{:else}Create your
+            <h1 class="font-weight-bolder title text-center">{?id}{_.make.title} {_.model.title} {manufacturedAt|year}{:else}Create your
                 vehicle{/id}</h1>
             <div class="blueimp-gallery blueimp-gallery-carousel blueimp-gallery-controls mt-3">
                 <div class="slides"></div>
@@ -24,7 +24,9 @@
             <div class="details">
                 {>"vehicles-findone-details"/}
             </div>
+            {?_.location}
             <div class="location"></div>
+            {/_.location}
         </div>
         <div class="col-md-3">
             <div class="recent"></div>

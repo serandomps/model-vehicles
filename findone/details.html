@@ -104,6 +104,7 @@
 </div>
 <div class="row mt-5">
     <div class="col-md">
+        {?_.location}
         <div class="card border-0">
             <div class="row no-gutters">
                 <div class="col-md-3 text-center">
@@ -167,8 +168,10 @@
                 </div>
             </div>
         </div>
+        {/_.location}
     </div>
     <div class="col-md">
+        {?_.contact}
         <div class="card border-0">
             <div class="row no-gutters">
                 <div class="col-md-3 text-center">
@@ -226,5 +229,6 @@
                 </div>
             </div>
         </div>
+        {/_.contact}
     </div>
 </div>
