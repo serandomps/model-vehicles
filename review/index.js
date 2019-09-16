@@ -120,11 +120,9 @@ module.exports = function (ctx, container, options, done) {
 
                 $('.location-ok', sandbox).on('click', function () {
                     var thiz = $(this);
-                    serand.emit('loader', 'start', {
-                        delay: 500
-                    });
+                    utils.loading();
                     utils.publish('accounts', 'locations', o.location, function (err) {
-                        serand.emit('loader', 'end', {});
+                        utils.loaded();
                         if (err) {
                             return console.error(err);
                         }
@@ -139,11 +137,9 @@ module.exports = function (ctx, container, options, done) {
 
                 $('.contact-ok', sandbox).on('click', function () {
                     var thiz = $(this);
-                    serand.emit('loader', 'start', {
-                        delay: 500
-                    });
+                    utils.loading();
                     utils.publish('accounts', 'contacts', o.contact, function (err) {
-                        serand.emit('loader', 'end', {});
+                        utils.loaded();
                         if (err) {
                             return console.error(err);
                         }
@@ -158,11 +154,9 @@ module.exports = function (ctx, container, options, done) {
 
                 $('.vehicle-ok', sandbox).on('click', function () {
                     var thiz = $(this);
-                    serand.emit('loader', 'start', {
-                        delay: 500
-                    });
+                    utils.loading();
                     utils.publish('autos', 'vehicles', vehicle, function (err) {
-                        serand.emit('loader', 'end', {});
+                        utils.loaded();
                         if (err) {
                             return console.error(err);
                         }

@@ -6,7 +6,7 @@ var Vehicle = require('../service');
 var locations = require('locations');
 var recent = require('../recent');
 
-require('gallery');
+var redirect = serand.redirect;
 
 var token;
 
@@ -110,11 +110,15 @@ module.exports = function (ctx, container, options, done) {
                                 return done(err);
                             }
                             elem.on('click', '.status-buttons .dropdown-item', function () {
+                                utils.loading();
                                 utils.transit('autos', 'vehicles', vehicle.id, $(this).data('action'), function (err) {
+                                    utils.loaded();
                                     if (err) {
-                                        console.error(err);
+                                        return console.error(err);
                                     }
+                                    redirect('/vehicles/' + vehicle.id);
                                 });
+                                return false;
                             });
                             done(null, {
                                 clean: function () {
@@ -149,14 +153,14 @@ module.exports = function (ctx, container, options, done) {
     });
 };
 
-serand.on('user', 'ready', function (tk) {
+utils.on('user', 'ready', function (tk) {
     token = tk;
 });
 
-serand.on('user', 'logged in', function (tk) {
+utils.on('user', 'logged in', function (tk) {
     token = tk;
 });
 
-serand.on('user', 'logged out', function (tk) {
+utils.on('user', 'logged out', function (tk) {
     token = null;
 });

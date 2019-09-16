@@ -325,11 +325,9 @@ var vehicleConfigs = {
 };
 
 var create = function (data, done) {
-    serand.emit('loader', 'start', {
-        delay: 500
-    });
+    utils.loading();
     var end = function (err, data) {
-        serand.emit('loader', 'end', {});
+        utils.loaded();
         done(err, data);
     };
     Vehicle.create(data, function (err, data) {
