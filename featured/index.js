@@ -12,6 +12,7 @@ module.exports = function (ctx, container, options, done) {
         list(ctx, container, {
             vehicles: vehicles,
             title: 'Featured',
+            secondary: true,
             size: 4
         }, done);
     });

@@ -1,5 +1,10 @@
 <div class="vehicles-find">
-    {?title}<h2 class="title">{title}</h2>{/title}
+    {?title}
+    {?secondary}
+    <h3 class="title font-weight-bolder mb-3 text-muted">{title}</h3>
+    {:else}
+    <h1 class="title text-center font-weight-bolder mb-3 text-muted">{title}</h1>
+    {/secondary}{/title}
     {@slice context=vehicles size="30"}
     <div class="row">
         {#.}
@@ -10,11 +15,11 @@
                         <img src="{_.images[0].url}" class="card-img-top" alt="..."/>
                     </a>
                     <div class="card-body position-relative">
-                        <h5 class="card-title">
+                        <h4 class="card-title text-truncate">
                             <a href="/vehicles/{id}" class="stretched-link">{_.make.title} {_.model.title}
                                 <small class="text-muted"> {manufacturedAt|year}</small>
                             </a>
-                        </h5>
+                        </h4>
                         <div class="d-flex justify-content-between">
                             <div class="pr-5">
                                 <small class="text-muted">{price} LKR</small>
@@ -24,6 +29,7 @@
                             </div>
                         </div>
                     </div>
+                    <!--
                     {?_.edit}
                     <div class="card-footer bg-transparent border-top-0 mt-0 pt-0">
                         <div class="d-flex text-muted">
@@ -41,6 +47,7 @@
                         </div>
                     </div>
                     {/_.edit}
+                    -->
                 </div>
             </div>
         </div>

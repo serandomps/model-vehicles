@@ -13,6 +13,7 @@ module.exports = function (ctx, container, options, done) {
         list(ctx, container, {
             vehicles: vehicles,
             title: 'Recently Added',
+            secondary: true,
             size: 12
         }, done);
     });
