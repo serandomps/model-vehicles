@@ -3,9 +3,9 @@
         <div class="card-header" role="tab">Search</div>
         <div class="card-body">
             <form>
-                {@blocks block="select" id=_.container name="type" label="Type" value=type options=_.types/}
-                {@blocks block="select" id=_.container name="make" label="Make" value=make options=_.makes/}
-                {@blocks block="select" id=_.container name="model" label="Model" value=model options=_.models/}
+                {@blocks block="select" id=_.container name="type" label="Type" value=type options=_.types search="true"/}
+                {@blocks block="select" id=_.container name="make" label="Make" value=make options=_.makes search="true"/}
+                {@blocks block="select" id=_.container name="model" label="Model" value=model options=_.models search="true"/}
                 {@blocks block="select" id=_.container name="color" label="Color" value=color options=_.colors/}
                 <div class="form-group year">
                     <label>Year</label>

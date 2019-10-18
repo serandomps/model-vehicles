@@ -439,16 +439,7 @@ var render = function (ctx, container, data, done) {
             data._ = data._ || {};
             data._.makes = makeData;
             data._.models = modelData;
-            data._.types = [
-                {label: 'SUV', value: 'suv'},
-                {label: 'Car', value: 'car'},
-                {label: 'Cab', value: 'cab'},
-                {label: 'Bus', value: 'bus'},
-                {label: 'Lorry', value: 'lorry'},
-                {label: 'Backhoe', value: 'backhoe'},
-                {label: 'Motorcycle', value: 'motorcycle'},
-                {label: 'Threewheeler', value: 'threewheeler'},
-            ];
+            data._.types = Vehicle.types();
             data._.manufacturedAt = manufacturedAt;
             data._.conditions = [
                 {label: 'Brand New', value: 'brand-new'},

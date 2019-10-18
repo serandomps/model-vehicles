@@ -2,6 +2,7 @@ var dust = require('dust')();
 var serand = require('serand');
 var utils = require('utils');
 var form = require('form');
+var Vehicles = require('../service');
 var Makes = require('vehicle-makes').service;
 var Models = require('vehicle-models').service;
 var Locations = require('locations').service;
@@ -626,17 +627,7 @@ module.exports = function (ctx, container, options, done) {
                 query._.container = container.id;
                 query._.makes = makeData;
                 query._.models = modelData;
-                query._.types = [
-                    {label: 'Any Type', value: ''},
-                    {label: 'SUV', value: 'suv'},
-                    {label: 'Car', value: 'car'},
-                    {label: 'Cab', value: 'cab'},
-                    {label: 'Bus', value: 'bus'},
-                    {label: 'Lorry', value: 'lorry'},
-                    {label: 'Backhoe', value: 'backhoe'},
-                    {label: 'Motorcycle', value: 'motorcycle'},
-                    {label: 'Threewheeler', value: 'threewheeler'},
-                ];
+                query._.types = [{label: 'Any Type', value: ''}].concat(Vehicles.types());
                 query._.manufacturedFrom = [{label: 'From Any Year', value: ''}].concat(manufacturedAt);
                 query._.manufacturedTo = [{label: 'To Any Year', value: ''}].concat(manufacturedAt);
                 query._.conditions = [

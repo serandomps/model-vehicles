@@ -2,6 +2,30 @@ var utils = require('utils');
 var Make = require('vehicle-makes').service;
 var Model = require('vehicle-models').service;
 
+var types = [
+    {value: 'bicycle', label: 'Bicycle'},
+    {value: 'excavator', label: 'Excavator'},
+    {value: 'loader', label: 'Loader'},
+    {value: 'bulldozer', label: 'Bulldozer'},
+    {value: 'digger', label: 'Digger'},
+    {value: 'tractor', label: 'Tractor'},
+    {value: 'truck', label: 'Truck'},
+    {value: 'cement-mixer', label: 'Cement-mixer'},
+    {value: 'crane', label: 'Crane'},
+    {value: 'road-roller', label: 'Road-roller'},
+    {value: 'motorbike', label: 'Motorbike'},
+    {value: 'three-wheeler', label: 'Three-wheeler'},
+    {value: 'scooter', label: 'Scooter'},
+    {value: 'car', label: 'Car'},
+    {value: 'van', label: 'Van'},
+    {value: 'suv', label: 'Suv'},
+    {value: 'cab', label: 'Cab'},
+    {value: 'lorry', label: 'Lorry'},
+    {value: 'bus', label: 'Bus'}
+];
+
+types = _.sortBy(types, 'value');
+
 var cdn = function (size, items, done) {
     if (!size) {
         return done();
@@ -132,7 +156,7 @@ exports.remove = function (options, done) {
 
 exports.create = function (options, done) {
     $.ajax({
-        url: utils.resolve('autos:///apis/v/vehicles'+ (options.id ? '/' + options.id : '')),
+        url: utils.resolve('autos:///apis/v/vehicles' + (options.id ? '/' + options.id : '')),
         type: options.id ? 'PUT' : 'POST',
         dataType: 'json',
         contentType: 'application/json',
@@ -144,4 +168,8 @@ exports.create = function (options, done) {
             done(err || status || xhr);
         }
     });
+};
+
+exports.types = function () {
+    return types;
 };
