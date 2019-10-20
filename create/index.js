@@ -6,7 +6,6 @@ var locations = require('locations');
 var contacts = require('contacts');
 var Vehicle = require('../service');
 var Make = require('vehicle-makes').service;
-var Model = require('vehicle-models').service;
 
 dust.loadSource(dust.compile(require('./template'), 'vehicles-create'));
 
@@ -53,59 +52,43 @@ var vehicleConfigs = {
             }, done);
         }
     },
-    doors: {
-        find: function (context, source, done) {
-            done(null, 5);
-        },
-        validate: function (context, data, value, done) {
-            done(null, null, value);
-        },
-        update: function (context, source, error, value, done) {
-            done();
-        }
-    },
-    seats: {
-        find: function (context, source, done) {
-            done(null, 5);
-        },
-        validate: function (context, data, value, done) {
-            done(null, null, value);
-        },
-        update: function (context, source, error, value, done) {
-            done();
-        }
-    },
     engine: {
         find: function (context, source, done) {
-            done(null, 1500);
+            done(null, $('input', source).val());
         },
         validate: function (context, data, value, done) {
+            if (!value) {
+                return done(null, 'Please enter the engine capacity of your vehicle');
+            }
+            value = Number(value);
+            if (!is.number(value)) {
+                return done(null, 'Please enter a valid number for the engine capacity of your vehicle');
+            }
             done(null, null, value);
         },
         update: function (context, source, error, value, done) {
+            $('input', source).val(value);
             done();
         }
     },
     driveType: {
         find: function (context, source, done) {
-            done(null, 'front');
+            done(null, $('input:checked', source).val());
         },
         validate: function (context, data, value, done) {
+            if (!value) {
+                return done(null, 'Please select the drive type of your vehicle');
+            }
             done(null, null, value);
         },
         update: function (context, source, error, value, done) {
             done();
-        }
-    },
-    steering: {
-        find: function (context, source, done) {
-            done(null, 'right');
         },
-        validate: function (context, data, value, done) {
-            done(null, null, value);
-        },
-        update: function (context, source, error, value, done) {
-            done();
+        render: function (ctx, vform, data, value, done) {
+            var el = $('.driveType', vform.elem);
+            serand.blocks('radios', 'create', el, {
+                value: value
+            }, done);
         }
     },
     make: {
@@ -154,6 +137,24 @@ var vehicleConfigs = {
             serand.blocks('select', 'create', el, {
                 value: value
             }, done);
+        }
+    },
+    edition: {
+        find: function (context, source, done) {
+            done(null, $('input', source).val());
+        },
+        validate: function (context, data, value, done) {
+            if (!value) {
+                return done();
+            }
+            if (value.length > 50) {
+                return done(null, 'Please enter a shorter value for the edition of your vehicle');
+            }
+            done(null, null, value);
+        },
+        update: function (context, source, error, value, done) {
+            $('input', source).val(value);
+            done();
         }
     },
     condition: {
@@ -346,7 +347,7 @@ var findModels = function (make, done) {
     if (!make) {
         return done(null, []);
     }
-    Model.find(make, function (err, models) {
+    Make.findModels(make, function (err, models) {
         if (err) {
             return done(err);
         }
@@ -449,15 +450,17 @@ var render = function (ctx, container, data, done) {
             data._.transmissions = [
                 {label: 'Automatic', value: 'automatic'},
                 {label: 'Manual', value: 'manual'},
-                {label: 'Manumatic', value: 'manumatic'}
+                {label: 'Manumatic', value: 'manumatic'},
+                {label: 'Other', value: 'other'}
             ];
             data._.fuels = [
                 {label: 'Petrol', value: 'petrol'},
                 {label: 'Diesel', value: 'diesel'},
                 {label: 'Hybrid', value: 'hybrid'},
                 {label: 'Electric', value: 'electric'},
-                {label: 'None', value: 'none'}
+                {label: 'Other', value: 'other'}
             ];
+            data._.driveTypes = Vehicle.driveTypes();
             data._.contacts = [
                 {label: 'You', value: 'you'},
                 {label: 'Other', value: 'other'}
@@ -471,7 +474,8 @@ var render = function (ctx, container, data, done) {
                 {label: 'Red', value: 'red'},
                 {label: 'Silver', value: 'silver'},
                 {label: 'White', value: 'white'},
-                {label: 'Yellow', value: 'yellow'}
+                {label: 'Yellow', value: 'yellow'},
+                {label: 'Other', value: 'other'}
             ];
             data._.back = '/vehicles' + (id ? '/' + id : '');
             dust.render('vehicles-create', data, function (err, out) {

@@ -5,13 +5,16 @@
             {@blocks block="select" id=_.container name="type" label="Type" title="Type" options=_.types search="true"/}
             {@blocks block="select" id=_.container name="make" label="Make" title="Make" options=_.makes search="true"/}
             {@blocks block="select" id=_.container name="model" label="Model" title="Model" options=_.models search="true"/}
+            {@blocks block="text" id=_.container name="edition" help="Edition (optional)" value=edition label="Edition"/}
             {@blocks block="select" id=_.container name="manufacturedAt" label="Year" title="Year" options=_.manufacturedAt/}
             {@blocks block="radios" id=_.container name="condition" options=_.conditions label="Condition"/}
             {@blocks block="radios" id=_.container name="transmission" options=_.transmissions label="Transmission"/}
             {@blocks block="radios" id=_.container name="fuel" options=_.fuels label="Fuel"/}
+            {@blocks block="radios" id=_.container name="driveType" options=_.driveTypes label="Drive Type"/}
             {@blocks block="select" id=_.container name="color" help="Color" title="Color" options=_.color label="Color"/}
-            {@blocks block="text" id=_.container name="mileage" help="Mileage" value=mileage label="Mileage"/}
-            {@blocks block="text" id=_.container name="price" help="Price" value=price label="Price"/}
+            {@blocks block="text" id=_.container name="mileage" help="Mileage (km)" value=mileage label="Mileage"/}
+            {@blocks block="text" id=_.container name="engine" help="Engine (cc)" value=engine label="Engine"/}
+            {@blocks block="text" id=_.container name="price" help="Price (LKR)" value=price label="Price"/}
             {@blocks block="textarea" id=_.container name="description" help="Description" rows=6 value=description label="Description"/}
             {@blocks block="uploads" id=_.container name="images" help="Photos" value=_.images size=3 label="Photos" icon="fa-images"/}
         {/step}

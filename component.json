@@ -48,7 +48,6 @@
         "serandomps/locations": "master",
         "serandomps/contacts": "master",
         "serandomps/service-binaries": "master",
-        "serandomps/vehicle-makes": "master",
-        "serandomps/vehicle-models": "master"
+        "serandomps/vehicle-makes": "master"
     }
 }

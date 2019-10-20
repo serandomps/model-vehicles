@@ -6,7 +6,7 @@
             </span>
             <div class="media-body">
                 <h4 class="h6 text-secondary mb-0 mt-0">Year</h4>
-                <span class="h4 text-capitalize">{manufacturedAt|year}</span>
+                <span class="h4 text-capitalize font-weight-bold">{manufacturedAt|year}</span>
             </div>
         </div>
     </div>
@@ -17,7 +17,8 @@
             </span>
             <div class="media-body">
                 <h4 class="h6 text-secondary mb-0 mt-0">Mileage</h4>
-                <span class="h4 text-capitalize">{mileage}</span> <small class="text-muted">km</small>
+                <span class="h4 text-capitalize font-weight-bold">{mileage}</span>
+                <small class="text-muted">km</small>
             </div>
         </div>
     </div>
@@ -28,7 +29,7 @@
             </span>
             <div class="media-body">
                 <h4 class="h6 text-secondary mb-0 mt-0">Transmission</h4>
-                <span class="h4 text-capitalize">{transmission}</span>
+                <span class="h4 text-capitalize font-weight-bold">{transmission}</span>
             </div>
         </div>
     </div>
@@ -39,65 +40,99 @@
             </span>
             <div class="media-body">
                 <h4 class="h6 text-secondary mb-0 mt-0">Price</h4>
-                <span class="h4 text-capitalize">{price}</span> <small class="text-muted">LKR</small>
+                <span class="h4 text-capitalize font-weight-bold">{price}</span>
+                <small class="text-muted">LKR</small>
             </div>
         </div>
     </div>
 </div>
 <hr/>
 <div class="row mt-4">
-    <div class="col-md mb-3">
+    <div class="col-md-3 mb-4">
+        <div class="media">
+            <span class="btn rounded-circle mr-2">
+              <span class="fas fa-building fa-fw"></span>
+            </span>
+            <div class="media-body">
+                <h4 class="h6 text-secondary mb-0 mt-0">Type</h4>
+                <span class="text-capitalize font-weight-bold">{_.type}</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
         <div class="media">
             <span class="btn rounded-circle mr-2">
               <span class="fas fa-building fa-fw"></span>
             </span>
             <div class="media-body">
                 <h4 class="h6 text-secondary mb-0 mt-0">Make</h4>
-                <span class="text-capitalize">{_.make.title}</span>
+                <span class="text-capitalize font-weight-bold">{_.make.title}</span>
             </div>
         </div>
     </div>
-    <div class="col-md mb-3">
+    <div class="col-md-3 mb-4">
         <div class="media">
             <span class="btn rounded-circle mr-2">
               <span class="fas fa-tag fa-fw"></span>
             </span>
             <div class="media-body">
                 <h4 class="h6 text-secondary mb-0 mt-0">Model</h4>
-                <span class="text-capitalize">{_.model.title}</span>
+                <span class="text-capitalize font-weight-bold">{_.model.title}{?edition} {edition}{/edition}</span>
             </div>
         </div>
     </div>
-    <div class="col-md mb-3">
+    <div class="col-md-3 mb-4">
         <div class="media">
             <span class="btn rounded-circle mr-2">
               <span class="fas fa-battery-full fa-fw"></span>
             </span>
             <div class="media-body">
                 <h4 class="h6 text-secondary mb-0 mt-0">Condition</h4>
-                <span class="text-capitalize">{condition}</span>
+                <span class="text-capitalize font-weight-bold">{condition}</span>
             </div>
         </div>
     </div>
-    <div class="col-md mb-3">
+    <div class="col-md-3 mb-4">
         <div class="media">
             <span class="btn rounded-circle mr-2">
               <span class="fas fa-tint fa-fw"></span>
             </span>
             <div class="media-body">
                 <h4 class="h6 text-secondary mb-0 mt-0">Color</h4>
-                <span class="text-capitalize">{color}</span>
+                <span class="text-capitalize font-weight-bold">{color}</span>
             </div>
         </div>
     </div>
-    <div class="col-md mb-3">
+    <div class="col-md-3 mb-4">
         <div class="media">
             <span class="btn rounded-circle mr-2">
               <span class="fas fa-gas-pump fa-fw"></span>
             </span>
             <div class="media-body">
                 <h4 class="h6 text-secondary mb-0 mt-0">Fuel</h4>
-                <span class="text-capitalize">{fuel}</span>
+                <span class="text-capitalize font-weight-bold">{fuel}</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="media">
+            <span class="btn rounded-circle mr-2">
+              <span class="fas fa-cog fa-fw"></span>
+            </span>
+            <div class="media-body">
+                <h4 class="h6 text-secondary mb-0 mt-0">Drive Type</h4>
+                <span class="text-capitalize font-weight-bold">{_.driveType}</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-4">
+        <div class="media">
+            <span class="btn rounded-circle mr-2">
+              <span class="fas fa-ruler-vertical fa-fw"></span>
+            </span>
+            <div class="media-body">
+                <h4 class="h6 text-secondary mb-0 mt-0">Engine</h4>
+                <span class="text-capitalize font-weight-bold">{engine}</span><span class="text-muted">cc</span>
             </div>
         </div>
     </div>
@@ -112,7 +147,7 @@
                 </div>
                 <div class="col-md-9">
                     <div class="card-body">
-                        <h4 class="h4 text-secondary mb-3">Location</h4>
+                        <h4 class="h4 text-secondary mb-3 font-weight-bold">Location</h4>
                         <div class="location-info">
                             {?_.location.name}
                             <div class="d-flex justify-content-start">
@@ -175,11 +210,11 @@
         <div class="card border-0">
             <div class="row no-gutters">
                 <div class="col-md-3 text-center">
-                        <span class="fas fa-mobile-alt fa-5x mt-md-5"></span>
+                    <span class="fas fa-mobile-alt fa-5x mt-md-5"></span>
                 </div>
                 <div class="col-md-9">
                     <div class="card-body">
-                        <h4 class="h4 text-secondary mb-3">Contacts</h4>
+                        <h4 class="h4 text-secondary mb-3 font-weight-bold">Contacts</h4>
                         <div class="contacts-info">
                             {?_.contact.phones}
                             <div class="d-flex justify-content-start">

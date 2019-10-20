@@ -4,7 +4,6 @@ var utils = require('utils');
 var form = require('form');
 var Vehicles = require('../service');
 var Makes = require('vehicle-makes').service;
-var Models = require('vehicle-models').service;
 var Locations = require('locations').service;
 
 var allProvinces = Locations.allProvinces();
@@ -37,7 +36,7 @@ var findModels = function (make, done) {
     if (!make) {
         return done(null, []);
     }
-    Models.find(make, function (err, models) {
+    Makes.findModels(make, function (err, models) {
         if (err) {
             return done(err);
         }

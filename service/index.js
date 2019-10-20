@@ -1,6 +1,5 @@
 var utils = require('utils');
 var Make = require('vehicle-makes').service;
-var Model = require('vehicle-models').service;
 
 var types = [
     {value: 'bicycle', label: 'Bicycle'},
@@ -18,10 +17,18 @@ var types = [
     {value: 'scooter', label: 'Scooter'},
     {value: 'car', label: 'Car'},
     {value: 'van', label: 'Van'},
-    {value: 'suv', label: 'Suv'},
+    {value: 'suv', label: 'SUV'},
     {value: 'cab', label: 'Cab'},
     {value: 'lorry', label: 'Lorry'},
     {value: 'bus', label: 'Bus'}
+];
+
+var driveTypes = [
+    {value: 'front', label: 'Front'},
+    {value: 'rear', label: 'Rear'},
+    {value: 'four', label: '4x4'},
+    {value: 'all', label: 'All'},
+    {value: 'other', label: 'Other'},
 ];
 
 types = _.sortBy(types, 'value');
@@ -76,7 +83,7 @@ var makes = function (vehicles, done) {
 
 var models = function (vehicles, done) {
     async.each(vehicles, function (vehicle, updated) {
-        Model.findOne(vehicle.model, function (err, model) {
+        Make.findModel(vehicle.model, function (err, model) {
             if (err) {
                 return updated(err);
             }
@@ -86,6 +93,18 @@ var models = function (vehicles, done) {
     }, function (err) {
         done(err, vehicles);
     });
+};
+
+var locations = function (vehicles, done) {
+    vehicles.forEach(function (vehicle) {
+        var tag = _.find(vehicle.tags, function (tag) {
+            return tag.name === 'location:locations:city';
+        });
+        vehicle._.city = tag.value;
+        vehicle._.type = exports.type(vehicle.type);
+        vehicle._.driveType = exports.driveType(vehicle.driveType);
+    });
+    done(null, vehicles);
 };
 
 var update = function (vehicles, options, done) {
@@ -104,7 +123,12 @@ var update = function (vehicles, options, done) {
                 if (err) {
                     return done(err);
                 }
-                done(null, vehicles);
+                locations(vehicles, function (err, vehicles) {
+                    if (err) {
+                        return done(err);
+                    }
+                    done(null, vehicles);
+                });
             });
         });
     });
@@ -172,4 +196,22 @@ exports.create = function (options, done) {
 
 exports.types = function () {
     return types;
+};
+
+exports.type = function (value) {
+    var type = _.find(types, function (type) {
+        return type.value === value;
+    });
+    return type.label;
+};
+
+exports.driveTypes = function () {
+    return driveTypes;
+};
+
+exports.driveType = function (value) {
+    var driveType = _.find(driveTypes, function (type) {
+        return type.value === value;
+    });
+    return driveType.label;
 };
