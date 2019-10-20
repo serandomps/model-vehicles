@@ -637,14 +637,16 @@ module.exports = function (ctx, container, options, done) {
                 query._.transmissions = [
                     {label: 'Automatic', value: 'automatic'},
                     {label: 'Manual', value: 'manual'},
-                    {label: 'Manumatic', value: 'manumatic'}
+                    {label: 'Manumatic', value: 'manumatic'},
+                    {label: 'Other', value: 'other'}
                 ];
                 query._.fuels = [
                     {label: 'None', value: 'none'},
                     {label: 'Petrol', value: 'petrol'},
                     {label: 'Diesel', value: 'diesel'},
                     {label: 'Hybrid', value: 'hybrid'},
-                    {label: 'Electric', value: 'electric'}
+                    {label: 'Electric', value: 'electric'},
+                    {label: 'Other', value: 'other'}
                 ];
                 query._.colors = [
                     {label: 'Any Color', value: ''},
@@ -657,7 +659,8 @@ module.exports = function (ctx, container, options, done) {
                     {label: 'Red', value: 'red'},
                     {label: 'Silver', value: 'silver'},
                     {label: 'White', value: 'white'},
-                    {label: 'Yellow', value: 'yellow'}
+                    {label: 'Yellow', value: 'yellow'},
+                    {label: 'Other', value: 'other'}
                 ];
                 var provinces = [{label: 'Any Province', value: ''}];
                 query._.provinces = provinces.concat(_.map(allProvinces, function (province) {
