@@ -17,5 +17,3 @@ exports.remove = require('./remove');
 exports.search = require('./search');
 
 exports.service = require('./service');
-
-exports.review = require('./review');

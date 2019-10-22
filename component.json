@@ -12,8 +12,7 @@
         "recent/index.js",
         "remove/index.js",
         "search/index.js",
-        "service/index.js",
-        "review/index.js"
+        "service/index.js"
     ],
     "styles": [
         "styles.css",
@@ -34,9 +33,7 @@
         "findone/actions.html",
         "findone/status.html",
         "findone/details.html",
-        "remove/template.html",
-        "review/template.html",
-        "review/details.html"
+        "remove/template.html"
     ],
     "main": "index.js",
     "dependencies": {

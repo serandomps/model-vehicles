@@ -100,7 +100,7 @@ var locations = function (vehicles, done) {
         var tag = _.find(vehicle.tags, function (tag) {
             return tag.name === 'location:locations:city';
         });
-        vehicle._.city = tag.value;
+        vehicle._.city = tag && tag.value;
         vehicle._.type = exports.type(vehicle.type);
         vehicle._.driveType = exports.driveType(vehicle.driveType);
     });
