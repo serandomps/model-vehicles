@@ -4,6 +4,8 @@ var utils = require('utils');
 var Vehicle = require('../service');
 
 var locations = require('locations');
+var Locations = locations.service;
+
 var recent = require('../recent');
 
 var redirect = serand.redirect;
@@ -51,9 +53,9 @@ module.exports = function (ctx, container, options, done) {
         }
         async.parallel({
             location: function (found) {
-                findLocation(vehicle.location, function (err, location) {
-                    if (err) {
-                        console.error(err);
+                findLocation(vehicle.location, function (ignored, location) {
+                    if (location) {
+                        location.country = Locations.findCountry(location.country);
                     }
                     found(null, location);
                 });
@@ -98,10 +100,7 @@ module.exports = function (ctx, container, options, done) {
                         required: true,
                         label: 'Location of the vehicle',
                         id: vehicle.location
-                    }, function (err, o) {
-                        if (err) {
-                            return done(err);
-                        }
+                    }, function (ignored, o) {
                         recent(ctx, {
                             id: container.id,
                             sandbox: $('.recent', elem)

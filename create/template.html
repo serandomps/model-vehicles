@@ -2,16 +2,16 @@
 <form role="form">
     {@steps}
         {@step name="vehicle" title="Vehicle" icon="fa-car" active="true" back=_.back}
-            {@blocks block="select" id=_.container name="type" label="Type" title="Type" options=_.types search="true"/}
-            {@blocks block="select" id=_.container name="make" label="Make" title="Make" options=_.makes search="true"/}
-            {@blocks block="select" id=_.container name="model" label="Model" title="Model" options=_.models search="true"/}
+            {@blocks block="select" id=_.container name="type" label="Type" title="Type" options=_.types search="true" size="10"/}
+            {@blocks block="select" id=_.container name="make" label="Make" title="Make" options=_.makes search="true" size="10"/}
+            {@blocks block="select" id=_.container name="model" label="Model" title="Model" options=_.models search="true" size="10"/}
             {@blocks block="text" id=_.container name="edition" help="Edition (optional)" value=edition label="Edition"/}
-            {@blocks block="select" id=_.container name="manufacturedAt" label="Year" title="Year" options=_.manufacturedAt/}
+            {@blocks block="select" id=_.container name="manufacturedAt" label="Year" title="Year" options=_.manufacturedAt search="true" size="10"/}
             {@blocks block="radios" id=_.container name="condition" options=_.conditions label="Condition"/}
             {@blocks block="radios" id=_.container name="transmission" options=_.transmissions label="Transmission"/}
             {@blocks block="radios" id=_.container name="fuel" options=_.fuels label="Fuel"/}
             {@blocks block="radios" id=_.container name="driveType" options=_.driveTypes label="Drive Type"/}
-            {@blocks block="select" id=_.container name="color" help="Color" title="Color" options=_.color label="Color"/}
+            {@blocks block="select" id=_.container name="color" help="Color" title="Color" options=_.color label="Color" search="true" size="10"/}
             {@blocks block="text" id=_.container name="mileage" help="Mileage (km)" value=mileage label="Mileage"/}
             {@blocks block="text" id=_.container name="engine" help="Engine (cc)" value=engine label="Engine"/}
             {@blocks block="text" id=_.container name="price" help="Price (LKR)" value=price label="Price"/}

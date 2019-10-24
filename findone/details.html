@@ -139,73 +139,6 @@
 </div>
 <div class="row mt-5">
     <div class="col-md">
-        {?_.location}
-        <div class="card border-0">
-            <div class="row no-gutters">
-                <div class="col-md-3 text-center">
-                    <span class="fas fa-map-marker-alt fa-5x mt-md-5"></span>
-                </div>
-                <div class="col-md-9">
-                    <div class="card-body">
-                        <h4 class="h4 text-secondary mb-3 font-weight-bold">Location</h4>
-                        <div class="location-info">
-                            {?_.location.name}
-                            <div class="d-flex justify-content-start">
-                                <div class="p-1">
-                                    {_.location.name}
-                                </div>
-                            </div>
-                            {/_.location.name}
-                            {?_.location.line1}
-                            <div class="d-flex justify-content-start">
-                                <div class="p-1">
-                                    {_.location.line1}{?_.location.line2}, {_.location.line2}{/_.location.line2}
-                                </div>
-                            </div>
-                            {/_.location.line1}
-                            {?_.location.city}
-                            <div class="d-flex justify-content-start">
-                                <div class="p-1">
-                                    {_.location.city}{?_.location.postal} {_.location.postal}{/_.location.postal}
-                                </div>
-                            </div>
-                            {/_.location.city}
-                            {?_.location.district}
-                            <div class="d-flex justify-content-start">
-                                <div class="p-1">
-                                    {_.location.district}
-                                </div>
-                            </div>
-                            {:else}
-                            {?_.location.province}
-                            <div class="d-flex justify-content-start">
-                                <div class="p-1">
-                                    {_.location.province}
-                                </div>
-                            </div>
-                            {:else}
-                            <div class="d-flex justify-content-start">
-                                <div class="p-1">
-                                    {_.location.state}
-                                </div>
-                            </div>
-                            {/_.location.province}
-                            {/_.location.district}
-                            {?_.location.country}
-                            <div class="d-flex justify-content-start">
-                                <div class="p-1">
-                                    {_.location.country}
-                                </div>
-                            </div>
-                            {/_.location.country}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {/_.location}
-    </div>
-    <div class="col-md">
         {?_.contact}
         <div class="card border-0">
             <div class="row no-gutters">
@@ -265,5 +198,72 @@
             </div>
         </div>
         {/_.contact}
+    </div>
+    <div class="col-md">
+        {?_.location}
+        <div class="card border-0">
+            <div class="row no-gutters">
+                <div class="col-md-3 text-center">
+                    <span class="fas fa-map-marker-alt fa-5x mt-md-5"></span>
+                </div>
+                <div class="col-md-9">
+                    <div class="card-body">
+                        <h4 class="h4 text-secondary mb-3 font-weight-bold">Location</h4>
+                        <div class="location-info">
+                            <!--{?_.location.name}
+                            <div class="d-flex justify-content-start">
+                                <div class="p-1">
+                                    {_.location.name}
+                                </div>
+                            </div>
+                            {/_.location.name}-->
+                            {?_.location.line1}
+                            <div class="d-flex justify-content-start">
+                                <div class="p-1">
+                                    {_.location.line1}{?_.location.line2}, {_.location.line2}{/_.location.line2}
+                                </div>
+                            </div>
+                            {/_.location.line1}
+                            {?_.location.city}
+                            <div class="d-flex justify-content-start">
+                                <div class="p-1">
+                                    {_.location.city}{?_.location.postal} {_.location.postal}{/_.location.postal}
+                                </div>
+                            </div>
+                            {/_.location.city}
+                            {?_.location.district}
+                            <div class="d-flex justify-content-start">
+                                <div class="p-1">
+                                    {_.location.district}
+                                </div>
+                            </div>
+                            {:else}
+                            {?_.location.province}
+                            <div class="d-flex justify-content-start">
+                                <div class="p-1">
+                                    {_.location.province}
+                                </div>
+                            </div>
+                            {:else}
+                            <div class="d-flex justify-content-start">
+                                <div class="p-1">
+                                    {_.location.state}
+                                </div>
+                            </div>
+                            {/_.location.province}
+                            {/_.location.district}
+                            {?_.location.country}
+                            <div class="d-flex justify-content-start">
+                                <div class="p-1">
+                                    {_.location.country}
+                                </div>
+                            </div>
+                            {/_.location.country}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {/_.location}
     </div>
 </div>

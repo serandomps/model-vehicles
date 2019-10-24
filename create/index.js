@@ -18,7 +18,7 @@ var vehicleConfigs = {
         },
         validate: function (context, data, value, done) {
             if (!value) {
-                return done(null, 'Please select the type of your vehicle');
+                return done(null, 'Please select the type of your vehicle.');
             }
             done(null, null, value);
         },
@@ -38,7 +38,7 @@ var vehicleConfigs = {
         },
         validate: function (context, data, value, done) {
             if (!value) {
-                return done(null, 'Please select the year of your vehicle');
+                return done(null, 'Please select the year of your vehicle.');
             }
             done(null, null, value);
         },
@@ -58,11 +58,11 @@ var vehicleConfigs = {
         },
         validate: function (context, data, value, done) {
             if (!value) {
-                return done(null, 'Please enter the engine capacity of your vehicle');
+                return done(null, 'Please enter the engine capacity of your vehicle.');
             }
             value = Number(value);
             if (!is.number(value)) {
-                return done(null, 'Please enter a valid number for the engine capacity of your vehicle');
+                return done(null, 'Please enter a valid number for the engine capacity of your vehicle.');
             }
             done(null, null, value);
         },
@@ -77,7 +77,7 @@ var vehicleConfigs = {
         },
         validate: function (context, data, value, done) {
             if (!value) {
-                return done(null, 'Please select the drive type of your vehicle');
+                return done(null, 'Please select the drive type of your vehicle.');
             }
             done(null, null, value);
         },
@@ -97,7 +97,7 @@ var vehicleConfigs = {
         },
         validate: function (context, data, value, done) {
             if (!value) {
-                return done(null, 'Please select the make of your vehicle');
+                return done(null, 'Please select the make of your vehicle.');
             }
             done(null, null, value);
         },
@@ -125,7 +125,7 @@ var vehicleConfigs = {
         },
         validate: function (context, data, value, done) {
             if (!value) {
-                return done(null, 'Please select the model of your vehicle');
+                return done(null, 'Please select the model of your vehicle.');
             }
             done(null, null, value);
         },
@@ -148,7 +148,7 @@ var vehicleConfigs = {
                 return done();
             }
             if (value.length > 50) {
-                return done(null, 'Please enter a shorter value for the edition of your vehicle');
+                return done(null, 'Please enter a shorter value for the edition of your vehicle.');
             }
             done(null, null, value);
         },
@@ -163,7 +163,7 @@ var vehicleConfigs = {
         },
         validate: function (context, data, value, done) {
             if (!value) {
-                return done(null, 'Please select the condition of your vehicle');
+                return done(null, 'Please select the condition of your vehicle.');
             }
             done(null, null, value);
         },
@@ -183,7 +183,7 @@ var vehicleConfigs = {
         },
         validate: function (context, data, value, done) {
             if (!value) {
-                return done(null, 'Please select the transmission of your vehicle');
+                return done(null, 'Please select the transmission of your vehicle.');
             }
             done(null, null, value);
         },
@@ -203,7 +203,7 @@ var vehicleConfigs = {
         },
         validate: function (context, data, value, done) {
             if (!value) {
-                return done(null, 'Please select the fuel of your vehicle');
+                return done(null, 'Please select the fuel of your vehicle.');
             }
             done(null, null, value);
         },
@@ -223,7 +223,7 @@ var vehicleConfigs = {
         },
         validate: function (context, data, value, done) {
             if (!value) {
-                return done(null, 'Please enter the color of your vehicle');
+                return done(null, 'Please enter the color of your vehicle.');
             }
             done(null, null, value);
         },
@@ -243,11 +243,11 @@ var vehicleConfigs = {
         },
         validate: function (context, data, value, done) {
             if (!value) {
-                return done(null, 'Please enter the mileage of your vehicle');
+                return done(null, 'Please enter the mileage of your vehicle.');
             }
             value = Number(value);
             if (!is.number(value)) {
-                return done(null, 'Please enter a valid number for the mileage of your vehicle');
+                return done(null, 'Please enter a valid number for the mileage of your vehicle.');
             }
             done(null, null, value);
         },
@@ -262,11 +262,11 @@ var vehicleConfigs = {
         },
         validate: function (context, data, value, done) {
             if (!value) {
-                return done(null, 'Please enter the price of your vehicle');
+                return done(null, 'Please enter the price of your vehicle.');
             }
             value = Number(value);
             if (!is.number(value)) {
-                return done(null, 'Please enter a valid amount for the price of your vehicle');
+                return done(null, 'Please enter a valid amount for the price of your vehicle.');
             }
             done(null, null, value);
         },
@@ -309,7 +309,7 @@ var vehicleConfigs = {
         },
         validate: function (context, data, value, done) {
             if (!value) {
-                return done(null, 'Please upload images of your vehicle');
+                return done(null, 'Please upload images of your vehicle.');
             }
             done(null, null, value);
         },

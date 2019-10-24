@@ -13,6 +13,14 @@ var hooks = {
         o.manufacturedAt = o.manufacturedAt || (o.manufacturedAt = {});
         o.manufacturedAt.$gte = new Date(val).toISOString();
     },
+    'price:lte': function (o, val) {
+        o.price = o.price || (o.price = {});
+        o.price.$lte = parseInt(val, 10);
+    },
+    'price:gte': function (o, val) {
+        o.price = o.price || (o.price = {});
+        o.price.$gte = parseInt(val, 10);
+    },
     'tags:location:province': function (o, val) {
         o.tags = o.tags || (o.tags = []);
         o.tags.push({name: 'location:locations:province', value: val});
