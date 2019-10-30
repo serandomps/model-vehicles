@@ -1,29 +1,45 @@
 <div class="vehicles-filter panel-group mb-3" role="tablist" aria-multiselectable="true">
     <div class="card">
-        <div class="card-header" role="tab">Search</div>
+        <div class="card-header" role="tab"><strong class="text-secondary">Search</strong></div>
         <div class="card-body">
             <form>
-                {@blocks block="select" id=_.container name="type" label="Type" value=type options=_.types search="true" size="10"/}
-                {@blocks block="select" id=_.container name="make" label="Make" value=make options=_.makes search="true" size="10"/}
-                {@blocks block="select" id=_.container name="model" label="Model" value=model options=_.models search="true" size="10"/}
-                {@blocks block="select" id=_.container name="color" label="Color" value=color options=_.colors/}
+                {?_.user}
+                <div class="source user form-group text-center mb-2">
+                    <div class="mb-2">
+                        <button type="button" class="avatar btn text-light rounded-circle btn-link bg-secondary text-decoration-none font-weight-bolder">{_.user._.initials}</button>
+                    </div>
+                    <h2 class="h5 text-primary font-weight-bolder">{_.user.alias}</h2>
+                    <a href="#" class="exclude h5 far fa-times-circle text-danger text-decoration-none"></a>
+                </div>
+                <!-- <div class="source user form-group text-center1 mb-3">
+                     <div class="d-flex">
+                         <div class="p-2 flex-fill text-left"><i class="far h5 fa-user"></i></div>
+                         <div class="p-2 flex-fill text-right"><i class="far h5 fa-times-circle text-danger"></i></div>
+                     </div>
+                     <span class="text-primary">{_.user.alias}</span>
+                 </div>-->
+                {/_.user}
+                {@blocks block="select" id=_.container name="type" label="Type" value=type options=_.types search="true" size="10" icon="far fa-object-group"/}
+                {@blocks block="select" id=_.container name="make" label="Make" value=make options=_.makes search="true" size="10" icon="fas fa-building"/}
+                {@blocks block="select" id=_.container name="model" label="Model" value=model options=_.models search="true" size="10" icon="fas fa-tag"/}
+                {@blocks block="select" id=_.container name="color" label="Color" value=color options=_.colors icon="fas fa-palette"/}
                 <div class="form-group year">
-                    <label>Year</label>
+                    <label class="title-text font-weight-bolder"><i class="text-dark fas fa-calendar mr-2"></i>Year</label>
                     {@blocks block="select" id=_.container name="manufacturedAt-gte" help="From" value=manufacturedAt-gte options=_.manufacturedFrom search="true" size="10"/}
                     {@blocks block="select" id=_.container name="manufacturedAt-lte" help="To" value=manufacturedAt-lte options=_.manufacturedTo search="true" size="10"/}
                 </div>
                 <div class="form-group price">
-                    <label>Price</label>
+                    <label class="title-text font-weight-bolder"><i class="text-dark fas fa-money-check-alt mr-2"></i>Price</label>
                     {@blocks block="text" id=_.container name="price-gte" help="Min"/}
                     {@blocks block="text" id=_.container name="price-lte" help="Max"/}
                 </div>
-                {@blocks block="checkboxes" id=_.container name="condition" value=condition options=_.conditions label="Condition"/}
-                {@blocks block="checkboxes" id=_.container name="transmission" value=transmission options=_.transmissions label="Transmission"/}
-                {@blocks block="checkboxes" id=_.container name="fuel" value=fuel options=_.fuels label="Fuel"/}
-                {@blocks block="select" id=_.container name="location-province" value=province options=_.provinces label="Province" search="true" size="10"/}
-                {@blocks block="select" id=_.container name="location-district" value=districts options=_.districts label="District" search="true" size="10"/}
-                {@blocks block="select" id=_.container name="location-city" value=city options=_.cities label="City" search="true" size="10"/}
-                {@blocks block="select" id=_.container name="location-postal" value=postal options=_.postals label="Postal Code" search="true" size="10"/}
+                {@blocks block="checkboxes" id=_.container name="condition" value=condition options=_.conditions label="Condition" icon="fas fa-battery-full"/}
+                {@blocks block="checkboxes" id=_.container name="transmission" value=transmission options=_.transmissions label="Transmission" icon="fas fa-cogs"/}
+                {@blocks block="checkboxes" id=_.container name="fuel" value=fuel options=_.fuels label="Fuel" icon="fas fa-gas-pump"/}
+                {@blocks block="select" id=_.container name="location-province" value=province options=_.provinces label="Province" search="true" size="10" icon="fas fa-landmark"/}
+                {@blocks block="select" id=_.container name="location-district" value=districts options=_.districts label="District" search="true" size="10" icon="fas fa-archway"/}
+                {@blocks block="select" id=_.container name="location-city" value=city options=_.cities label="City" search="true" size="10" icon="fas fa-city"/}
+                {@blocks block="select" id=_.container name="location-postal" value=postal options=_.postals label="Postal Code" search="true" size="10" icon="fas fa-envelope"/}
             </form>
         </div>
     </div>

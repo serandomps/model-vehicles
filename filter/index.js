@@ -2,6 +2,7 @@ var dust = require('dust')();
 var serand = require('serand');
 var utils = require('utils');
 var form = require('form');
+var user = require('user');
 var Vehicles = require('../service');
 var Makes = require('vehicle-makes').service;
 var Locations = require('locations').service;
@@ -63,6 +64,7 @@ var findCities = function (province, district, done) {
 
 var to = function (o, done) {
     var query = {
+        user: o.user,
         type: o.type,
         make: o.make,
         model: o.model,
@@ -99,6 +101,7 @@ var to = function (o, done) {
 var from = function (query, done) {
     var o = {
         _: query._,
+        user: query.user,
         type: query.type || '',
         make: query.make || '',
         model: query.model,
@@ -132,7 +135,31 @@ var from = function (query, done) {
     done(null, oo);
 };
 
+var redirect = function (ctx, query) {
+    var q = utils.toQuery(query);
+    var path = '/vehicles' + (q ? '?' + q : '');
+    serand.redirect(path);
+};
+
 var configs = {
+    user: {
+        find: function (context, source, done) {
+            done(null, context.user);
+        },
+        render: function (ctx, vform, data, value, done) {
+            var context = {user: data.user};
+            $('.user', vform.elem).on('click', '.exclude', function () {
+                delete context.user;
+                findQuery(vform, function (err, query) {
+                    if (err) {
+                        return console.error(err);
+                    }
+                    redirect(ctx, query);
+                });
+            });
+            done(null, context);
+        }
+    },
     type: {
         find: function (context, source, done) {
             serand.blocks('select', 'find', source, done);
@@ -146,7 +173,7 @@ var configs = {
                         if (err) {
                             return console.error(err);
                         }
-                        serand.redirect('/vehicles' + utils.toQuery(query));
+                        redirect(ctx, query);
                     });
                 }
             }, done);
@@ -176,7 +203,7 @@ var configs = {
                             if (err) {
                                 return console.error(err);
                             }
-                            serand.redirect('/vehicles' + utils.toQuery(query));
+                            redirect(ctx, query);
                         });
                     });
                 }
@@ -196,7 +223,7 @@ var configs = {
                         if (err) {
                             return console.error(err);
                         }
-                        serand.redirect('/vehicles' + utils.toQuery(query));
+                        redirect(ctx, query);
                     });
                 }
             }, done);
@@ -215,7 +242,7 @@ var configs = {
                         if (err) {
                             return console.error(err);
                         }
-                        serand.redirect('/vehicles' + utils.toQuery(query));
+                        redirect(ctx, query);
                     });
                 }
             }, done);
@@ -234,7 +261,7 @@ var configs = {
                         if (err) {
                             return console.error(err);
                         }
-                        serand.redirect('/vehicles' + utils.toQuery(query));
+                        redirect(ctx, query);
                     });
                 }
             }, done);
@@ -253,7 +280,7 @@ var configs = {
                         if (err) {
                             return console.error(err);
                         }
-                        serand.redirect('/vehicles' + utils.toQuery(query));
+                        redirect(ctx, query);
                     });
                 }
             }, done);
@@ -272,7 +299,7 @@ var configs = {
                         if (err) {
                             return console.error(err);
                         }
-                        serand.redirect('/vehicles' + utils.toQuery(query));
+                        redirect(ctx, query);
                     });
                 }
             }, done);
@@ -305,7 +332,7 @@ var configs = {
                         if (err) {
                             return console.error(err);
                         }
-                        serand.redirect('/vehicles' + utils.toQuery(query));
+                        redirect(ctx, query);
                     });
                 }
             }, done);
@@ -329,7 +356,7 @@ var configs = {
                         if (err) {
                             return console.error(err);
                         }
-                        serand.redirect('/vehicles' + utils.toQuery(query));
+                        redirect(ctx, query);
                     });
                 }
             }, done);
@@ -348,7 +375,7 @@ var configs = {
                         if (err) {
                             return console.error(err);
                         }
-                        serand.redirect('/vehicles' + utils.toQuery(query));
+                        redirect(ctx, query);
                     });
                 }
             }, done);
@@ -367,7 +394,7 @@ var configs = {
                         if (err) {
                             return console.error(err);
                         }
-                        serand.redirect('/vehicles' + utils.toQuery(query));
+                        redirect(ctx, query);
                     });
                 }
             }, done);
@@ -412,7 +439,7 @@ var configs = {
                                     if (err) {
                                         return console.error(err);
                                     }
-                                    serand.redirect('/vehicles' + utils.toQuery(query));
+                                    redirect(ctx, query);
                                 });
                             });
                         });
@@ -462,7 +489,7 @@ var configs = {
                                         if (err) {
                                             return console.error(err);
                                         }
-                                        serand.redirect('/vehicles' + utils.toQuery(query));
+                                        redirect(ctx, query);
                                     });
                                 });
                             });
@@ -515,7 +542,7 @@ var configs = {
                                         if (err) {
                                             return console.error(err);
                                         }
-                                        serand.redirect('/vehicles' + utils.toQuery(query));
+                                        redirect(ctx, query);
                                     });
                                 });
                             });
@@ -568,7 +595,7 @@ var configs = {
                                         if (err) {
                                             return console.error(err);
                                         }
-                                        serand.redirect('/vehicles' + utils.toQuery(query));
+                                        redirect(ctx, query);
                                     });
                                 });
                             });
@@ -589,13 +616,24 @@ module.exports = function (ctx, container, options, done) {
             return done(err);
         }
         query._ = query._ || (query._ = {});
-        Makes.find(function (err, makes) {
+
+        async.parallel({
+            makes: function (found) {
+                Makes.find(found);
+            },
+            user: function (found) {
+                if (!query.user) {
+                    return found();
+                }
+                user.findOne(query.user, found);
+            }
+        }, function (err, o) {
             if (err) {
                 return done(err);
             }
-
+            query._.user = o.user;
             var makeData = [{label: 'Any Make', value: ''}];
-            makeData = makeData.concat(_.map(makes, function (make) {
+            makeData = makeData.concat(_.map(o.makes, function (make) {
                 return {
                     value: make.id,
                     label: make.title
@@ -692,12 +730,12 @@ module.exports = function (ctx, container, options, done) {
                                 value: city.name
                             };
                         }));
-                        query._.postals = postalsData.concat(_.sortBy(_.map(cities, function (city) {
+                        query._.postals = postalsData.concat(_.map(cities, function (city) {
                             return {
                                 label: city.postal,
                                 value: city.postal
                             }
-                        }), 'value'));
+                        }));
 
                         dust.render('vehicles-filter', serand.pack(query, container), function (err, out) {
                             if (err) {

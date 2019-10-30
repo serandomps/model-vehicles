@@ -2,6 +2,7 @@ var dust = require('dust')();
 var serand = require('serand');
 var utils = require('utils');
 var Vehicle = require('../service');
+var user = require('user');
 
 var locations = require('locations');
 var Locations = locations.service;
@@ -67,11 +68,15 @@ module.exports = function (ctx, container, options, done) {
                     }
                     found(null, contact);
                 })
+            },
+            user: function (found) {
+                user.findOne(vehicle.user, found);
             }
         }, function (err, o) {
             if (err) {
                 return done(err);
             }
+            vehicle._.user = o.user;
             vehicle._.contact = o.contact;
             vehicle._.location = o.location;
             if (token && token.user.id === vehicle.user) {

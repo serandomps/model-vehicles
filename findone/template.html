@@ -10,8 +10,20 @@
             {/is}
             {/_.edit}
             </div>
-            <h1 class="font-weight-bolder title text-center text-muted">{?id}{_.make.title} {_.model.title}{?edition} {edition}{/edition} {manufacturedAt|year}{:else}Create your
-                vehicle{/id}</h1>
+            <h1 class="font-weight-bolder title text-center text-muted">
+                {?id}{_.make.title} {_.model.title}{?edition} {edition}{/edition} {manufacturedAt|year}{:else}Create your vehicle{/id}
+            </h1>
+            <div class="row text-muted mt-3">
+                <div class="col-lg mb-2 text-lg-right">
+                    <i class="fas fa-user fa-fw"></i> <a href="/vehicles?user={_.user.id}">{_.user.alias}</a>
+                </div>
+                <div class="col-lg mb-2 text-lg-center">
+                    <i class="fas fa-clock fa-fw"></i> {createdAt|ago}
+                </div>
+                <div class="col-lg mb-2 text-lg-left">
+                    <i class="fas fa-map-marker-alt fa-fw"></i> {_.city}</span>
+                </div>
+            </div>
             <div class="blueimp-gallery blueimp-gallery-carousel blueimp-gallery-controls mt-3">
                 <div class="slides"></div>
                 <h3 class="title"></h3>

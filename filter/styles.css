@@ -5,3 +5,17 @@
 .sandbox-vehicles-filter .form-control {
     margin-bottom: 10px;
 }
+
+.sandbox-vehicles-filter .user .avatar {
+    font-size: 1rem;
+    width: 75px;
+    height: 75px;
+}
+
+.sandbox-vehicles-filter .manufacturedAt-gte {
+    margin-bottom: 0.5rem!important;
+}
+
+.sandbox-vehicles-filter .price-gte {
+    margin-bottom: 0.5rem!important;
+}

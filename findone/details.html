@@ -51,7 +51,7 @@
     <div class="col-md-3 mb-4">
         <div class="media">
             <span class="btn rounded-circle mr-2">
-              <span class="fas fa-building fa-fw"></span>
+              <span class="far fa-object-group fa-fw"></span>
             </span>
             <div class="media-body">
                 <h4 class="h6 text-secondary mb-0 mt-0">Type</h4>
@@ -95,7 +95,7 @@
     <div class="col-md-3 mb-4">
         <div class="media">
             <span class="btn rounded-circle mr-2">
-              <span class="fas fa-tint fa-fw"></span>
+              <span class="fas fa-palette fa-fw"></span>
             </span>
             <div class="media-body">
                 <h4 class="h6 text-secondary mb-0 mt-0">Color</h4>
@@ -137,17 +137,18 @@
         </div>
     </div>
 </div>
-<div class="row mt-5">
+<div class="row mt-md-5">
     <div class="col-md">
         {?_.contact}
         <div class="card border-0">
             <div class="row no-gutters">
-                <div class="col-md-3 text-center">
-                    <span class="fas fa-mobile-alt fa-5x mt-md-5"></span>
-                </div>
+                <div class="col-md-3"></div>
                 <div class="col-md-9">
                     <div class="card-body">
-                        <h4 class="h4 text-secondary mb-3 font-weight-bold">Contacts</h4>
+                        <h4 class="h4 mb-3">
+                            <i class="fas fa-mobile-alt mr-3"></i>
+                            <span class="text-secondary font-weight-bold">Contacts</span>
+                        </h4>
                         <div class="contacts-info">
                             {?_.contact.phones}
                             <div class="d-flex justify-content-start">
@@ -203,12 +204,13 @@
         {?_.location}
         <div class="card border-0">
             <div class="row no-gutters">
-                <div class="col-md-3 text-center">
-                    <span class="fas fa-map-marker-alt fa-5x mt-md-5"></span>
-                </div>
+                <div class="col-md-3 text-center"></div>
                 <div class="col-md-9">
                     <div class="card-body">
-                        <h4 class="h4 text-secondary mb-3 font-weight-bold">Location</h4>
+                        <h4 class="h4 mb-3">
+                            <i class="fas fa-map-marker-alt mr-3"></i>
+                            <span class="text-secondary font-weight-bold">Location</span>
+                        </h4>
                         <div class="location-info">
                             <!--{?_.location.name}
                             <div class="d-flex justify-content-start">

@@ -1,7 +1,7 @@
 var utils = require('utils');
 var Make = require('vehicle-makes').service;
 
-var types = [
+var types = _.sortBy([
     {value: 'bicycle', label: 'Bicycle'},
     {value: 'excavator', label: 'Excavator'},
     {value: 'loader', label: 'Loader'},
@@ -21,7 +21,7 @@ var types = [
     {value: 'cab', label: 'Cab'},
     {value: 'lorry', label: 'Lorry'},
     {value: 'bus', label: 'Bus'}
-];
+], 'value');
 
 var driveTypes = [
     {value: 'front', label: 'Front'},
@@ -31,7 +31,6 @@ var driveTypes = [
     {value: 'other', label: 'Other'},
 ];
 
-types = _.sortBy(types, 'value');
 
 var cdn = function (size, items, done) {
     if (!size) {

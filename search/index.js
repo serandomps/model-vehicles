@@ -1,5 +1,6 @@
 var Vehicle = require('../service');
-var list = require('../find');
+var find = require('../find');
+var user = require('user');
 
 var hooks = {
     price: function (o, val) {
@@ -64,7 +65,7 @@ module.exports = function (ctx, container, options, done) {
         if (err) {
             return done(err);
         }
-        list(ctx, container, {
+        find(ctx, container, {
             vehicles: vehicles,
             size: 4
         }, done);
