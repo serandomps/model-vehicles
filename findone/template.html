@@ -15,7 +15,8 @@
             </h1>
             <div class="row text-muted mt-3">
                 <div class="col-lg mb-2 text-lg-right">
-                    <i class="fas fa-user fa-fw"></i> <a href="/vehicles?user={_.user.id}">{_.user.alias}</a>
+                    <i class="fas fa-user fa-fw"></i>
+                    <a href="/vehicles?user={_.user.id}" class="text-decoration-none">{_.user.alias}</a>
                 </div>
                 <div class="col-lg mb-2 text-lg-center">
                     <i class="fas fa-clock fa-fw"></i> {createdAt|ago}
