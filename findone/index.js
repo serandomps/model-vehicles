@@ -81,7 +81,9 @@ module.exports = function (ctx, container, options, done) {
             vehicle._.location = o.location;
             if (token && token.user.id === vehicle.user) {
                 vehicle._.edit = true;
+                vehicle._.bumpable = utils.bumpable(vehicle);
             }
+            vehicle._.bumped = (vehicle.createdAt !== vehicle.updatedAt);
             utils.workflow('model', function (err, workflow) {
                 if (err) {
                     return done(err);
@@ -115,14 +117,28 @@ module.exports = function (ctx, container, options, done) {
                             }
                             elem.on('click', '.status-buttons .dropdown-item', function () {
                                 utils.loading();
-                                utils.transit('autos', 'vehicles', vehicle.id, $(this).data('action'), function (err) {
+                                var action = $(this).data('action');
+                                utils.transit('autos', 'vehicles', vehicle.id, action, function (err) {
+                                    utils.loaded();
+                                    if (err) {
+                                        return console.error(err);
+                                    }
+                                    if (action === 'edit') {
+                                        return redirect('/vehicles/' + vehicle.id + '/edit');
+                                    }
+                                    redirect('/vehicles/' + vehicle.id);
+                                });
+                                return false;
+                            });
+                            elem.on('click', '.bumpup', function () {
+                                utils.loading();
+                                utils.bumpup('autos', 'vehicles', vehicle.id, function (err) {
                                     utils.loaded();
                                     if (err) {
                                         return console.error(err);
                                     }
                                     redirect('/vehicles/' + vehicle.id);
                                 });
-                                return false;
                             });
                             done(null, {
                                 clean: function () {

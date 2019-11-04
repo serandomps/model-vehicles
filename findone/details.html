@@ -51,7 +51,7 @@
     <div class="col-md-3 mb-4">
         <div class="media">
             <span class="btn rounded-circle mr-2">
-              <span class="far fa-object-group fa-fw"></span>
+              <span class="fas fa-ribbon fa-fw"></span>
             </span>
             <div class="media-body">
                 <h4 class="h6 text-secondary mb-0 mt-0">Type</h4>
@@ -128,7 +128,7 @@
     <div class="col-md-3 mb-4">
         <div class="media">
             <span class="btn rounded-circle mr-2">
-              <span class="fas fa-ruler-vertical fa-fw"></span>
+              <span class="fas fa-flask fa-fw"></span>
             </span>
             <div class="media-body">
                 <h4 class="h6 text-secondary mb-0 mt-0">Engine</h4>
@@ -137,7 +137,12 @@
         </div>
     </div>
 </div>
-<div class="row mt-md-5">
+{?description}
+<div class="mt-md-2">
+    <div class="text-muted">{description|s}</div>
+</div>
+{/description}
+<div class="row mt-md-2">
     <div class="col-md">
         {?_.contact}
         <div class="card border-0">

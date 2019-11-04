@@ -291,7 +291,13 @@ var vehicleConfigs = {
             done(null, $('textarea', source).val());
         },
         validate: function (context, data, value, done) {
-            done(null, null, value);
+            if (!value) {
+                return done(null, null, value);
+            }
+            if (value.length < 5000) {
+                return done(null, null, value);
+            }
+            done(null, 'Please make sure the description does not exceed 5000 characters.')
         },
         update: function (context, source, error, value, done) {
             done();
@@ -301,6 +307,9 @@ var vehicleConfigs = {
             serand.blocks('textarea', 'create', el, {
                 value: value
             }, done);
+        },
+        ready: function (context, source, done) {
+            serand.blocks('textarea', 'ready', source, done);
         }
     },
     images: {
@@ -335,7 +344,12 @@ var create = function (data, done) {
         if (err) {
             return end(err);
         }
-        end(null, data);
+        utils.transit('autos', 'vehicles', data.id, 'review', function (err) {
+            if (err) {
+                return end(err);
+            }
+            end(null, data);
+        });
     });
 };
 
@@ -569,8 +583,17 @@ var render = function (ctx, container, data, done) {
                                     });
                                     return false;
                                 });
-                                done(null, function () {
-                                    $('.vehicles-create', sandbox).remove();
+                                done(null, {
+                                    clean: function () {
+                                        $('.vehicles-create', sandbox).remove();
+                                    },
+                                    ready: function () {
+                                        vehicleForm.ready(ctx, function (err) {
+                                            if (err) {
+                                                console.error(err);
+                                            }
+                                        });
+                                    }
                                 });
                             });
                         });

@@ -185,7 +185,12 @@ exports.create = function (options, done) {
         contentType: 'application/json',
         data: JSON.stringify(options),
         success: function (data) {
-            update([data], options, done);
+            update([data], options, function (err) {
+                if (err) {
+                    return done(err);
+                }
+                done(null, data);
+            });
         },
         error: function (xhr, status, err) {
             done(err || status || xhr);
