@@ -152,10 +152,34 @@ exports.findOne = function (options, done) {
 exports.find = function (options, done) {
     $.ajax({
         method: 'GET',
-        url: utils.resolve('autos:///apis/v/vehicles' + utils.data(options)),
+        url: utils.resolve('autos:///apis/v/vehicles' + utils.toData(options.query)),
         dataType: 'json',
-        success: function (data) {
-            update(data, options, done);
+        success: function (data, status, xhr) {
+            update(data, options, function (err, data) {
+                if (err) {
+                    return done(err);
+                }
+                var o;
+                var query;
+                var links = utils.links(xhr.getResponseHeader('Link'));
+                if (links.prev) {
+                    o = utils.fromUrl(links.prev);
+                    query = o.query;
+                    links.prev = {
+                        url: links.prev,
+                        query: JSON.parse(query.data)
+                    }
+                }
+                if (links.next) {
+                    o = utils.fromUrl(links.next);
+                    query = o.query;
+                    links.next = {
+                        url: links.next,
+                        query: JSON.parse(query.data)
+                    }
+                }
+                done(null, data, links);
+            });
         },
         error: function (xhr, status, err) {
             done(err || status || xhr);

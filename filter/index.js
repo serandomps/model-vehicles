@@ -63,39 +63,73 @@ var findCities = function (province, district, done) {
 };
 
 var to = function (o, done) {
-    var query = {
-        user: o.user,
-        type: o.type,
-        make: o.make,
-        model: o.model,
-        color: o.color,
-        condition: o.condition,
-        transmission: o.transmission,
-        fuel: o.fuel,
-        mileage: o.mileage,
-        'price:gte': o['price-gte'],
-        'price:lte': o['price-lte'],
-        'manufacturedAt:gte': o['manufacturedAt-gte'],
-        'manufacturedAt:lte': o['manufacturedAt-lte'],
-        'tags:location:province': o['location-province'],
-        'tags:location:district': o['location-district'],
-        'tags:location:city': o['location-city'],
-        'tags:location:postal': o['location-postal']
-    };
-    var key;
-    var value;
-    var oo = {};
-    for (key in query) {
-        if (!query.hasOwnProperty(key)) {
-            continue;
-        }
-        value = query[key];
-        if (!value) {
-            continue;
-        }
-        oo[key] = query[key];
+    var query = {};
+    if (o.user) {
+        query.user = o.user;
     }
-    done(null, oo);
+    if (o.type) {
+        query.type = o.type;
+    }
+    if (o.make) {
+        query.make = o.make;
+    }
+    if (o.model) {
+        query.model = o.model;
+    }
+    if (o.color) {
+        query.color = o.color;
+    }
+    if (o.condition && o.condition.length) {
+        query.condition = {
+            $in: o.condition
+        };
+    }
+    if (o.transmission && o.transmission.length) {
+        query.transmission = {
+            $in: o.transmission
+        };
+    }
+    if (o.fuel && o.fuel.length) {
+        query.fuel = {
+            $in: o.fuel
+        };
+    }
+    if (o.mileage) {
+        query.mileage = o.mileage;
+    }
+    if (o['manufacturedAt-gte']) {
+        query.manufacturedAt = query.manufacturedAt || (query.manufacturedAt = {});
+        query.manufacturedAt.$gte = o['manufacturedAt-gte'];
+    }
+    if (o['manufacturedAt-lte']) {
+        query.manufacturedAt = query.manufacturedAt || (query.manufacturedAt = {});
+        query.manufacturedAt.$lte = o['manufacturedAt-lte'];
+    }
+    if (o['price-gte']) {
+        query.price = query.price || (query.price = {});
+        query.price.$gte = o['price-gte'];
+    }
+    if (o['price-lte']) {
+        query.price = query.price || (query.price = {});
+        query.price.$lte = o['price-lte'];
+    }
+    if (o['location-province']) {
+        query.tags = query.tags || (query.tags = []);
+        query.tags.push({name: 'location:locations:province', value: o['location-province']});
+    }
+    if (o['location-district']) {
+        query.tags = query.tags || (query.tags = []);
+        query.tags.push({name: 'location:locations:district', value: o['location-district']});
+    }
+    if (o['location-city']) {
+        query.tags = query.tags || (query.tags = []);
+        query.tags.push({name: 'location:locations:city', value: o['location-city']});
+    }
+    if (o['location-postal']) {
+        query.tags = query.tags || (query.tags = []);
+        query.tags.push({name: 'location:locations:postal', value: o['location-postal']});
+    }
+    done(null, query);
 };
 
 var from = function (query, done) {
@@ -106,19 +140,45 @@ var from = function (query, done) {
         make: query.make || '',
         model: query.model,
         color: query.color,
-        condition: query.condition,
-        transmission: query.transmission,
-        fuel: query.fuel,
         mileage: query.mileage,
-        'price-gte': query['price:gte'],
-        'price-lte': query['price:lte'],
-        'manufacturedAt-gte': query['manufacturedAt:gte'],
-        'manufacturedAt-lte': query['manufacturedAt:lte'],
         'location-province': query['tags:location:province'],
         'location-district': query['tags:location:district'],
         'location-city': query['tags:location:city'],
         'location-postal': query['tags:location:postal']
     };
+    if (query.condition) {
+        o.condition = query.condition.$in;
+    }
+    if (query.transmission) {
+        o.transmission = query.transmission.$in;
+    }
+    if (query.fuel) {
+        o.fuel = query.fuel.$in;
+    }
+    if (query.manufacturedAt) {
+        if (query.manufacturedAt.$gte) {
+            o['manufacturedAt-gte'] = query.manufacturedAt.$gte;
+        }
+        if (query.manufacturedAt.$lte) {
+            o['manufacturedAt-lte'] = query.manufacturedAt.$lte;
+        }
+    }
+    if (query.price) {
+        if (query.price.$gte) {
+            o['price-gte'] = query.price.$gte;
+        }
+        if (query.price.$lte) {
+            o['price-lte'] = query.price.$lte;
+        }
+    }
+    var tags = query.tags || [];
+    tags.forEach(function (tag) {
+        var name = tag.name;
+        if (name.indexOf('location:locations') === -1) {
+            return;
+        }
+        o['location-' + name.substring(19)] = tag.value;
+    });
     var key;
     var value;
     var oo = {};
@@ -136,7 +196,10 @@ var from = function (query, done) {
 };
 
 var redirect = function (ctx, query) {
-    var q = utils.toQuery(query);
+    var q = utils.toQuery({
+        query: query,
+        count: 30
+    });
     var path = '/vehicles' + (q ? '?' + q : '');
     serand.redirect(path);
 };

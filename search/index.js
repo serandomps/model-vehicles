@@ -1,73 +1,135 @@
 var Vehicle = require('../service');
 var find = require('../find');
 var user = require('user');
+var serand = require('serand');
+var utils = require('utils');
 
 var hooks = {
-    price: function (o, val) {
-        o.price = parseInt(val, 10) || null;
+    'query.manufacturedAt.$lte': function (val) {
+        return new Date(val).toISOString();
     },
-    'manufacturedAt:lte': function (o, val) {
-        o.manufacturedAt = o.manufacturedAt || (o.manufacturedAt = {});
-        o.manufacturedAt.$lte = new Date(val).toISOString();
+    'query.manufacturedAt.$gte': function (val) {
+        return new Date(val).toISOString();
     },
-    'manufacturedAt:gte': function (o, val) {
-        o.manufacturedAt = o.manufacturedAt || (o.manufacturedAt = {});
-        o.manufacturedAt.$gte = new Date(val).toISOString();
+    'query.price.$lte': function (val) {
+        return parseInt(val, 10);
     },
-    'price:lte': function (o, val) {
-        o.price = o.price || (o.price = {});
-        o.price.$lte = parseInt(val, 10);
+    'query.price.$gte': function (val) {
+        return parseInt(val, 10);
     },
-    'price:gte': function (o, val) {
-        o.price = o.price || (o.price = {});
-        o.price.$gte = parseInt(val, 10);
+    'count': function (val) {
+        return parseInt(val, 10);
     },
-    'tags:location:province': function (o, val) {
-        o.tags = o.tags || (o.tags = []);
-        o.tags.push({name: 'location:locations:province', value: val});
+    'direction': function (val) {
+        return parseInt(val, 10);
     },
-    'tags:location:district': function (o, val) {
-        o.tags = o.tags || (o.tags = []);
-        o.tags.push({name: 'location:locations:district', value: val});
+    'sort.updatedAt': function (val) {
+        return parseInt(val, 10);
     },
-    'tags:location:city': function (o, val) {
-        o.tags = o.tags || (o.tags = []);
-        o.tags.push({name: 'location:locations:city', value: val});
-    },
-    'tags:location:postal': function (o, val) {
-        o.tags = o.tags || (o.tags = []);
-        o.tags.push({name: 'location:locations:postal', value: val});
+    'sort.id': function (val) {
+        return parseInt(val, 10);
     }
 };
 
-var hook = function (o, field, val) {
-  var hook = hooks[field];
-  if (!hook) {
-      return o[field] = val;
-  }
-  return hook(o, val);
+var prepare = function (o) {
+    Object.keys(hooks).forEach(function (path) {
+        var val;
+        var part;
+        var hook = hooks[path];
+        var parts = path.split('.');
+        var pointer = o;
+        while (parts.length) {
+            part = parts.shift();
+            val = pointer[part];
+            if (!val) {
+                break;
+            }
+            if (!parts.length) {
+                pointer[part] = hook(val);
+                break;
+            }
+            pointer = val;
+        }
+    });
+    return o;
 };
 
-module.exports = function (ctx, container, options, done) {
-    var query = options.query;
-    var o = {};
-    Object.keys(query).forEach(function (name) {
-        var val = query[name];
-        if (!val) {
-            return;
-        }
-        hook(o, name, query[name]);
-    });
+var render = function (ctx, container, paging, query, done) {
     Vehicle.find({
-        query: o,
+        query: prepare(query),
         resolution: '288x162'
-    }, function (err, vehicles) {
+    }, function (err, vehicles, links) {
         if (err) {
             return done(err);
         }
-        find(ctx, container, {
+        var page = ++paging.total;
+        var pageBox = $('<div class="vehicles-search-page" data-page="' + page + '"></div>');
+        find(ctx, {
+            id: container.id,
+            sandbox: pageBox
+        }, {
             vehicles: vehicles,
             size: 4
-        }, done);
+        }, function (err, clean) {
+            if (err) {
+                return done(err);
+            }
+            container.sandbox.append(pageBox);
+            done(null, clean, links);
+        });
+    });
+};
+
+module.exports = function (ctx, container, options, done) {
+    var loadable = options.loadable;
+    var cleaners = [];
+    var paging = {total: 0};
+    render(ctx, container, paging, options.query, function (err, clean, links) {
+        if (err) {
+            return done(err);
+        }
+        if (!loadable) {
+            return done(null, clean);
+        }
+        cleaners.push(clean);
+
+        var activePage = function () {
+            return $('.vehicles-search-page', container.sandbox).mostVisible().data('page');
+        };
+
+        var scrolled = function (o) {
+            utils.emit('footer', 'pages', paging.total, activePage() || 1);
+        };
+
+        var scrolledDown = function () {
+            if (!links.next) {
+                return;
+            }
+            render(ctx, container, paging, links.next.query, function (err, clean, linkz) {
+                if (err) {
+                    return console.error(err);
+                }
+                utils.emit('footer', 'pages', paging.total, activePage() || 1);
+                cleaners.push(clean);
+                links = linkz;
+            });
+        };
+
+        //var url = '/vehicles?' + utils.toQuery(links.prev.query);
+        //serand.redirect(url);
+
+        done(null, {
+            clean: function () {
+                utils.off('serand', 'scrolled', scrolled);
+                utils.off('serand', 'scrolled down', scrolledDown);
+                cleaners.forEach(function (clean) {
+                    clean();
+                });
+            },
+            ready: function () {
+                utils.on('serand', 'scrolled', scrolled);
+                utils.on('serand', 'scrolled down', scrolledDown);
+            }
+        });
     });
 };

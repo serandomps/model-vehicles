@@ -11,10 +11,6 @@ module.exports = function (ctx, container, options, done) {
             return done(err);
         }
         sandbox.append(out);
-        sandbox.on('click', '.edit', function (e) {
-            serand.redirect($(this).closest('.thumbnail').attr('href') + '/edit');
-            return false;
-        });
         done(null, function () {
             $('.vehicles-find', sandbox).remove();
         });
