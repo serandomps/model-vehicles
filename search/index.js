@@ -93,12 +93,19 @@ module.exports = function (ctx, container, options, done) {
         }
         cleaners.push(clean);
 
-        var activePage = function () {
+        var activePage = 0;
+
+        var findActivePage = function () {
             return $('.vehicles-search-page', container.sandbox).mostVisible().data('page');
         };
 
         var scrolled = function (o) {
-            utils.emit('footer', 'pages', paging.total, activePage() || 1);
+            var active = findActivePage();
+            if (active === activePage) {
+                return;
+            }
+            activePage = active;
+            utils.emit('footer', 'pages', paging.total, findActivePage() || 1);
         };
 
         var scrolledDown = function () {
@@ -109,7 +116,7 @@ module.exports = function (ctx, container, options, done) {
                 if (err) {
                     return console.error(err);
                 }
-                utils.emit('footer', 'pages', paging.total, activePage() || 1);
+                utils.emit('footer', 'pages', paging.total, findActivePage() || 1);
                 cleaners.push(clean);
                 links = linkz;
             });
