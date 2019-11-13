@@ -83,6 +83,7 @@ module.exports = function (ctx, container, options, done) {
                 vehicle._.edit = true;
                 vehicle._.bumpable = utils.bumpable(vehicle);
             }
+            vehicle._.condition = vehicle.condition.replace(/-/ig, ' ');
             vehicle._.bumped = (vehicle.createdAt !== vehicle.updatedAt);
             utils.workflow('model', function (err, workflow) {
                 if (err) {
