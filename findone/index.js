@@ -76,6 +76,7 @@ module.exports = function (ctx, container, options, done) {
             if (err) {
                 return done(err);
             }
+            vehicle._.privileged = options.privileged;
             vehicle._.user = o.user;
             vehicle._.contact = o.contact;
             vehicle._.location = o.location;

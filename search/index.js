@@ -68,6 +68,7 @@ var render = function (ctx, container, paging, query, done) {
             id: container.id,
             sandbox: pageBox
         }, {
+            prefix: utils.resolve('autos:///vehicles'),
             vehicles: vehicles,
             size: 4
         }, function (err, clean) {

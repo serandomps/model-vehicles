@@ -11,12 +11,12 @@
         <div class="col-lg-{size}">
             <div class="thumbnail">
                 <div class="card mb-3">
-                    <a href="/vehicles/{id}">
+                    <a href="{prefix}/{id}"{?external} target="_blank"{/external}>
                         <img src="{_.images[0].url}" class="card-img-top" alt="..."/>
                     </a>
                     <div class="card-body position-relative">
                         <h4 class="card-title text-truncate">
-                            <a href="/vehicles/{id}" class="stretched-link">{_.make.title} {_.model.title}
+                            <a href="{prefix}/{id}" class="stretched-link"{?external} target="_blank"{/external}>{_.make.title} {_.model.title}
                                 <span class="text-muted"> {edition}</span>
                             </a>
                         </h4>

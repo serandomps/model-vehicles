@@ -21,9 +21,10 @@
                         </a>
                     </li>
                     {/_.bumpable}
+                    {?_.privileged}
                     {@is group="admin"}
                     <li class="nav-item">
-                        <a class="nav-link cancel" href="/vehicles/{id}/review">
+                        <a class="nav-link review" href="/vehicles/{id}/review">
                             <i class="fas fa-eye fa-fw text-success mr-1"></i> Review
                         </a>
                     </li>
@@ -41,6 +42,7 @@
                         </div>
                     </li>
                     {/_.status.length}
+                    {/_.privileged}
                     {?_.editing}
                     <li class="nav-item">
                         <a class="nav-link edit" href="/vehicles/{id}/edit">
