@@ -29,6 +29,7 @@
                         </a>
                     </li>
                     {/is}
+                    {/_.privileged}
                     {?_.status.length}
                     <li class="status-buttons nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="dropdown-vehicles-findone-{_.container}"
@@ -42,7 +43,6 @@
                         </div>
                     </li>
                     {/_.status.length}
-                    {/_.privileged}
                     {?_.editing}
                     <li class="nav-item">
                         <a class="nav-link edit" href="/vehicles/{id}/edit">

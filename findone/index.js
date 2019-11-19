@@ -62,12 +62,9 @@ module.exports = function (ctx, container, options, done) {
                 });
             },
             contact: function (found) {
-                findContact(vehicle.contact, function (err, contact) {
-                    if (err) {
-                        console.error(err);
-                    }
+                findContact(vehicle.contact, function (ignored, contact) {
                     found(null, contact);
-                })
+                });
             },
             user: function (found) {
                 user.findOne(vehicle.user, found);

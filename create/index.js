@@ -508,6 +508,7 @@ var render = function (ctx, container, data, done) {
                         id: container.id,
                         sandbox: $('.tab-pane[data-name="location"] .step', elem)
                     }, {
+                        expand: true,
                         required: true,
                         label: 'Location',
                         location: data.location
@@ -521,6 +522,7 @@ var render = function (ctx, container, data, done) {
                             id: container.id,
                             sandbox: $('.tab-pane[data-name="contact"] .step', elem)
                         }, {
+                            expand: true,
                             required: true,
                             label: 'Contacts',
                             contact: data.contact

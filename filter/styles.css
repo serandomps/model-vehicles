@@ -12,6 +12,9 @@
     height: 75px;
 }
 
+.sandbox-vehicles-filter .user div.avatar {
+    padding-top: 25px;
+}
 .sandbox-vehicles-filter .manufacturedAt-gte {
     margin-bottom: 0.5rem!important;
 }
