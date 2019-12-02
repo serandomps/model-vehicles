@@ -368,15 +368,6 @@ var configs = {
             }, done);
         }
     },
-    mileage: {
-        find: function (context, source, done) {
-            done(null, $('input', source).val());
-        },
-        update: function (context, source, error, value, done) {
-            $('input', source).val(value);
-            done();
-        }
-    },
     'price-gte': {
         find: function (context, source, done) {
             serand.blocks('text', 'find', source, function (err, value) {

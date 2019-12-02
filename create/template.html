@@ -1,10 +1,10 @@
-<h1 class="title text-center text-muted">{?id}{_.make.title} {_.model.title} {manufacturedAt|year}{:else}Create your vehicle{/id}</h1>
+<h1 class="title text-center text-muted">{?id}{_.make.title} {_.model.title} {manufacturedAt|year}{:else}Create your Vehicle{/id}</h1>
 <form role="form">
     {@steps}
         {@step name="vehicle" title="Vehicle" icon="fas fa-2x fa-car" active="true" back=_.back}
-            {@blocks block="select" id=_.container name="type" label="Type" title="Type" options=_.types search="true" size="10" icon="fas fa-ribbon"/}
+            {@blocks block="select" id=_.container name="type" label="Type" title="Type" options=_.types search="true" size="10" icon="fas fa-tag"/}
             {@blocks block="select" id=_.container name="make" label="Make" title="Make" options=_.makes search="true" size="10" icon="fas fa-building"/}
-            {@blocks block="select" id=_.container name="model" label="Model" title="Model" options=_.models search="true" size="10" icon="fas fa-tag"/}
+            {@blocks block="select" id=_.container name="model" label="Model" title="Model" options=_.models search="true" size="10" icon="fas fa-ribbon"/}
             {@blocks block="text" id=_.container name="edition" help="Edition (optional)" value=edition label="Edition" icon="fas fa-award"/}
             {@blocks block="select" id=_.container name="manufacturedAt" label="Year" title="Year" options=_.manufacturedAt search="true" size="10" icon="fas fa-calendar"/}
             {@blocks block="radios" id=_.container name="condition" options=_.conditions label="Condition" icon="fas fa-battery-full"/}

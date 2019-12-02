@@ -51,17 +51,6 @@
     <div class="col-md-3 mb-4">
         <div class="media">
             <span class="btn rounded-circle mr-2">
-              <span class="fas fa-ribbon fa-fw text-dark"></span>
-            </span>
-            <div class="media-body">
-                <h4 class="h6 text-secondary mb-0 mt-0">Type</h4>
-                <span class="text-capitalize font-weight-bold">{_.type}</span>
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3 mb-4">
-        <div class="media">
-            <span class="btn rounded-circle mr-2">
               <span class="fas fa-building fa-fw text-dark"></span>
             </span>
             <div class="media-body">
@@ -73,14 +62,27 @@
     <div class="col-md-3 mb-4">
         <div class="media">
             <span class="btn rounded-circle mr-2">
-              <span class="fas fa-tag fa-fw text-dark"></span>
+              <span class="fas fa-ribbon fa-fw text-dark"></span>
             </span>
             <div class="media-body">
                 <h4 class="h6 text-secondary mb-0 mt-0">Model</h4>
-                <span class="text-capitalize font-weight-bold">{_.model.title}{?edition} {edition}{/edition}</span>
+                <span class="text-capitalize font-weight-bold">{_.model.title}</span>
             </div>
         </div>
     </div>
+    {?edition}
+    <div class="col-md-3 mb-4">
+        <div class="media">
+            <span class="btn rounded-circle mr-2">
+              <span class="fas fa-award fa-fw text-dark"></span>
+            </span>
+            <div class="media-body">
+                <h4 class="h6 text-secondary mb-0 mt-0">Edition</h4>
+                <span class="text-capitalize font-weight-bold">{edition}</span>
+            </div>
+        </div>
+    </div>
+    {/edition}
     <div class="col-md-3 mb-4">
         <div class="media">
             <span class="btn rounded-circle mr-2">
@@ -132,7 +134,7 @@
             </span>
             <div class="media-body">
                 <h4 class="h6 text-secondary mb-0 mt-0">Engine</h4>
-                <span class="text-capitalize font-weight-bold">{engine}</span><span class="text-muted">cc</span>
+                <span class="text-capitalize font-weight-bold mr-1">{engine}</span><span class="text-muted">cc</span>
             </div>
         </div>
     </div>

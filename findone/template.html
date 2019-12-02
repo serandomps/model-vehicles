@@ -11,10 +11,13 @@
             {/_.edit}
             </div>
             <h1 class="font-weight-bolder title text-center text-muted">
-                {?id}{_.make.title} {_.model.title}{?edition} {edition}{/edition} {manufacturedAt|year}{:else}Create your vehicle{/id}
+                {_.make.title} {_.model.title}{?edition} {edition}{/edition} {manufacturedAt|year}
             </h1>
             <div class="row text-muted mt-3">
-                <div class="col-lg mb-2 text-lg-right">
+                <div class="col-lg mb-2 text-lg-center text-truncate">
+                    <i class="fas fa-shopping-cart fa-fw text-primary mr-1 text-truncate"></i>{_.offer}
+                </div>
+                <div class="col-lg mb-2 text-lg-center">
                     <i class="fas fa-user fa-fw text-primary mr-1"></i>
                     <a href="/vehicles?query[user]={_.user.id}" class="text-decoration-none text-secondary">{_.user.alias}</a>
                 </div>
@@ -22,7 +25,7 @@
                     {?_.bumped} <i class="fas fa-angle-double-up text-primary mr-1"></i>{/_.bumped}
                     <i class="fas fa-clock fa-fw"></i> {createdAt|ago}
                 </div>
-                <div class="col-lg mb-2 text-lg-left">
+                <div class="col-lg mb-2 text-lg-center">
                     <i class="fas fa-map-marker-alt fa-fw text-primary"></i> {_.city}
                 </div>
             </div>

@@ -83,6 +83,7 @@ module.exports = function (ctx, container, options, done) {
             }
             vehicle._.condition = vehicle.condition.replace(/-/ig, ' ');
             vehicle._.bumped = (vehicle.createdAt !== vehicle.updatedAt);
+            vehicle._.offer = utils.capitalize(vehicle.type) + ' for ' + (vehicle.offer === 'sell' ? 'Sale' : 'Rent');
             utils.workflow('model', function (err, workflow) {
                 if (err) {
                     return done(err);

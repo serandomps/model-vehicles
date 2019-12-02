@@ -145,7 +145,7 @@ var vehicleConfigs = {
         },
         validate: function (context, data, value, done) {
             if (!value) {
-                return done();
+                return done(null, null, null);
             }
             if (value.length > 50) {
                 return done(null, 'Please enter a shorter value for the edition of your vehicle.');
