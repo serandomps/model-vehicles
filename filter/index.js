@@ -4,12 +4,12 @@ var utils = require('utils');
 var form = require('form');
 var user = require('user');
 var Vehicles = require('../service');
-var Makes = require('vehicle-makes').service;
-var Locations = require('locations').service;
+var Makes = require('model-vehicle-makes').service;
+var Locations = require('model-locations').service;
 
 var allProvinces = Locations.allProvinces();
 
-dust.loadSource(dust.compile(require('./template'), 'vehicles-filter'));
+dust.loadSource(dust.compile(require('./template'), 'model-vehicles-filter'));
 
 var findQuery = function (vform, done) {
     vform.find(function (err, data) {
@@ -791,7 +791,7 @@ module.exports = function (ctx, container, options, done) {
                             }
                         }));
 
-                        dust.render('vehicles-filter', serand.pack(query, container), function (err, out) {
+                        dust.render('model-vehicles-filter', serand.pack(query, container), function (err, out) {
                             if (err) {
                                 return done(err);
                             }
@@ -804,7 +804,7 @@ module.exports = function (ctx, container, options, done) {
                                     return done(err);
                                 }
                                 done(null, function () {
-                                    $('.vehicles-filter', sandbox).remove();
+                                    $('.model-vehicles-filter', sandbox).remove();
                                 });
                             });
                         });

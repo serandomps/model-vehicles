@@ -1,5 +1,5 @@
 var utils = require('utils');
-var Make = require('vehicle-makes').service;
+var Make = require('model-vehicle-makes').service;
 
 var types = _.sortBy([
     {value: 'bicycle', label: 'Bicycle'},

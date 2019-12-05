@@ -3,7 +3,7 @@ var serand = require('serand');
 var utils = require('utils');
 var Vehicle = require('../service');
 
-dust.loadSource(dust.compile(require('./template'), 'vehicles-find'));
+dust.loadSource(dust.compile(require('./template'), 'model-vehicles-find'));
 
 var fetch = function (options, done) {
     if (options.vehicles) {
@@ -32,13 +32,13 @@ module.exports = function (ctx, container, options, done) {
         if (err) {
             return done(err);
         }
-        dust.render('vehicles-find', serand.pack(o, container), function (err, out) {
+        dust.render('model-vehicles-find', serand.pack(o, container), function (err, out) {
             if (err) {
                 return done(err);
             }
             sandbox.append(out);
             done(null, function () {
-                $('.vehicles-find', sandbox).remove();
+                $('.model-vehicles-find', sandbox).remove();
             });
         });
     });

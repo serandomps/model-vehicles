@@ -4,7 +4,7 @@ var utils = require('utils');
 var Vehicle = require('../service');
 var user = require('user');
 
-var locations = require('locations');
+var locations = require('model-locations');
 var Locations = locations.service;
 
 var recent = require('../recent');
@@ -13,10 +13,10 @@ var redirect = serand.redirect;
 
 var token;
 
-dust.loadSource(dust.compile(require('./template'), 'vehicles-findone'));
-dust.loadSource(dust.compile(require('./actions'), 'vehicles-findone-actions'));
-dust.loadSource(dust.compile(require('./status'), 'vehicles-findone-status'));
-dust.loadSource(dust.compile(require('./details'), 'vehicles-findone-details'));
+dust.loadSource(dust.compile(require('./template'), 'model-vehicles-findone'));
+dust.loadSource(dust.compile(require('./actions'), 'model-vehicles-findone-actions'));
+dust.loadSource(dust.compile(require('./status'), 'model-vehicles-findone-status'));
+dust.loadSource(dust.compile(require('./details'), 'model-vehicles-findone-details'));
 
 var findLocation = function (id, done) {
     $.ajax({
@@ -94,7 +94,7 @@ module.exports = function (ctx, container, options, done) {
                 });
                 vehicle._.status = status.length ? status : null;
                 vehicle._.editing = (vehicle.status === 'editing');
-                dust.render('vehicles-findone', serand.pack(vehicle, container), function (err, out) {
+                dust.render('model-vehicles-findone', serand.pack(vehicle, container), function (err, out) {
                     if (err) {
                         return done(err);
                     }
@@ -142,7 +142,7 @@ module.exports = function (ctx, container, options, done) {
                             });
                             done(null, {
                                 clean: function () {
-                                    $('.vehicles-findone', sandbox).remove();
+                                    $('.model-vehicles-findone', sandbox).remove();
                                 },
                                 ready: function () {
                                     var i;

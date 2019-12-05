@@ -1,12 +1,12 @@
-<div class="vehicles-findone">
+<div class="model-vehicles-findone">
     <div class="row">
         <div class="col-md-9">
             <div class="actions">
             {?_.edit}
-                {>"vehicles-findone-actions"/}
+                {>"model-vehicles-findone-actions"/}
             {:else}
             {@is group="admin"}
-                {>"vehicles-findone-actions"/}
+                {>"model-vehicles-findone-actions"/}
             {/is}
             {/_.edit}
             </div>
@@ -38,7 +38,7 @@
                 <ol class="indicator"></ol>
             </div>
             <div class="details">
-                {>"vehicles-findone-details"/}
+                {>"model-vehicles-findone-details"/}
             </div>
             {?_.location}
             <div class="location"></div>

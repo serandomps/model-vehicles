@@ -2,12 +2,12 @@ var dust = require('dust')();
 var serand = require('serand');
 var utils = require('utils');
 var form = require('form');
-var locations = require('locations');
-var contacts = require('contacts');
+var locations = require('model-locations');
+var contacts = require('model-contacts');
 var Vehicle = require('../service');
-var Make = require('vehicle-makes').service;
+var Make = require('model-vehicle-makes').service;
 
-dust.loadSource(dust.compile(require('./template'), 'vehicles-create'));
+dust.loadSource(dust.compile(require('./template'), 'model-vehicles-create'));
 
 var resolution = '288x162';
 
@@ -492,7 +492,7 @@ var render = function (ctx, container, data, done) {
                 {label: 'Other', value: 'other'}
             ];
             data._.back = '/vehicles' + (id ? '/' + id : '');
-            dust.render('vehicles-create', data, function (err, out) {
+            dust.render('model-vehicles-create', data, function (err, out) {
                 if (err) {
                     return done(err);
                 }
@@ -589,7 +589,7 @@ var render = function (ctx, container, data, done) {
                                 });
                                 done(null, {
                                     clean: function () {
-                                        $('.vehicles-create', sandbox).remove();
+                                        $('.model-vehicles-create', sandbox).remove();
                                     },
                                     ready: function () {
                                         vehicleForm.ready(ctx, function (err) {

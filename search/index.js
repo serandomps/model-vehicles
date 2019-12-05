@@ -63,7 +63,7 @@ var render = function (ctx, container, paging, query, done) {
             return done(err);
         }
         var page = ++paging.total;
-        var pageBox = $('<div class="vehicles-search-page" data-page="' + page + '"></div>');
+        var pageBox = $('<div class="model-vehicles-search-page" data-page="' + page + '"></div>');
         find(ctx, {
             id: container.id,
             sandbox: pageBox
@@ -97,7 +97,7 @@ module.exports = function (ctx, container, options, done) {
         var activePage = 0;
 
         var findActivePage = function () {
-            return $('.vehicles-search-page', container.sandbox).mostVisible().data('page');
+            return $('.model-vehicles-search-page', container.sandbox).mostVisible().data('page');
         };
 
         var scrolled = function (o) {

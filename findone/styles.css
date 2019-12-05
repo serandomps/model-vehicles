@@ -1,15 +1,15 @@
-.sandbox-vehicles-findone .blueimp-gallery-carousel {
+.sandbox-model-vehicles-findone .blueimp-gallery-carousel {
     margin-top: 0;
 }
 
-.sandbox-vehicles-findone .blueimp-gallery > .indicator > li {
+.sandbox-model-vehicles-findone .blueimp-gallery > .indicator > li {
     width: 40px;
     height: 40px;
 }
 
-.sandbox-vehicles-findone .btn.status,
-.sandbox-vehicles-findone .btn.edit,
-.sandbox-vehicles-findone .btn.cancel,
-.sandbox-vehicles-findone .btn-group {
+.sandbox-model-vehicles-findone .btn.status,
+.sandbox-model-vehicles-findone .btn.edit,
+.sandbox-model-vehicles-findone .btn.cancel,
+.sandbox-model-vehicles-findone .btn-group {
 
 }
