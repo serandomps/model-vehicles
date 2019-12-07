@@ -77,6 +77,9 @@ module.exports = function (ctx, container, options, done) {
             vehicle._.user = o.user;
             vehicle._.contact = o.contact;
             vehicle._.location = o.location;
+            if (!vehicle._.location) {
+                vehicle._.location = Locations.locateByTags(vehicle.tags);
+            }
             if (token && token.user.id === vehicle.user) {
                 vehicle._.edit = true;
                 vehicle._.bumpable = utils.bumpable(vehicle);
