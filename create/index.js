@@ -4,8 +4,9 @@ var utils = require('utils');
 var form = require('form');
 var locations = require('model-locations');
 var contacts = require('model-contacts');
-var Vehicle = require('../service');
-var Make = require('model-vehicle-makes').service;
+var Contacts = contacts.service;
+var Vehicles = require('../service');
+var Makes = require('model-vehicle-makes').service;
 
 dust.loadSource(dust.compile(require('./template'), 'model-vehicles-create'));
 
@@ -334,15 +335,25 @@ var vehicleConfigs = {
     },
 };
 
-var create = function (data, done) {
+var findContact = function (id, contact, done) {
+    if (contact) {
+        return done(null, contact);
+    }
+    Contacts.findOne({id: id}, done);
+};
+
+var create = function (data, location, contact, done) {
     utils.loading();
     var end = function (err, data) {
         utils.loaded();
         done(err, data);
     };
-    Vehicle.create(data, function (err, data) {
+    Vehicles.create(data, function (err, data) {
         if (err) {
             return end(err);
+        }
+        if (contact) {
+            return end(null, data);
         }
         utils.transit('autos', 'vehicles', data.id, 'review', function (err) {
             if (err) {
@@ -354,14 +365,14 @@ var create = function (data, done) {
 };
 
 var remove = function (id, done) {
-    Vehicle.remove({id: id}, done);
+    Vehicles.remove({id: id}, done);
 };
 
 var findModels = function (make, done) {
     if (!make) {
         return done(null, []);
     }
-    Make.findModels(make, function (err, models) {
+    Makes.findModels(make, function (err, models) {
         if (err) {
             return done(err);
         }
@@ -421,7 +432,7 @@ var createHandler = function (handler, done) {
 var render = function (ctx, container, data, done) {
     var id = data.id;
     var sandbox = container.sandbox;
-    Make.find(function (err, makes) {
+    Makes.find(function (err, makes) {
         if (err) {
             return done(err);
         }
@@ -454,7 +465,7 @@ var render = function (ctx, container, data, done) {
             data._ = data._ || {};
             data._.makes = makeData;
             data._.models = modelData;
-            data._.types = Vehicle.types();
+            data._.types = Vehicles.types();
             data._.manufacturedAt = manufacturedAt;
             data._.conditions = [
                 {label: 'Brand New', value: 'brand-new'},
@@ -474,7 +485,7 @@ var render = function (ctx, container, data, done) {
                 {label: 'Electric', value: 'electric'},
                 {label: 'Other', value: 'other'}
             ];
-            data._.driveTypes = Vehicle.driveTypes();
+            data._.driveTypes = Vehicles.driveTypes();
             data._.contacts = [
                 {label: 'You', value: 'you'},
                 {label: 'Other', value: 'other'}
@@ -547,27 +558,39 @@ var render = function (ctx, container, data, done) {
                                             return;
                                         }
                                         vehicle.id = vehicle.id || id;
-                                        createHandler(handlers.location, function (err, errors, location) {
+                                        createHandler(handlers.location, function (err, errors, lid, location) {
                                             if (err) {
                                                 return console.error(err);
                                             }
                                             if (errors) {
                                                 return;
                                             }
-                                            vehicle.location = location;
-                                            createHandler(handlers.contact, function (err, errors, contact) {
+                                            vehicle.location = lid;
+                                            createHandler(handlers.contact, function (err, errors, cid, contact) {
                                                 if (err) {
                                                     return console.error(err);
                                                 }
                                                 if (errors) {
                                                     return;
                                                 }
-                                                vehicle.contact = contact;
-                                                create(vehicle, function (err) {
+                                                vehicle.contact = cid;
+                                                findContact(cid, contact, function (err, contact) {
                                                     if (err) {
                                                         return console.error(err);
                                                     }
-                                                    serand.redirect('/mine');
+                                                    create(vehicle, location, contact, function (err, vehicle) {
+                                                        if (err) {
+                                                            return console.error(err);
+                                                        }
+                                                        if (contact.status === 'published') {
+                                                            return serand.redirect('/vehicles/' + vehicle.id);
+                                                        }
+                                                        var location = utils.resolve('autos:///vehicles/' + vehicle.id);
+                                                        var url = utils.query('accounts:///contacts/' + cid + '/verify', {
+                                                            location: location
+                                                        });
+                                                        serand.redirect(url);
+                                                    });
                                                 });
                                             });
                                         });
@@ -615,7 +638,7 @@ module.exports = function (ctx, container, options, done) {
         render(ctx, container, serand.pack({}, container), done);
         return;
     }
-    Vehicle.findOne({
+    Vehicles.findOne({
         id: id,
         resolution: resolution
     }, function (err, vehicle) {

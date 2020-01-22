@@ -313,11 +313,11 @@ var configs = {
     },
     condition: {
         find: function (context, source, done) {
-            serand.blocks('radios', 'find', source, done);
+            serand.blocks('checkboxes', 'find', source, done);
         },
         render: function (ctx, vform, data, value, done) {
             var el = $('.condition', vform.elem);
-            serand.blocks('radios', 'create', el, {
+            serand.blocks('checkboxes', 'create', el, {
                 value: value,
                 change: function () {
                     findQuery(vform, function (err, query) {
@@ -332,11 +332,11 @@ var configs = {
     },
     transmission: {
         find: function (context, source, done) {
-            serand.blocks('radios', 'find', source, done);
+            serand.blocks('checkboxes', 'find', source, done);
         },
         render: function (ctx, vform, data, value, done) {
             var el = $('.transmission', vform.elem);
-            serand.blocks('radios', 'create', el, {
+            serand.blocks('checkboxes', 'create', el, {
                 value: value,
                 change: function () {
                     findQuery(vform, function (err, query) {
@@ -351,11 +351,11 @@ var configs = {
     },
     fuel: {
         find: function (context, source, done) {
-            serand.blocks('radios', 'find', source, done);
+            serand.blocks('checkboxes', 'find', source, done);
         },
         render: function (ctx, vform, data, value, done) {
             var el = $('.fuel', vform.elem);
-            serand.blocks('radios', 'create', el, {
+            serand.blocks('checkboxes', 'create', el, {
                 value: value,
                 change: function () {
                     findQuery(vform, function (err, query) {
@@ -398,7 +398,7 @@ var configs = {
                 if (err) {
                     return done(err);
                 }
-                done(null, parseInt(value, 10) || null)
+                done(null, parseInt(value, 10) || null);
             });
         },
         render: function (ctx, vform, data, value, done) {
