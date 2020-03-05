@@ -1,9 +1,9 @@
 <div class="model-vehicles-find">
     {?title}
     {?secondary}
-    <h3 class="title font-weight-bolder mb-3 text-muted">{title}</h3>
+    <h3 class="title font-weight-bolder mb-3">{title}</h3>
     {:else}
-    <h1 class="title text-center font-weight-bolder mb-3 text-muted">{title}</h1>
+    <h1 class="title font-weight-bolder mb-3">{title}</h1>
     {/secondary}{/title}
     {@slice context=vehicles size="30"}
     <div class="row">
@@ -16,24 +16,24 @@
                     </a>
                     <div class="card-body position-relative">
                         <h4 class="card-title text-truncate">
-                            <a href="{prefix}/{id}" class="stretched-link"{?external} target="_blank"{/external}>{_.make.title} {_.model.title}
+                            <a href="{prefix}/{id}" class="stretched-link text-dark font-weight-bolder"{?external} target="_blank"{/external}>{_.make.title} {_.model.title}
                                 <span class="text-muted"> {edition}</span>
                             </a>
                         </h4>
                         <div class="d-flex justify-content-between">
                             <div class="pr-5 text-truncate">
-                                <small class="text-muted">{price} LKR</small>
+                                <span class="text-muted font-weight-bolder">{price} <small class="text-muted">LKR</small></span>
                             </div>
                             <div class="text-truncate">
-                                <small class="text-muted">{mileage} km</small>
+                                <span class="text-muted font-weight-bolder">{mileage} <small class="text-muted">km</small></span>
                             </div>
                         </div>
                         <div class="d-flex justify-content-between mt-1">
                             <div class="pr-5">
-                                <small class="text-success font-weight-bolder">{_.city}</small>
+                                <span class="text-muted font-weight-bolder">{_.city}</span>
                             </div>
                             <div class="card-text">
-                                <small class="badge badge-secondary">{manufacturedAt|year}</small>
+                                <span class="badge badge-secondary">{manufacturedAt|year}</span>
                             </div>
                         </div>
                     </div>

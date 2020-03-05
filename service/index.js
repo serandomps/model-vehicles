@@ -109,6 +109,7 @@ var locations = function (vehicles, done) {
 var update = function (vehicles, options, done) {
     vehicles.forEach(function (vehicle) {
         vehicle._ = {};
+        vehicle.description = (vehicle.description !== '<p><br></p>') ? vehicle.description : null;
     });
     cdn(options.resolution, vehicles, function (err) {
         if (err) {
