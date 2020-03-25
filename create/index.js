@@ -318,7 +318,7 @@ var vehicleConfigs = {
             serand.blocks('uploads', 'find', source, done);
         },
         validate: function (context, data, value, done) {
-            if (!value) {
+            if (!value || !value.length) {
                 return done(null, 'Please upload images of your vehicle.');
             }
             done(null, null, value);
