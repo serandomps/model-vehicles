@@ -18,3 +18,7 @@
 .sandbox-model-vehicles-filter .price-gte {
     margin-bottom: 0.5rem!important;
 }
+
+.sandbox-model-vehicles-filter .collapse-filters {
+    font-size: 16px !important;
+}
