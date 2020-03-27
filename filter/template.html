@@ -37,14 +37,14 @@
                              <span class="text-primary">{_.user.alias}</span>
                          </div>-->
                         {/_.user}
-                        {@blocks block="select" id=_.container name="type" label="Type" value=type options=_.types search="true" size="10" icon="fas fa-ribbon"/}
-                        {@blocks block="select" id=_.container name="make" label="Make" value=make options=_.makes search="true" size="10" icon="fas fa-building"/}
-                        {@blocks block="select" id=_.container name="model" label="Model" value=model options=_.models search="true" size="10" icon="fas fa-tag"/}
+                        {@blocks block="select" id=_.container name="type" label="Type" value=type options=_.types size="10" icon="fas fa-ribbon"/}
+                        {@blocks block="select" id=_.container name="make" label="Make" value=make options=_.makes size="10" icon="fas fa-building"/}
+                        {@blocks block="select" id=_.container name="model" label="Model" value=model options=_.models size="10" icon="fas fa-tag"/}
                         {@blocks block="select" id=_.container name="color" label="Color" value=color options=_.colors icon="fas fa-palette"/}
                         <div class="form-group year">
                             <label class="title-text font-weight-bolder"><i class="text-dark fas fa-calendar mr-2"></i>Year</label>
-                            {@blocks block="select" id=_.container name="manufacturedAt-gte" help="From" value=manufacturedAt-gte options=_.manufacturedFrom search="true" size="10"/}
-                            {@blocks block="select" id=_.container name="manufacturedAt-lte" help="To" value=manufacturedAt-lte options=_.manufacturedTo search="true" size="10"/}
+                            {@blocks block="select" id=_.container name="manufacturedAt-gte" help="From" value=manufacturedAt-gte options=_.manufacturedFrom size="10"/}
+                            {@blocks block="select" id=_.container name="manufacturedAt-lte" help="To" value=manufacturedAt-lte options=_.manufacturedTo size="10"/}
                         </div>
                         <div class="form-group price">
                             <label class="title-text font-weight-bolder"><i
@@ -55,11 +55,11 @@
                         {@blocks block="checkboxes" id=_.container name="condition" value=condition options=_.conditions label="Condition" icon="fas fa-battery-full"/}
                         {@blocks block="checkboxes" id=_.container name="transmission" value=transmission options=_.transmissions label="Transmission" icon="fas fa-cogs"/}
                         {@blocks block="checkboxes" id=_.container name="fuel" value=fuel options=_.fuels label="Fuel" icon="fas fa-gas-pump"/}
-                        {@blocks block="select" id=_.container name="location-province" value=province options=_.provinces label="Province" search="true" size="10" icon="fas fa-landmark"/}
-                        {@blocks block="select" id=_.container name="location-district" value=districts options=_.districts label="District" search="true" size="10" icon="fas fa-archway"/}
-                        {@blocks block="select" id=_.container name="location-city" value=city options=_.cities label="City" search="true" size="10" icon="fas fa-city"/}
+                        {@blocks block="select" id=_.container name="location-province" value=province options=_.provinces label="Province" size="10" icon="fas fa-landmark"/}
+                        {@blocks block="select" id=_.container name="location-district" value=districts options=_.districts label="District" size="10" icon="fas fa-archway"/}
+                        {@blocks block="select" id=_.container name="location-city" value=city options=_.cities label="City" size="10" icon="fas fa-city"/}
                         <!--
-                        {@blocks block="select" id=_.container name="location-postal" value=postal options=_.postals label="Postal Code" search="true" size="10" icon="fas fa-envelope"/}
+                        {@blocks block="select" id=_.container name="location-postal" value=postal options=_.postals label="Postal Code" size="10" icon="fas fa-envelope"/}
                         -->
                     </form>
                 </div>
