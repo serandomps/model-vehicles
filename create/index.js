@@ -525,6 +525,7 @@ var render = function (ctx, container, data, done) {
                         creatable: true,
                         required: true,
                         label: 'Location',
+                        user: data.user,
                         location: data.location,
                         details: 'Specify the location of your vehicle or select an existing location.'
                     }, function (err, o) {
@@ -541,6 +542,7 @@ var render = function (ctx, container, data, done) {
                             creatable: true,
                             required: true,
                             label: 'Contacts',
+                            user: data.user,
                             contact: data.contact,
                             details: 'Specify the contact details for your vehicle or select an existing contact.'
                         }, function (err, o) {

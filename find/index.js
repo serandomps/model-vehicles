@@ -10,7 +10,6 @@ var fetch = function (options, done) {
         return done(null, options);
     }
     var o = _.cloneDeep(options);
-    o.resolution = o.resolution || '288x162';
     o.prefix = utils.resolve('autos:///vehicles');
     Vehicle.find(o, function (err, vehicles) {
         if (err) {

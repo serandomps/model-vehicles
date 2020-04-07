@@ -12,7 +12,7 @@
             <div class="thumbnail">
                 <div class="card mb-3">
                     <a href="{prefix}/{id}"{?external} target="_blank"{/external}>
-                        <img src="{_.images[0].url}" class="card-img-top" alt="..."/>
+                        <img src="{_.images[0].x288}" class="card-img-top" alt="..."/>
                     </a>
                     <div class="card-body position-relative">
                         <h4 class="card-title text-truncate">
@@ -25,7 +25,7 @@
                                 <span class="h5 text-muted font-weight-bolder">{price|numeral} <small class="text-muted">LKR</small></span>
                             </div>
                             <div class="text-truncate">
-                                <span class="h5 text-muted font-weight-bolder">{mileage} <small class="text-muted">km</small></span>
+                                <span class="h5 text-muted font-weight-bolder">{mileage|numeral} <small class="text-muted">km</small></span>
                             </div>
                         </div>
                         <div class="d-flex justify-content-between mt-1">
