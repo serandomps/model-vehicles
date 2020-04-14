@@ -2,18 +2,6 @@
     margin-top: 0;
 }
 
-.sandbox-model-vehicles-findone .blueimp-gallery > .indicator > li {
-    width: 40px;
-    height: 40px;
-}
-
 .sandbox-model-vehicles-findone .divider {
     margin-top: 0;
-}
-
-.sandbox-model-vehicles-findone .btn.status,
-.sandbox-model-vehicles-findone .btn.edit,
-.sandbox-model-vehicles-findone .btn.cancel,
-.sandbox-model-vehicles-findone .btn-group {
-
 }

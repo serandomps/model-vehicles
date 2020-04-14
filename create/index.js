@@ -345,23 +345,18 @@ var findContact = function (id, contact, done) {
 };
 
 var create = function (data, location, contact, done) {
-    utils.loading();
-    var end = function (err, data) {
-        utils.loaded();
-        done(err, data);
-    };
     Vehicles.create(data, function (err, data) {
         if (err) {
-            return end(err);
+            return done(err);
         }
         if (contact) {
-            return end(null, data);
+            return done(null, data);
         }
         utils.transit('autos', 'vehicles', data.id, 'review', function (err) {
             if (err) {
-                return end(err);
+                return done(err);
             }
-            end(null, data);
+            done(null, data);
         });
     });
 };
@@ -556,37 +551,44 @@ var render = function (ctx, container, data, done) {
                                     stepHandler(handlers[from], done);
                                 },
                                 create: function (elem) {
+                                    utils.loading();
+                                    var end = function (err) {
+                                        utils.loaded();
+                                        if (err) {
+                                            console.error(err);
+                                        }
+                                    };
                                     createHandler(handlers.vehicle, function (err, errors, vehicle) {
                                         if (err) {
-                                            return console.error(err);
+                                            return end(err);
                                         }
                                         if (errors) {
-                                            return;
+                                            return end();
                                         }
                                         vehicle.id = vehicle.id || id;
                                         createHandler(handlers.location, function (err, errors, lid, location) {
                                             if (err) {
-                                                return console.error(err);
+                                                return end(err);
                                             }
                                             if (errors) {
-                                                return;
+                                                return end();
                                             }
                                             vehicle.location = lid;
                                             createHandler(handlers.contact, function (err, errors, cid, contact) {
                                                 if (err) {
-                                                    return console.error(err);
+                                                    return end(err);
                                                 }
                                                 if (errors) {
-                                                    return;
+                                                    return end();
                                                 }
                                                 vehicle.contact = cid;
                                                 findContact(cid, contact, function (err, contact) {
                                                     if (err) {
-                                                        return console.error(err);
+                                                        return end(err);
                                                     }
                                                     create(vehicle, location, contact, function (err, vehicle) {
                                                         if (err) {
-                                                            return console.error(err);
+                                                            return end(err);
                                                         }
                                                         if (contact.status === 'published') {
                                                             return serand.redirect('/vehicles/' + vehicle.id);
