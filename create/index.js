@@ -344,20 +344,14 @@ var findContact = function (id, contact, done) {
     Contacts.findOne({id: id}, done);
 };
 
-var create = function (data, location, contact, done) {
-    Vehicles.create(data, function (err, data) {
+var create = function (found, vehicle, location, contact, done) {
+    utils.create('autos', 'vehicles', Vehicles.create, found, vehicle, function (vehicle, action) {
+        return true
+    }, function (err, data) {
         if (err) {
             return done(err);
         }
-        if (contact) {
-            return done(null, data);
-        }
-        utils.transit('autos', 'vehicles', data.id, 'review', function (err) {
-            if (err) {
-                return done(err);
-            }
-            done(null, data);
-        });
+        done(null, data);
     });
 };
 
@@ -426,9 +420,10 @@ var createHandler = function (handler, done) {
     })
 };
 
-var render = function (ctx, container, data, done) {
-    var id = data.id;
+var render = function (ctx, container, found, done) {
     var sandbox = container.sandbox;
+    var data = serand.pack(found || {}, container);
+    var id = data.id;
     Makes.find(function (err, makes) {
         if (err) {
             return done(err);
@@ -459,7 +454,6 @@ var render = function (ctx, container, data, done) {
                 year--;
             }
 
-            data._ = data._ || {};
             data._.makes = makeData;
             data._.models = modelData;
             data._.types = Vehicles.types();
@@ -586,7 +580,7 @@ var render = function (ctx, container, data, done) {
                                                     if (err) {
                                                         return end(err);
                                                     }
-                                                    create(vehicle, location, contact, function (err, vehicle) {
+                                                    create(found, vehicle, location, contact, function (err, vehicle) {
                                                         if (err) {
                                                             return end(err);
                                                         }
@@ -643,7 +637,7 @@ module.exports = function (ctx, container, options, done) {
     options = options || {};
     var id = options.id;
     if (!id) {
-        render(ctx, container, serand.pack({}, container), done);
+        render(ctx, container, null, done);
         return;
     }
     Vehicles.findOne({

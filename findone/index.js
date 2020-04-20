@@ -96,13 +96,14 @@ module.exports = function (ctx, container, options, done) {
                             elem.on('click', '.status-buttons .dropdown-item', function () {
                                 utils.loading();
                                 var action = $(this).data('action');
+                                if (action === 'edit') {
+                                    redirect('/vehicles/' + vehicle.id + '/edit');
+                                    return false;
+                                }
                                 utils.transit('autos', 'vehicles', vehicle.id, action, function (err) {
                                     utils.loaded();
                                     if (err) {
                                         return console.error(err);
-                                    }
-                                    if (action === 'edit') {
-                                        return redirect('/vehicles/' + vehicle.id + '/edit');
                                     }
                                     redirect('/vehicles/' + vehicle.id);
                                 });
@@ -117,6 +118,7 @@ module.exports = function (ctx, container, options, done) {
                                     }
                                     redirect('/vehicles/' + vehicle.id);
                                 });
+                                return false;
                             });
                             done(null, {
                                 clean: function () {
