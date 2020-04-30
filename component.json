@@ -46,6 +46,7 @@
         "serandomps/model-locations": "master",
         "serandomps/model-contacts": "master",
         "serandomps/model-binaries": "master",
-        "serandomps/model-vehicle-makes": "master"
+        "serandomps/model-vehicle-makes": "master",
+        "serandomps/model-advertisements": "master"
     }
 }
