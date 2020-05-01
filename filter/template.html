@@ -42,12 +42,12 @@
                         {@blocks block="select" id=_.container name="model" label="Model" value=model options=_.models size="10" icon="fas fa-tag"/}
                         {@blocks block="select" id=_.container name="color" label="Color" value=color options=_.colors icon="fas fa-palette"/}
                         <div class="form-group year">
-                            <label class="title-text font-weight-bold"><i class="text-dark fas fa-calendar mr-2"></i>Year</label>
+                            <label class="title-text font-weight-bold"><i class="text-muted fas fa-calendar mr-2"></i>Year</label>
                             {@blocks block="select" id=_.container name="manufacturedAt-gte" help="From" value=manufacturedAt-gte options=_.manufacturedFrom size="10"/}
                             {@blocks block="select" id=_.container name="manufacturedAt-lte" help="To" value=manufacturedAt-lte options=_.manufacturedTo size="10"/}
                         </div>
                         <div class="form-group price">
-                            <label class="title-text font-weight-bold"><i class="text-dark fas fa-money-check-alt mr-2"></i>Price</label>
+                            <label class="title-text font-weight-bold"><i class="text-muted fas fa-money-check-alt mr-2"></i>Price</label>
                             {@blocks block="text" id=_.container name="price-gte" help="Min (LKR)"/}
                             {@blocks block="text" id=_.container name="price-lte" help="Max (LKR)"/}
                         </div>

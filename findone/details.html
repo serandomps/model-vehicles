@@ -1,5 +1,5 @@
 <div class="d-none d-lg-flex mt-4">
-    <div class="text-dark mr-3">
+    <div class="text-dark mr-5">
         <h1 class="font-weight-bold title text-dark">
             {_.make.title} {_.model.title}{?edition}
             <span class="text-muted ml-1">{edition}{/edition} {manufacturedAt|year}</span>
@@ -22,15 +22,15 @@
             <button type="button" class="btn rounded-circle pl-0 mr-4">
                 <i class="fab fa-twitter fa-fw text-info"></i>
             </button>-->
-            <a href="/realestates/{id}/report" class="btn btn-link rounded-circle pl-0 mr-1">
+            <a href="/vehicles/{id}/report" class="btn btn-link rounded-circle pl-0 mr-1">
                 <i class="fas fa-flag fa-fw text-danger"></i>
             </a>
         </div>
     </div>
     <div class="text-dark">
         <h1 class="font-weight-bold title text-dark mt-2">
-            <span class="text-danger ml-1 h0">{price|numeral}</span>
-            <span class="text-muted h5 ml-1"><small>LKR</small></span>
+            <span class="text-info h0 mr-1">{price|numeral}</span>
+            <span class="text-muted h6">LKR</span>
         </h1>
     </div>
 </div>
@@ -58,8 +58,8 @@
         </div>
     </div>
     <div class="col-lg font-weight-bold title text-dark mt-3">
-        <span class="text-danger h0">{price|numeral}</span>
-        <span class="text-muted h5 ml-1"><small class="text-muted h5 ml-1">LKR</small></span>
+        <span class="text-info h0 mr-1">{price|numeral}</span>
+        <span class="text-muted h6">LKR</span>
     </div>
     <div class="col-lg btn-group actions mt-2" role="group">
         <!--<button type="button" class="btn rounded-circle pl-0 mr-1">
@@ -68,7 +68,7 @@
         <button type="button" class="btn rounded-circle pl-0 mr-1">
             <i class="fab fa-twitter fa-fw text-info"></i>
         </button>-->
-        <a href="/realestates/{id}/report" class="btn btn-link rounded-circle pl-0 mr-1">
+        <a href="/vehicles/{id}/report" class="btn btn-link rounded-circle pl-0 mr-1">
             <i class="fas fa-flag fa-fw text-danger"></i>
         </a>
     </div>
@@ -81,7 +81,7 @@
               <i class="fas fa-ribbon fa-fw text-muted"></i>
             </span>
             <div class="media-body">
-                <h4 class="h6 text-secondary mb-0 mt-0">Type</h4>
+                <h4 class="h5 text-secondary mb-1 mt-0">Type</h4>
                 <span class="h4 font-weight-bold text-dark">{_.type}</span>
             </div>
         </div>
@@ -92,7 +92,7 @@
               <i class="fas fa-battery-full fa-fw text-muted"></i>
             </span>
             <div class="media-body">
-                <h4 class="h6 text-secondary mb-0 mt-0">Condition</h4>
+                <h4 class="h5 text-secondary mb-1 mt-0">Condition</h4>
                 <span class="h4 text-capitalize font-weight-bold text-dark">{_.condition}</span>
             </div>
         </div>
@@ -103,9 +103,11 @@
               <i class="fas fa-tachometer-alt fa-fw text-muted"></i>
             </span>
             <div class="media-body">
-                <h4 class="h6 text-secondary mb-0 mt-0">Mileage</h4>
-                <span class="h4 font-weight-bold text-dark mr-1">{mileage|numeral}</span>
-                <small class="text-muted">km</small>
+                <h4 class="h5 text-secondary mb-1 mt-0">Mileage</h4>
+                <span class="h4 font-weight-bold text-dark">
+                    {mileage|numeral}<small class="text-muted ml-1">km</small>
+                </span>
+
             </div>
         </div>
     </div>
@@ -115,8 +117,8 @@
               <i class="fas fa-palette fa-fw text-muted"></i>
             </span>
             <div class="media-body">
-                <h4 class="h6 text-secondary mb-0 mt-0">Color</h4>
-                <span class="h4 text-capitalize font-weight-bold text-dark mr-1">{color}</span>
+                <h4 class="h5 text-secondary mb-1 mt-0">Color</h4>
+                <span class="h4 text-capitalize font-weight-bold text-dark">{color}</span>
             </div>
         </div>
     </div>
@@ -126,8 +128,8 @@
               <i class="fas fa-gas-pump fa-fw text-muted"></i>
             </span>
             <div class="media-body">
-                <h4 class="h6 text-secondary mb-0 mt-0">Fuel</h4>
-                <span class="h4 text-capitalize font-weight-bold">{fuel}</span>
+                <h4 class="h5 text-secondary mb-1 mt-0">Fuel</h4>
+                <span class="h4 text-capitalize font-weight-bold text-dark">{fuel}</span>
             </div>
         </div>
     </div>
@@ -137,8 +139,8 @@
               <i class="fas fa-cog fa-fw text-muted"></i>
             </span>
             <div class="media-body">
-                <h4 class="h6 text-secondary mb-0 mt-0">Drive Type</h4>
-                <span class="h4 text-capitalize font-weight-bold">{_.driveType}</span>
+                <h4 class="h5 text-secondary mb-1 mt-0">Drive Type</h4>
+                <span class="h4 text-capitalize font-weight-bold text-dark">{_.driveType}</span>
             </div>
         </div>
     </div>
@@ -148,9 +150,10 @@
               <i class="fas fa-flask fa-fw text-muted"></i>
             </span>
             <div class="media-body">
-                <h4 class="h6 text-secondary mb-0 mt-0">Engine</h4>
-                <span class="h4 font-weight-bold mr-1">{engine|numeral}</span>
-                <small class="text-muted">cc</small>
+                <h4 class="h5 text-secondary mb-1 mt-0">Engine</h4>
+                <span class="h4 font-weight-bold text-dark">
+                    {engine|numeral}<small class="text-muted ml-1">cc</small>
+                </span>
             </div>
         </div>
     </div>
@@ -160,8 +163,8 @@
               <i class="fas fa-cogs fa-fw text-muted"></i>
             </span>
             <div class="media-body">
-                <h4 class="h6 text-secondary mb-0 mt-0">Transmission</h4>
-                <span class="h4 text-capitalize font-weight-bold">{transmission}</span>
+                <h4 class="h5 text-secondary mb-1 mt-0">Transmission</h4>
+                <span class="h4 text-capitalize font-weight-bold text-dark">{transmission}</span>
             </div>
         </div>
     </div>
@@ -169,7 +172,7 @@
 {?description}
 <div class="mt-4 mb-4">
     <h3 class="text-dark font-weight-bold mb-4">Description</h3>
-    <div class="text-dark">{description|s}</div>
+    <div class="text-muted">{description|s}</div>
 </div>
 {/description}
 <div class="d-flex">
