@@ -345,7 +345,7 @@ var findContact = function (id, contact, done) {
 };
 
 var create = function (found, vehicle, location, contact, done) {
-    utils.create('autos', 'vehicles', Vehicles.create, found, vehicle, function (vehicle, action) {
+    utils.create('vehicles', Vehicles.create, found, vehicle, function (vehicle, action) {
         return true
     }, function (err, data) {
         if (err) {

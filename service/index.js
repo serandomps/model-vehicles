@@ -20,7 +20,8 @@ var types = _.sortBy([
     {value: 'suv', label: 'SUV'},
     {value: 'cab', label: 'Cab'},
     {value: 'lorry', label: 'Lorry'},
-    {value: 'bus', label: 'Bus'}
+    {value: 'bus', label: 'Bus'},
+    {value: 'other', label: 'Other'}
 ], 'value');
 
 var driveTypes = [
@@ -28,54 +29,12 @@ var driveTypes = [
     {value: 'rear', label: 'Rear'},
     {value: 'four', label: '4x4'},
     {value: 'all', label: 'All'},
-    {value: 'other', label: 'Other'},
+    {value: 'other', label: 'Other'}
 ];
-
-var sizes = [
-    {key: 'x288', size: '288x162'},
-    {key: 'x160', size: '160x160'},
-    {key: 'x800', size: '800x450'}
-];
-
-var cdn = function (items, done) {
-    items = items instanceof Array ? items : [items];
-    async.eachSeries(items, function (item, did) {
-        var images = item.images;
-        if (!images) {
-            return did();
-        }
-        var o = [];
-        var index = 0;
-        async.eachSeries(images, function (image, pushed) {
-            var entry = {
-                id: image,
-                index: index++
-            };
-            async.eachSeries(sizes, function (o, calculated) {
-                utils.cdn('images', '/images/' + o.size + '/' + image, function (err, url) {
-                    if (err) {
-                        return calculated(err);
-                    }
-                    entry[o.key] = url;
-                    calculated();
-                });
-            }, function (err) {
-                if (err) return pushed(err);
-                o.push(entry);
-                pushed();
-            });
-        }, function (err) {
-            if (err) {
-                return did(err);
-            }
-            item._.images = o;
-            did();
-        });
-    }, done);
-};
 
 var makes = function (vehicles, done) {
     async.each(vehicles, function (vehicle, updated) {
+        updated = utils.later(updated);
         Make.findOne(vehicle.make, function (err, make) {
             if (err) {
                 return updated(err);
@@ -90,6 +49,7 @@ var makes = function (vehicles, done) {
 
 var models = function (vehicles, done) {
     async.each(vehicles, function (vehicle, updated) {
+        updated = utils.later(updated);
         Make.findModel(vehicle.model, function (err, model) {
             if (err) {
                 return updated(err);
@@ -119,7 +79,7 @@ var update = function (vehicles, options, done) {
         vehicle._ = {};
         vehicle.description = (vehicle.description !== '<p><br></p>') ? vehicle.description : null;
     });
-    cdn(vehicles, function (err) {
+    utils.cdns(vehicles, function (err) {
         if (err) {
             return done(err);
         }
@@ -149,7 +109,7 @@ var update = function (vehicles, options, done) {
 exports.findOne = function (options, done) {
     $.ajax({
         method: 'GET',
-        url: utils.resolve('autos:///apis/v/vehicles/' + options.id),
+        url: utils.resolve('apis:///v/vehicles/' + options.id),
         dataType: 'json',
         success: function (data) {
             update([data], options, function (err, vehicles) {
@@ -165,7 +125,7 @@ exports.findOne = function (options, done) {
 exports.find = function (options, done) {
     $.ajax({
         method: 'GET',
-        url: utils.resolve('autos:///apis/v/vehicles' + utils.toData(options.query)),
+        url: utils.resolve('apis:///v/vehicles' + utils.toData(options.query)),
         dataType: 'json',
         success: function (data, status, xhr) {
             update(data, options, function (err, data) {
@@ -203,7 +163,7 @@ exports.find = function (options, done) {
 exports.remove = function (options, done) {
     $.ajax({
         method: 'DELETE',
-        url: utils.resolve('autos:///apis/v/vehicles/' + options.id),
+        url: utils.resolve('apis:///v/vehicles/' + options.id),
         dataType: 'json',
         success: function (data) {
             done(null, data);
@@ -216,7 +176,7 @@ exports.remove = function (options, done) {
 
 exports.create = function (options, done) {
     $.ajax({
-        url: utils.resolve('autos:///apis/v/vehicles' + (options.id ? '/' + options.id : '')),
+        url: utils.resolve('apis:///v/vehicles' + (options.id ? '/' + options.id : '')),
         type: options.id ? 'PUT' : 'POST',
         dataType: 'json',
         contentType: 'application/json',

@@ -100,7 +100,7 @@ module.exports = function (ctx, container, options, done) {
                                     redirect('/vehicles/' + vehicle.id + '/edit');
                                     return false;
                                 }
-                                utils.transit('autos', 'vehicles', vehicle.id, action, function (err) {
+                                utils.transit('vehicles', vehicle.id, action, function (err) {
                                     utils.loaded();
                                     if (err) {
                                         return console.error(err);
@@ -111,7 +111,7 @@ module.exports = function (ctx, container, options, done) {
                             });
                             elem.on('click', '.bumpup', function () {
                                 utils.loading();
-                                utils.bumpup('autos', 'vehicles', vehicle.id, function (err) {
+                                utils.bumpup('vehicles', vehicle.id, function (err) {
                                     utils.loaded();
                                     if (err) {
                                         return console.error(err);
