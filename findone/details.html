@@ -11,7 +11,7 @@
                    class="text-decoration-none text-primary">{_.user.username}</a>,
             </div>
             <div class="mr-2">
-                {?_.bumped} <i class="fas fa-angle-double-up text-warning mr-1"></i>{/_.bumped}{createdAt|ago},
+                {?_.bumped} <i class="fas fa-angle-double-up text-warning mr-1"></i>{/_.bumped}{updatedAt|ago},
             </div>
             <div class="mr-2">{_.city}</div>
         </div>
@@ -172,7 +172,7 @@
 {?description}
 <div class="mt-4 mb-4">
     <!--<h3 class="text-dark font-weight-bold mb-4">Description</h3>-->
-    <div class="text-muted">{description|s}</div>
+    <div class="text-muted">{description|s|js}</div>
 </div>
 {/description}
 <div class="d-flex">
