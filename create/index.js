@@ -158,6 +158,24 @@ var vehicleConfigs = {
             done();
         }
     },
+    title: {
+        find: function (context, source, done) {
+            done(null, $('input', source).val());
+        },
+        validate: function (context, data, value, done) {
+            if (!value) {
+                return done(null, null, null);
+            }
+            if (value.length > 100) {
+                return done(null, 'Please enter a shorter value for the title of your vehicle.');
+            }
+            done(null, null, value);
+        },
+        update: function (context, source, error, value, done) {
+            $('input', source).val(value);
+            done();
+        }
+    },
     condition: {
         find: function (context, source, done) {
             done(null, $('input:checked', source).val());

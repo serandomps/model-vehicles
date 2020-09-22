@@ -96,8 +96,13 @@ var update = function (vehicles, options, done) {
                         return done(err);
                     }
                     vehicles.forEach(function (vehicle) {
-                       vehicle._.title = vehicle._.make.title + ' ' + vehicle._.model.title +
-                           (vehicle.edition ? ' ' + vehicle.edition : '') + ' ' + moment(vehicle.manufacturedAt).year();
+                        if (vehicle.title) {
+                            vehicle._.title = vehicle.title;
+                            return;
+                        }
+                        vehicle._.title = vehicle._.make.title + ' ' + vehicle._.model.title;
+                        vehicle._.title += (vehicle.edition ? ' ' + vehicle.edition : '');
+                        vehicle._.title += ' ' + moment(vehicle.manufacturedAt).year();
                     });
                     done(null, vehicles);
                 });

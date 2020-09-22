@@ -1,8 +1,12 @@
 <div class="d-none d-lg-flex mt-4">
     <div class="text-dark mr-5">
         <h1 class="font-weight-bold title text-dark">
+            {?title}
+            {title}
+            {:else}
             {_.make.title} {_.model.title}{?edition}
             <span class="text-muted ml-1">{edition}{/edition} {manufacturedAt|year}</span>
+            {/title}
         </h1>
         <div class="text-muted d-flex">
             <div class="text-truncate mr-2">
@@ -37,8 +41,12 @@
 <div class="row text-muted d-lg-none mt-4">
     <div class="col-lg text-dark mr-3">
         <h1 class="font-weight-bold title text-dark">
+            {?title}
+            {title}
+            {:else}
             {_.make.title} {_.model.title}{?edition}
             <span class="text-muted ml-1">{edition}{/edition} {manufacturedAt|year}</span>
+            {/title}
         </h1>
     </div>
     <div class="col-lg text-muted">
