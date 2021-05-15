@@ -6,7 +6,7 @@ var locations = require('model-locations');
 var contacts = require('model-contacts');
 var Contacts = contacts.service;
 var Vehicles = require('../service');
-var Makes = require('model-vehicle-makes').service;
+var Brands = require('model-brands').service;
 
 dust.loadSource(dust.compile(require('./template'), 'model-vehicles-create'));
 
@@ -92,13 +92,13 @@ var vehicleConfigs = {
             }, done);
         }
     },
-    make: {
+    brand: {
         find: function (context, source, done) {
             serand.blocks('select', 'find', source, done);
         },
         validate: function (context, data, value, done) {
             if (!value) {
-                return done(null, 'Please select the make of your vehicle.');
+                return done(null, 'Please select the brand of your vehicle.');
             }
             done(null, null, value);
         },
@@ -106,7 +106,7 @@ var vehicleConfigs = {
             done();
         },
         render: function (ctx, vform, data, value, done) {
-            var el = $('.make', vform.elem);
+            var el = $('.brand', vform.elem);
             serand.blocks('select', 'create', el, {
                 value: value,
                 change: function () {
@@ -377,11 +377,11 @@ var remove = function (id, done) {
     Vehicles.remove({id: id}, done);
 };
 
-var findModels = function (make, done) {
-    if (!make) {
+var findModels = function (brand, done) {
+    if (!brand) {
         return done(null, []);
     }
-    Makes.findModels(make, function (err, models) {
+    Brands.findModels('vehicles', brand, function (err, models) {
         if (err) {
             return done(err);
         }
@@ -389,9 +389,9 @@ var findModels = function (make, done) {
     });
 };
 
-var updateModels = function (ctx, elem, make, model, done) {
+var updateModels = function (ctx, elem, brand, model, done) {
     var source = $('.model', elem);
-    findModels(make, function (err, models) {
+    findModels(brand, function (err, models) {
         if (err) {
             return done(err);
         }
@@ -442,17 +442,17 @@ var render = function (ctx, container, found, done) {
     var sandbox = container.sandbox;
     var data = serand.pack(found || {}, container);
     var id = data.id;
-    Makes.find(function (err, makes) {
+    Brands.find('vehicles', function (err, brands) {
         if (err) {
             return done(err);
         }
-        var makeData = _.map(makes, function (make) {
+        var brandData = _.map(brands, function (brand) {
             return {
-                value: make.id,
-                label: make.title
+                value: brand.id,
+                label: brand.title
             };
         });
-        findModels(data.make, function (err, models) {
+        findModels(data.brand, function (err, models) {
             if (err) {
                 return done(err);
             }
@@ -472,7 +472,7 @@ var render = function (ctx, container, found, done) {
                 year--;
             }
 
-            data._.makes = makeData;
+            data._.brands = brandData;
             data._.models = modelData;
             data._.types = Vehicles.types();
             data._.manufacturedAt = manufacturedAt;

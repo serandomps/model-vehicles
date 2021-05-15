@@ -3,6 +3,7 @@ var find = require('../find');
 var user = require('user');
 var serand = require('serand');
 var utils = require('utils');
+var watcher = require('watcher');
 
 var hooks = {
     'query.manufacturedAt.$lte': function (val) {
@@ -80,7 +81,7 @@ var render = function (ctx, container, paging, query, page, done) {
                 container.sandbox.append(pageBox);
             }
             paging.queries[page] = query;
-            utils.emit('footer', 'pages', paging.end, findActivePage(container));
+            watcher.emit('footer', 'pages', paging.end, findActivePage(container));
             done(null, clean, links);
         });
     });
@@ -141,7 +142,7 @@ module.exports = function (ctx, container, options, done) {
             }
             paging.active = active;
             pushState(ctx, container, paging);
-            utils.emit('footer', 'pages', paging.end, active);
+            watcher.emit('footer', 'pages', paging.end, active);
         };
 
         var scrolledDown = function () {
@@ -192,19 +193,19 @@ module.exports = function (ctx, container, options, done) {
 
         done(null, {
             clean: function () {
-                utils.off('serand', 'scrolled', scrolled);
-                utils.off('serand', 'scrolled down', scrolledDown);
-                utils.off('serand', 'scrolled up', scrolledUp);
+                watcher.off('serand', 'scrolled', scrolled);
+                watcher.off('serand', 'scrolled down', scrolledDown);
+                watcher.off('serand', 'scrolled up', scrolledUp);
                 cleaners.forEach(function (clean) {
                     clean();
                 });
             },
             ready: function () {
-                utils.on('serand', 'scrolled', scrolled);
-                utils.on('serand', 'scrolled down', scrolledDown);
-                utils.on('serand', 'scrolled up', scrolledUp);
+                watcher.on('serand', 'scrolled', scrolled);
+                watcher.on('serand', 'scrolled down', scrolledDown);
+                watcher.on('serand', 'scrolled up', scrolledUp);
                 if (paging.end > 1) {
-                    utils.emit('footer', 'pages', paging.end, paging.active);
+                    watcher.emit('footer', 'pages', paging.end, paging.active);
                 }
                 if (ctx.state.backed && !paging.backed) {
                     paging.backed = true;

@@ -4,7 +4,7 @@ var utils = require('utils');
 var form = require('form');
 var user = require('user');
 var Vehicles = require('../service');
-var Makes = require('model-vehicle-makes').service;
+var Brands = require('model-brands').service;
 var Locations = require('model-locations').service;
 
 var allProvinces = Locations.allProvinces();
@@ -33,11 +33,11 @@ var findQuery = function (vform, done) {
     });
 };
 
-var findModels = function (make, done) {
-    if (!make) {
+var findModels = function (model, brand, done) {
+    if (!brand) {
         return done(null, []);
     }
-    Makes.findModels(make, function (err, models) {
+    Brands.findModels(model, brand, function (err, models) {
         if (err) {
             return done(err);
         }
@@ -70,8 +70,8 @@ var to = function (o, done) {
     if (o.type) {
         query.type = o.type;
     }
-    if (o.make) {
-        query.make = o.make;
+    if (o.brand) {
+        query.brand = o.brand;
     }
     if (o.model) {
         query.model = o.model;
@@ -137,7 +137,7 @@ var from = function (query, done) {
         _: query._,
         user: query.user,
         type: query.type || '',
-        make: query.make || '',
+        brand: query.brand || '',
         model: query.model,
         color: query.color,
         mileage: query.mileage,
@@ -242,7 +242,7 @@ var configs = {
             }, done);
         }
     },
-    make: {
+    brand: {
         find: function (context, source, done) {
             serand.blocks('select', 'find', source, done);
         },
@@ -252,7 +252,7 @@ var configs = {
             }, done);
         },
         render: function (ctx, vform, data, value, done) {
-            var el = $('.make', vform.elem);
+            var el = $('.brand', vform.elem);
             serand.blocks('select', 'create', el, {
                 value: value,
                 change: function () {
@@ -672,8 +672,8 @@ module.exports = function (ctx, container, options, done) {
         query._ = query._ || (query._ = {});
 
         async.parallel({
-            makes: function (found) {
-                Makes.find(found);
+            brands: function (found) {
+                Brands.find('vehicles', found);
             },
             user: function (found) {
                 if (!query.user) {
@@ -686,15 +686,15 @@ module.exports = function (ctx, container, options, done) {
                 return done(err);
             }
             query._.user = o.user;
-            var makeData = [{label: 'Any Make', value: ''}];
-            makeData = makeData.concat(_.map(o.makes, function (make) {
+            var brandData = [{label: 'Any Make', value: ''}];
+            brandData = brandData.concat(_.map(o.brands, function (brand) {
                 return {
-                    value: make.id,
-                    label: make.title
+                    value: brand.id,
+                    label: brand.title
                 };
             }));
 
-            findModels(query.make, function (err, models) {
+            findModels('vehicles', query.brand, function (err, models) {
                 if (err) {
                     return done(err);
                 }
@@ -716,7 +716,7 @@ module.exports = function (ctx, container, options, done) {
                 }
 
                 query._.container = container.id;
-                query._.makes = makeData;
+                query._.brands = brandData;
                 query._.models = modelData;
                 query._.types = [{label: 'Any Type', value: ''}].concat(Vehicles.types());
                 query._.manufacturedFrom = [{label: 'From Any Year', value: ''}].concat(manufacturedAt);

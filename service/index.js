@@ -1,5 +1,5 @@
 var utils = require('utils');
-var Make = require('model-vehicle-makes').service;
+var Brands = require('model-brands').service;
 
 var types = _.sortBy([
     {value: 'bicycle', label: 'Bicycle'},
@@ -32,16 +32,16 @@ var driveTypes = [
     {value: 'other', label: 'Other'}
 ];
 
-var makes = function (vehicles, done) {
+var brands = function (vehicles, done) {
     async.each(vehicles, function (vehicle, updated) {
         updated = utils.later(updated);
-        Make.findOne(vehicle.make, function (err, make) {
+        Brands.findOne('vehicles', vehicle.brand, function (err, brand) {
             if (err) {
                 return updated(err);
             }
-            vehicle._.make = make;
+            vehicle._.brand = brand;
             updated();
-        })
+        });
     }, function (err) {
         done(err, vehicles);
     });
@@ -50,13 +50,13 @@ var makes = function (vehicles, done) {
 var models = function (vehicles, done) {
     async.each(vehicles, function (vehicle, updated) {
         updated = utils.later(updated);
-        Make.findModel(vehicle.model, function (err, model) {
+        Brands.findModel('vehicles', vehicle.model, function (err, model) {
             if (err) {
                 return updated(err);
             }
             vehicle._.model = model;
             updated();
-        })
+        });
     }, function (err) {
         done(err, vehicles);
     });
@@ -65,7 +65,7 @@ var models = function (vehicles, done) {
 var locations = function (vehicles, done) {
     vehicles.forEach(function (vehicle) {
         var tag = _.find(vehicle.tags, function (tag) {
-            return tag.name === 'location:locations:city';
+            return tag.server && tag.group === 'location' && tag.name === 'city';
         });
         vehicle._.city = tag && tag.value;
         vehicle._.type = exports.type(vehicle.type);
@@ -83,7 +83,7 @@ var update = function (vehicles, options, done) {
         if (err) {
             return done(err);
         }
-        makes(vehicles, function (err, vehicles) {
+        brands(vehicles, function (err, vehicles) {
             if (err) {
                 return done(err);
             }
@@ -100,7 +100,7 @@ var update = function (vehicles, options, done) {
                             vehicle._.title = vehicle.title;
                             return;
                         }
-                        vehicle._.title = vehicle._.make.title + ' ' + vehicle._.model.title;
+                        vehicle._.title = vehicle._.brand.title + ' ' + vehicle._.model.title;
                         vehicle._.title += (vehicle.edition ? ' ' + vehicle.edition : '');
                         vehicle._.title += ' ' + moment(vehicle.manufacturedAt).year();
                     });
